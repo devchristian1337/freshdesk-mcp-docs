@@ -1,0 +1,11 @@
+{
+  // Worker "assets-only": serve il sito statico generato da Docusaurus.
+  // Nessuno script server-side, solo i file in ./build.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "freshdesk-mcp-docs",
+  "compatibility_date": "2026-01-01",
+  "assets": {
+    "directory": "./build",
+    "not_found_handling": "404-page"
+  }
+}
