@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Freshdesk MCP',
   tagline: 'Server MCP per Freshdesk: 64 tool per ticket, contatti, aziende, knowledge base e altro',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.webp',
 
   future: {
     v4: true, // Compatibilità con Docusaurus v4
