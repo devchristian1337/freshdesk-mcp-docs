@@ -38,12 +38,10 @@
   text-decoration: none;
 }
 
-/* Il "led di stato": piccolo quadrato verde acceso — servizio operativo. */
-.brandMark {
-  width: 10px;
-  height: 10px;
-  border-radius: 3px;
-  background: var(--fd-primary);
+.brandLogo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
   flex: none;
 }
 

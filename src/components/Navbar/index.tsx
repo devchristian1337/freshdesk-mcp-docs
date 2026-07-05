@@ -27,7 +27,14 @@ export default function Navbar() {
     <header className={clsx(styles.navbar, hidden && !open && styles.hidden)}>
       <div className={styles.inner}>
         <Link to="/" className={styles.brand} onClick={() => setOpen(false)}>
-          <span className={styles.brandMark} aria-hidden="true" />
+          <img
+            className={styles.brandLogo}
+            src="/img/logo.png"
+            width={30}
+            height={30}
+            alt=""
+            aria-hidden="true"
+          />
           {site.title}
         </Link>
 
