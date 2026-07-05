@@ -9,7 +9,7 @@ sidebar_label: Ticket
 
 12 tool per elencare, cercare, leggere, creare, aggiornare ed eliminare i ticket, oltre ai riepiloghi (summary) e alle proprietà dei ticket field.
 
-:::info Valori di riferimento
+:::info[Valori di riferimento]
 Diversi tool usano i valori interni di Freshdesk:
 
 - **source**: `1` email · `2` portal · `3` phone · `7` chat · `9` feedback widget · `10` outbound email

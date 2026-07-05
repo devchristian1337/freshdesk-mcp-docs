@@ -119,6 +119,6 @@ docker run -p 8000:8000 \
    - **Non** impostare `PORT` (Railway lo inietta automaticamente)
 3. Imposta il path dell'health check su `/health`.
 
-:::tip Credenziali in HTTP
+:::tip[Credenziali in HTTP]
 In modalità HTTP le credenziali possono essere fornite **per-richiesta** dal client (header o query string), quindi un solo deploy può servire più account Freshdesk. Vedi la pagina [Configurazione](./configurazione.md).
 :::

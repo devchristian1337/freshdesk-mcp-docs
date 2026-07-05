@@ -1,0 +1,32 @@
+.grid {
+  max-width: var(--fd-content-max);
+  margin: 0 auto;
+  width: 100%;
+  padding: 2rem 1.25rem 3.5rem;
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr) 210px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.main {
+  min-width: 0;
+}
+
+@media (max-width: 1240px) {
+  .grid {
+    grid-template-columns: 230px minmax(0, 1fr);
+  }
+
+  .toc {
+    display: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-top: 1.2rem;
+  }
+}

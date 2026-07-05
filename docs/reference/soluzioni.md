@@ -9,7 +9,7 @@ sidebar_label: Knowledge base
 
 13 tool per gestire la knowledge base (solutions) di Freshdesk: categorie, cartelle e articoli, oltre alla ricerca testuale degli articoli.
 
-:::info Valori di riferimento
+:::info[Valori di riferimento]
 **status** dell'articolo: `1` draft (bozza) · `2` published (pubblicato).
 :::
 
