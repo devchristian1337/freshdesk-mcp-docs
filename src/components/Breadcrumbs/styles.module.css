@@ -1,0 +1,38 @@
+.crumbs {
+  margin-bottom: 1.4rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-family: var(--fd-font-mono);
+}
+
+.list li + li::before {
+  content: '/';
+  color: var(--fd-line-strong);
+  margin-right: 0.5rem;
+}
+
+.link {
+  color: var(--fd-ink-3);
+}
+
+.link:hover {
+  color: var(--fd-ink);
+}
+
+.section {
+  color: var(--fd-ink-3);
+}
+
+.current {
+  color: var(--fd-ink-2);
+  font-weight: 600;
+}

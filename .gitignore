@@ -1,14 +1,11 @@
-# Dependencies
+# Dipendenze
 /node_modules
 
-# Production
+# Output di build
 /build
+/build-ssr
 
-# Generated files
-.docusaurus
-.cache-loader
-
-# Misc
+# Varie
 .DS_Store
 .env.local
 .env.development.local

@@ -9,7 +9,7 @@ sidebar_label: Agenti
 
 5 tool per elencare, leggere, cercare, creare e aggiornare gli agenti.
 
-:::info Valori di riferimento
+:::info[Valori di riferimento]
 **ticket_scope**: `1` global access · `2` group access · `3` restricted access.
 :::
 

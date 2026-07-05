@@ -45,7 +45,7 @@ Recupera l'intero thread di conversazione di un ticket, impaginando automaticame
 ]
 ```
 
-:::caution Dimensione del contesto
+:::caution[Dimensione del contesto]
 Su ticket con molti scambi i body HTML possono essere lunghi: il tool restituisce comunque tutte le pagine.
 :::
 
