@@ -39,7 +39,12 @@ export default defineConfig({
             rehypeAutolinkHeadings,
             {
               behavior: 'append',
-              properties: {className: ['anchor-link'], ariaLabel: 'Link diretto'},
+              properties: {
+                className: ['anchor-link'],
+                ariaLabel: 'Link diretto',
+                // Fuori dall'indice di ricerca: niente ¶ nei titoli dei risultati.
+                dataPagefindIgnore: 'all',
+              },
               content: {type: 'text', value: '¶'},
             },
           ],

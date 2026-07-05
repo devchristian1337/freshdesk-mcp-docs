@@ -53,6 +53,11 @@
   padding: 12vh 1rem 1rem;
 }
 
+/* `hidden` è sovrascritto da display:flex: ripristinalo esplicitamente. */
+.overlay[hidden] {
+  display: none;
+}
+
 .modal {
   width: 100%;
   max-width: 640px;

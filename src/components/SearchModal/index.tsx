@@ -91,12 +91,13 @@ export default function SearchModal() {
     return () => window.clearTimeout(t);
   }, [open]);
 
-  if (!open) return null;
-
+  // Il modal resta montato anche da chiuso (solo nascosto): l'istanza
+  // PagefindUI vive nel suo DOM e non va ricreata a ogni apertura.
   return (
     <div
       className={styles.overlay}
       role="presentation"
+      hidden={!open}
       onMouseDown={(e) => {
         if (e.target === e.currentTarget) setOpen(false);
       }}>
