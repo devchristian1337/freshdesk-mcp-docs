@@ -1,0 +1,27 @@
+.wrap {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 6rem 1.25rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.title {
+  font-size: 2.4rem;
+  margin: 0.4rem 0 0;
+}
+
+.text {
+  color: var(--fd-ink-2);
+  margin: 0.4rem 0 1.4rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}

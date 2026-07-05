@@ -1,0 +1,397 @@
+/**
+ * Base globale: reset, tipografia, bottoni, chip semantici e resa
+ * del contenuto markdown (.markdown). I nomi .fd-tag* sono un contratto
+ * con i file in docs/ e non vanno rinominati.
+ */
+
+/* ---------------------------------------------------------------- Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Le ancore non devono finire sotto la navbar fissa. */
+  scroll-padding-top: calc(var(--fd-navbar-h) + 16px);
+}
+
+body {
+  margin: 0;
+  font-family: var(--fd-font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--fd-ink);
+  background: var(--fd-paper);
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--fd-link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* Focus visibile e coerente ovunque (tastiera). */
+:focus-visible {
+  outline: 2px solid var(--fd-primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------- Titoli */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--fd-font-display);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--fd-ink);
+}
+
+/* ---------------------------------------------------------------- Etichette tecniche */
+/* Eyebrow mono: il "campo modulo" che introduce una sezione. */
+.fd-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fd-font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fd-ink-2);
+}
+
+.fd-eyebrow::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--fd-primary);
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- Bottoni */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.62rem 1.25rem;
+  border-radius: var(--fd-radius-sm);
+  border: 1px solid transparent;
+  font-family: var(--fd-font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.btn:hover {
+  text-decoration: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--primary {
+  background: var(--fd-primary);
+  color: var(--fd-on-primary);
+}
+
+.btn--primary:hover {
+  background: var(--fd-primary-strong);
+}
+
+[data-theme='dark'] .btn--primary:hover {
+  background: var(--fd-primary-strong);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--fd-line-strong);
+  color: var(--fd-ink);
+}
+
+.btn--ghost:hover {
+  border-color: var(--fd-ink-2);
+  background: var(--fd-surface);
+}
+
+.btn--lg {
+  padding: 0.78rem 1.6rem;
+  font-size: 1rem;
+}
+
+/* ---------------------------------------------------------------- Chip semantici */
+/* Contratto con i .md: <span className="fd-tag">read</span> ecc.
+   Il colore È l'informazione: blu = lettura, ambra = scrittura,
+   rosso = eliminazione. */
+.fd-tag {
+  display: inline-block;
+  font-family: var(--fd-font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.14rem 0.5rem;
+  border-radius: 999px;
+  background: var(--fd-read-tint);
+  color: var(--fd-read);
+  border: 1px solid color-mix(in srgb, var(--fd-read) 25%, transparent);
+  vertical-align: middle;
+}
+
+.fd-tag--write {
+  background: var(--fd-write-tint);
+  color: var(--fd-write);
+  border-color: color-mix(in srgb, var(--fd-write) 25%, transparent);
+}
+
+.fd-tag--delete {
+  background: var(--fd-delete-tint);
+  color: var(--fd-delete);
+  border-color: color-mix(in srgb, var(--fd-delete) 25%, transparent);
+}
+
+/* ---------------------------------------------------------------- Markdown */
+.markdown {
+  font-size: 1rem;
+}
+
+.markdown > h1:first-child {
+  margin-top: 0;
+  font-size: 2.3rem;
+  font-weight: 800;
+}
+
+.markdown h2 {
+  font-size: 1.45rem;
+  margin: 2.8rem 0 0.9rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--fd-line);
+}
+
+.markdown h3 {
+  font-size: 1.15rem;
+  margin: 2rem 0 0.7rem;
+}
+
+/* Nelle pagine di reference gli H2 sono nomi di tool: identificatori,
+   quindi composti in mono — la tipografia codifica la natura del testo. */
+.markdown[data-kind='reference'] h2 {
+  font-family: var(--fd-font-mono);
+  font-weight: 600;
+  font-size: 1.25rem;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol {
+  margin: 0.9rem 0;
+}
+
+.markdown li + li {
+  margin-top: 0.35rem;
+}
+
+.markdown hr {
+  border: 0;
+  border-top: 1px solid var(--fd-line);
+  margin: 2.2rem 0;
+}
+
+/* Ancora ¶ sui titoli (parità con Docusaurus), visibile su hover. */
+.markdown .anchor-link {
+  margin-left: 0.4rem;
+  font-family: var(--fd-font-body);
+  font-weight: 400;
+  color: var(--fd-ink-3);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.markdown h2:hover .anchor-link,
+.markdown h3:hover .anchor-link,
+.markdown h4:hover .anchor-link,
+.markdown .anchor-link:focus-visible {
+  opacity: 1;
+}
+
+/* Codice inline */
+.markdown code {
+  font-family: var(--fd-font-mono);
+  font-size: 0.86em;
+  background: var(--fd-sunken);
+  border: 1px solid var(--fd-line);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  overflow-wrap: anywhere;
+}
+
+.markdown pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: 0.88rem;
+  overflow-wrap: normal;
+}
+
+/* Admonition (:::note/info/tip/warning/caution nei .md).
+   Bordo sinistro semantico + fondo in tinta: informazione, non decorazione. */
+.admonition {
+  margin: 1.3rem 0;
+  padding: 0.85rem 1.1rem;
+  border: 1px solid var(--fd-line);
+  border-left: 3px solid var(--fd-ink-3);
+  border-radius: var(--fd-radius-sm);
+  background: var(--fd-sunken);
+  font-size: 0.95rem;
+}
+
+.admonition > :last-child {
+  margin-bottom: 0;
+}
+
+.admonition__title {
+  font-family: var(--fd-font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fd-ink-2);
+  margin: 0 0 0.35rem;
+}
+
+.admonition--info {
+  border-left-color: var(--fd-read);
+  background: var(--fd-read-tint);
+}
+
+.admonition--info .admonition__title {
+  color: var(--fd-read);
+}
+
+.admonition--tip {
+  border-left-color: var(--fd-primary);
+  background: var(--fd-primary-tint);
+}
+
+.admonition--tip .admonition__title {
+  color: var(--fd-primary-strong);
+}
+
+[data-theme='dark'] .admonition--tip .admonition__title {
+  color: var(--fd-primary);
+}
+
+.admonition--warning,
+.admonition--caution {
+  border-left-color: var(--fd-write);
+  background: var(--fd-write-tint);
+}
+
+.admonition--warning .admonition__title,
+.admonition--caution .admonition__title {
+  color: var(--fd-write);
+}
+
+.admonition--danger {
+  border-left-color: var(--fd-delete);
+  background: var(--fd-delete-tint);
+}
+
+.admonition--danger .admonition__title {
+  color: var(--fd-delete);
+}
+
+/* Tabelle: registro dati, righe alternate come un elenco ticket. */
+.markdown table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--fd-line);
+  border-radius: var(--fd-radius);
+  overflow: hidden;
+  margin: 1.2rem 0;
+  font-size: 0.92rem;
+  display: table;
+}
+
+.markdown th {
+  font-family: var(--fd-font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--fd-ink-2);
+  background: var(--fd-sunken);
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--fd-line);
+}
+
+.markdown td {
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--fd-line);
+  vertical-align: top;
+}
+
+.markdown tr:last-child td {
+  border-bottom: 0;
+}
+
+.markdown tbody tr:nth-child(even) {
+  background: color-mix(in srgb, var(--fd-sunken) 55%, transparent);
+}
+
+.markdown table code {
+  white-space: nowrap;
+}
+
+/* Su schermi stretti le tabelle scorrono senza rompere il layout. */
+@media (max-width: 760px) {
+  .markdown table {
+    display: block;
+    overflow-x: auto;
+  }
+}

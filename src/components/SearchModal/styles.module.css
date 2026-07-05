@@ -1,0 +1,72 @@
+.searchButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 34px;
+  padding: 0 0.65rem;
+  border: 1px solid var(--fd-line);
+  border-radius: var(--fd-radius-sm);
+  background: var(--fd-surface);
+  color: var(--fd-ink-2);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.searchButton:hover {
+  color: var(--fd-ink);
+  border-color: var(--fd-line-strong);
+}
+
+.searchKbd {
+  font-family: var(--fd-font-mono);
+  font-size: 0.66rem;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--fd-line);
+  border-radius: 4px;
+  background: var(--fd-sunken);
+  color: var(--fd-ink-3);
+}
+
+@media (max-width: 860px) {
+  .searchLabel,
+  .searchKbd {
+    display: none;
+  }
+
+  .searchButton {
+    width: 34px;
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+/* ------------------------------------------------ Modal (Step 8) */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: color-mix(in srgb, var(--fd-ink) 40%, transparent);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 1rem 1rem;
+}
+
+.modal {
+  width: 100%;
+  max-width: 640px;
+  max-height: 70vh;
+  overflow: auto;
+  background: var(--fd-surface);
+  border: 1px solid var(--fd-line);
+  border-radius: var(--fd-radius);
+  box-shadow: var(--fd-shadow-pop);
+  padding: 1rem;
+}
+
+.devNote {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--fd-ink-2);
+}

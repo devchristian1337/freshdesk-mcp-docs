@@ -62,7 +62,7 @@ Le credenziali vengono risolte **per-richiesta** con questa precedenza:
 3. **Variabili d'ambiente** (fallback tipico per stdio):
    - `FRESHDESK_DOMAIN`, `FRESHDESK_API_KEY`, `FRESHDESK_TICKETS_READ_ONLY`
 
-:::warning Sicurezza della API key
+:::warning[Sicurezza della API key]
 La API key passata in **query string** può finire negli access log di proxy/Railway e nella cronologia del browser. Preferisci sempre gli **header** `X-Freshdesk-*`; in locale (stdio) usa le variabili d'ambiente.
 :::
 
