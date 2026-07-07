@@ -19,12 +19,9 @@ const ThemeContext = createContext<ThemeContextValue>({
   toggle: () => {},
 });
 
-/** Tema iniziale: legge l'attributo impostato dallo script anti-FOUC in index.html. */
+/** Tema iniziale: deve combaciare con il prerender SSG per evitare mismatch. */
 function initialTheme(): Theme {
-  if (typeof document === 'undefined') return 'light'; // prerender SSG
-  return document.documentElement.getAttribute('data-theme') === 'dark'
-    ? 'dark'
-    : 'light';
+  return 'light';
 }
 
 export function ThemeProvider({children}: {children: ReactNode}) {
@@ -46,6 +43,16 @@ export function ThemeProvider({children}: {children: ReactNode}) {
   const toggle = useCallback(() => {
     apply(theme === 'dark' ? 'light' : 'dark', true);
   }, [theme, apply]);
+
+  // Dopo l'hydration allinea lo stato React al tema applicato dallo script
+  // anti-FOUC. Il primo render resta identico all'SSG, evitando React #418.
+  useEffect(() => {
+    const current =
+      document.documentElement.getAttribute('data-theme') === 'dark'
+        ? 'dark'
+        : 'light';
+    setTheme(current);
+  }, []);
 
   // Se l'utente non ha mai scelto, segui i cambi di preferenza di sistema.
   useEffect(() => {

@@ -46,14 +46,14 @@ function escapeHtml(s) {
 
 const routes = await collectRoutes();
 
-// Route pubbliche → build/<percorso>/index.html
+// Route pubbliche: / resta index.html, le altre clean URL diventano .html.
 for (const meta of routes) {
   const appHtml = await render(meta.path);
   const html = fillTemplate(appHtml, meta);
   const outFile =
     meta.path === '/'
       ? path.join(buildDir, 'index.html')
-      : path.join(buildDir, meta.path.slice(1), 'index.html');
+      : path.join(buildDir, `${meta.path.slice(1)}.html`);
   await mkdir(path.dirname(outFile), {recursive: true});
   await writeFile(outFile, html, 'utf8');
   console.log(`prerender ${meta.path} -> ${path.relative(root, outFile)}`);

@@ -30,7 +30,7 @@ export async function render(path: string): Promise<string> {
   return renderToString(
     <StrictMode>
       <ThemeProvider>
-        <StaticRouterProvider router={router} context={context} />
+        <StaticRouterProvider router={router} context={context} hydrate={false} />
       </ThemeProvider>
     </StrictMode>,
   );
