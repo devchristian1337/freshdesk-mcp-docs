@@ -1,14 +1,14 @@
 import {Outlet, ScrollRestoration} from 'react-router';
-import Navbar from '../components/Navbar';
+import Dock from '../components/Dock';
 import Footer from '../components/Footer';
 import SearchModal from '../components/SearchModal';
 import styles from './SiteLayout.module.css';
 
-/** Guscio comune a tutte le pagine: navbar, contenuto, footer, ricerca. */
+/** Guscio comune a tutte le pagine: contenuto, footer, dock e ricerca. */
 export default function SiteLayout() {
   return (
     <div className={styles.shell}>
-      <Navbar />
+      <Dock />
       <div className={styles.content}>
         <Outlet />
       </div>

@@ -32,6 +32,7 @@
   color: var(--fd-ink-2);
   line-height: 1.45;
   overflow-wrap: anywhere;
+  transition: color 0.15s ease;
 }
 
 .link:hover {

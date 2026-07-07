@@ -39,12 +39,15 @@
   font-size: 0.9rem;
   color: var(--fd-ink-2);
   border-left: 2px solid transparent;
+  transition: color 0.13s ease, background-color 0.13s ease,
+    transform 0.13s ease;
 }
 
 .link:hover {
   color: var(--fd-ink);
   background: var(--fd-sunken);
   text-decoration: none;
+  transform: translateX(2px);
 }
 
 .linkActive {

@@ -1,19 +1,75 @@
-import {useEffect, useRef, useState} from 'react';
-import {OPEN_SEARCH_EVENT} from './SearchButton';
-import styles from './styles.module.css';
-import '@pagefind/default-ui/css/ui.css';
-import './pagefind-overrides.css';
+import {useCallback, useEffect, useRef, useState} from 'react';
+import {useNavigate} from 'react-router';
+import {BookOpen, Braces, Terminal} from 'lucide-react';
+import {GitHubIcon} from '../ui/github-icon';
+import {
+  AppleSpotlight,
+  type SpotlightResult,
+  type SpotlightShortcut,
+} from '../ui/apple-spotlight';
+import {site} from '../../site.config';
+
+/** Evento globale che apre lo Spotlight (usato dal Dock). */
+export const OPEN_SEARCH_EVENT = 'fd:search:open';
+
+/** Evento con lo stato aperto/chiuso dello Spotlight (il Dock si nasconde). */
+export const SEARCH_STATE_EVENT = 'fd:search:state';
 
 /**
- * Modal di ricerca basato su Pagefind: l'indice viene generato in build
- * (`pagefind --site build`) a partire dall'HTML prerenderizzato.
- * In dev l'indice non esiste: mostriamo un avviso al posto dei risultati.
+ * Ricerca del sito in stile Spotlight: l'input interroga l'API JS di
+ * Pagefind, il cui indice viene generato in build (`pagefind --site build`)
+ * dall'HTML prerenderizzato. In dev l'indice non esiste: mostriamo un
+ * avviso al posto dei risultati.
  */
+
+/** Sottoinsieme dell'API JS di Pagefind che usiamo. */
+type PagefindApi = {
+  init: () => Promise<void>;
+  debouncedSearch: (
+    term: string,
+    options?: Record<string, unknown>,
+    debounceMs?: number,
+  ) => Promise<{results: PagefindRawResult[]} | null>;
+};
+
+type PagefindRawResult = {
+  id: string;
+  data: () => Promise<{
+    url: string;
+    excerpt: string;
+    meta: {title?: string};
+  }>;
+};
+
+const MAX_RESULTS = 8;
+
+/* Percorso servito dallo static hosting: esiste solo dopo la build
+   (costante non-letterale così né Vite né TS provano a risolverlo). */
+const PAGEFIND_URL = '/pagefind/pagefind.js';
+
+/** Gli URL di Pagefind puntano all'HTML statico: riportali a path di route. */
+function normalizeUrl(url: string): string {
+  return url
+    .replace(/index\.html$/, '')
+    .replace(/\.html$/, '')
+    .replace(/\/$/, '') || '/';
+}
+
+const SHORTCUTS: SpotlightShortcut[] = [
+  {label: 'Documentazione', icon: <BookOpen />, link: '/docs/intro'},
+  {label: 'Reference', icon: <Braces />, link: '/docs/reference/overview'},
+  {label: 'Esempi', icon: <Terminal />, link: '/docs/esempi'},
+  {label: 'GitHub', icon: <GitHubIcon size={28} />, link: site.repoUrl, external: true},
+];
+
 export default function SearchModal() {
   const [open, setOpen] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const uiRef = useRef<unknown>(null);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<SpotlightResult[]>([]);
+  const pagefindRef = useRef<PagefindApi | null>(null);
+  const searchSeq = useRef(0);
+  const navigate = useNavigate();
 
   // Apertura da navbar (evento) e da tastiera (Ctrl/Cmd+K), chiusura con Esc.
   useEffect(() => {
@@ -34,7 +90,12 @@ export default function SearchModal() {
     };
   }, []);
 
-  // Blocca lo scroll della pagina mentre il modal è aperto.
+  // Notifica lo stato al resto dell'app (il Dock si nasconde quando aperto).
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(SEARCH_STATE_EVENT, {detail: {open}}));
+  }, [open]);
+
+  // Blocca lo scroll della pagina mentre lo Spotlight è aperto.
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -44,33 +105,32 @@ export default function SearchModal() {
     };
   }, [open]);
 
-  // Istanzia la UI Pagefind alla prima apertura (e la riusa poi).
+  // Reset della query a ogni apertura.
   useEffect(() => {
-    if (!open || uiRef.current || !containerRef.current) return;
+    if (open) {
+      setQuery('');
+      setResults([]);
+    }
+  }, [open]);
+
+  // Carica Pagefind alla prima apertura (e riusa l'istanza poi).
+  useEffect(() => {
+    if (!open || pagefindRef.current || unavailable) return;
     let cancelled = false;
     (async () => {
       try {
-        // Verifica che l'indice esista (in dev non c'è).
-        const probe = await fetch('/pagefind/pagefind.js', {method: 'HEAD'});
-        if (!probe.ok) throw new Error('indice assente');
-        const {PagefindUI} = await import('@pagefind/default-ui');
-        if (cancelled || !containerRef.current) return;
-        uiRef.current = new PagefindUI({
-          element: containerRef.current,
-          bundlePath: '/pagefind/',
-          showImages: false,
-          showSubResults: true,
-          pageSize: 8,
-          translations: {
-            placeholder: 'Cerca nella documentazione…',
-            clear_search: 'Pulisci',
-            load_more: 'Altri risultati',
-            zero_results: 'Nessun risultato per «[SEARCH_TERM]»',
-            many_results: '[COUNT] risultati per «[SEARCH_TERM]»',
-            one_result: 'Un risultato per «[SEARCH_TERM]»',
-            searching: 'Ricerca di «[SEARCH_TERM]»…',
-          },
-        });
+        const probe = await fetch(PAGEFIND_URL, {method: 'HEAD'});
+        // In dev il fallback SPA risponde 200 con HTML: senza il check sul
+        // content-type l'import fallirebbe con un 404 rumoroso in console.
+        const type = probe.headers.get('content-type') ?? '';
+        if (!probe.ok || !type.includes('javascript')) {
+          throw new Error('indice assente');
+        }
+        const pagefind = (await import(
+          /* @vite-ignore */ PAGEFIND_URL
+        )) as PagefindApi;
+        await pagefind.init();
+        if (!cancelled) pagefindRef.current = pagefind;
       } catch {
         if (!cancelled) setUnavailable(true);
       }
@@ -78,42 +138,64 @@ export default function SearchModal() {
     return () => {
       cancelled = true;
     };
-  }, [open]);
+  }, [open, unavailable]);
 
-  // Porta il focus nel campo di ricerca a ogni apertura.
+  // Interroga Pagefind a ogni cambio di query (debounce interno a Pagefind).
   useEffect(() => {
-    if (!open) return;
-    const t = window.setTimeout(() => {
-      containerRef.current
-        ?.querySelector<HTMLInputElement>('input[type="text"], input[type="search"]')
-        ?.focus();
-    }, 60);
-    return () => window.clearTimeout(t);
-  }, [open]);
+    const pagefind = pagefindRef.current;
+    if (!query || !pagefind) {
+      setResults([]);
+      return;
+    }
+    const seq = ++searchSeq.current;
+    (async () => {
+      const search = await pagefind.debouncedSearch(query, {}, 250);
+      // null = ricerca superata da una più recente.
+      if (!search || seq !== searchSeq.current) return;
+      const data = await Promise.all(
+        search.results.slice(0, MAX_RESULTS).map((r) => r.data()),
+      );
+      if (seq !== searchSeq.current) return;
+      setResults(
+        data.map((d) => ({
+          label: d.meta.title ?? 'Senza titolo',
+          descriptionHtml: d.excerpt,
+          link: normalizeUrl(d.url),
+        })),
+      );
+    })();
+  }, [query]);
 
-  // Il modal resta montato anche da chiuso (solo nascosto): l'istanza
-  // PagefindUI vive nel suo DOM e non va ricreata a ogni apertura.
+  const handleNavigate = useCallback(
+    (link: string, external: boolean) => {
+      setOpen(false);
+      if (external) {
+        window.open(link, '_blank', 'noopener,noreferrer');
+      } else {
+        navigate(link);
+      }
+    },
+    [navigate],
+  );
+
   return (
-    <div
-      className={styles.overlay}
-      role="presentation"
-      hidden={!open}
-      onMouseDown={(e) => {
-        if (e.target === e.currentTarget) setOpen(false);
-      }}>
-      <div
-        className={styles.modal}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Ricerca nella documentazione">
-        <div ref={containerRef} className="fd-search-scope" />
-        {unavailable && (
-          <p className={styles.devNote}>
+    <AppleSpotlight
+      isOpen={open}
+      handleClose={() => setOpen(false)}
+      shortcuts={SHORTCUTS}
+      searchValue={query}
+      onSearchValueChange={setQuery}
+      searchResults={results}
+      notice={
+        unavailable ? (
+          <>
             L&apos;indice di ricerca viene generato in build: esegui{' '}
-            <code>npm run build</code> e poi <code>npm run preview</code> per provarla.
-          </p>
-        )}
-      </div>
-    </div>
+            <code>npm run build</code> e poi <code>npm run preview</code> per
+            provarla.
+          </>
+        ) : undefined
+      }
+      onNavigate={handleNavigate}
+    />
   );
 }

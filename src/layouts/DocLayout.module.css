@@ -11,6 +11,19 @@
 
 .main {
   min-width: 0;
+  /* Entrata calma dell'articolo a ogni navigazione (key={docId} nel layout). */
+  animation: articleIn 0.3s ease;
+}
+
+@keyframes articleIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (max-width: 1240px) {

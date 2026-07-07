@@ -1,0 +1,7 @@
+/**
+ * Tailwind v4 SENZA preflight: importiamo solo theme e utilities.
+ * Il reset globale di Tailwind romperebbe la base CSS esistente del sito
+ * (base.css); le utility servono solo ai componenti in src/components/ui.
+ */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);

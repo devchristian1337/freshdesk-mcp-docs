@@ -16,13 +16,15 @@
   border-radius: var(--fd-radius);
   background: var(--fd-surface);
   color: var(--fd-ink);
-  transition: border-color 0.14s ease, background-color 0.14s ease;
+  transition: border-color 0.14s ease, background-color 0.14s ease,
+    transform 0.14s ease;
 }
 
 .card:hover {
   border-color: var(--fd-primary);
   background: var(--fd-primary-tint);
   text-decoration: none;
+  transform: translateY(-2px);
 }
 
 .cardNext {

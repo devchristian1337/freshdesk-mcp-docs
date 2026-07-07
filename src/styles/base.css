@@ -56,6 +56,12 @@ button {
   border-radius: 2px;
 }
 
+/* Opt-out per i campi che gestiscono il focus da soli (es. Spotlight):
+   la regola sopra è fuori layer e vincerebbe sull'outline-none di Tailwind. */
+[data-no-focus-ring]:focus-visible {
+  outline: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -120,11 +126,12 @@ h4 {
   cursor: pointer;
   text-decoration: none;
   transition: background-color 0.15s ease, border-color 0.15s ease,
-    transform 0.1s ease;
+    transform 0.15s ease;
 }
 
 .btn:hover {
   text-decoration: none;
+  transform: translateY(-1px);
 }
 
 .btn:active {

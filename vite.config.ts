@@ -1,5 +1,7 @@
+import {fileURLToPath, URL} from 'node:url';
 import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import mdx from '@mdx-js/rollup';
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
@@ -35,6 +37,10 @@ export default defineConfig({
         rehypePlugins: [
           // rehype-slug usa github-slugger: ancore identiche a Docusaurus.
           rehypeSlug,
+          // La TOC va estratta PRIMA di rehype-autolink-headings, altrimenti
+          // il ¶ dell'ancora finisce nel testo delle voci "In questa pagina".
+          withToc,
+          [withTocExport, {name: 'tableOfContents'}],
           [
             rehypeAutolinkHeadings,
             {
@@ -48,14 +54,17 @@ export default defineConfig({
               content: {type: 'text', value: '¶'},
             },
           ],
-          // Estrae la TOC e la esporta dal modulo (export tableOfContents).
-          withToc,
-          [withTocExport, {name: 'tableOfContents'}],
         ],
       }),
     },
     react({include: /\.(jsx|js|mdx|md|tsx|ts)$/}),
+    tailwindcss(),
   ],
+  resolve: {
+    alias: {
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
   build: {
     // Deve restare "build": wrangler.jsonc serve gli asset da ./build
     outDir: 'build',

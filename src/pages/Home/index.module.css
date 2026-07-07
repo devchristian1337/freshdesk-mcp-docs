@@ -20,6 +20,36 @@
   align-items: center;
 }
 
+/* Entrata scaglionata della copy al load: puro CSS, gira anche senza JS. */
+.heroCopy > * {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: riseIn 0.5s ease forwards;
+}
+
+.heroCopy > :nth-child(2) {
+  animation-delay: 60ms;
+}
+
+.heroCopy > :nth-child(3) {
+  animation-delay: 120ms;
+}
+
+.heroCopy > :nth-child(4) {
+  animation-delay: 180ms;
+}
+
+.heroCopy > :nth-child(5) {
+  animation-delay: 240ms;
+}
+
+@keyframes riseIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .title {
   font-size: clamp(2.3rem, 4.6vw, 3.4rem);
   font-weight: 800;
@@ -361,6 +391,14 @@
   border: 1px solid var(--fd-line);
   border-radius: var(--fd-radius);
   padding: 1.3rem 1.35rem;
+  transition: transform 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.featureCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--fd-line-strong);
+  box-shadow: 0 8px 20px -14px rgba(23, 34, 43, 0.35);
 }
 
 .featureTitle {
@@ -400,6 +438,14 @@
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+  transition: transform 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.modeCard:hover {
+  transform: translateY(-3px);
+  border-color: var(--fd-line-strong);
+  box-shadow: 0 8px 20px -14px rgba(23, 34, 43, 0.35);
 }
 
 .modeTag {
@@ -445,9 +491,15 @@
 }
 
 .modeLink {
+  display: inline-block;
   font-weight: 600;
   font-size: 0.92rem;
   margin-top: auto;
+  transition: transform 0.15s ease;
+}
+
+.modeLink:hover {
+  transform: translateX(3px);
 }
 
 /* ---------------------------------------------------------------- CTA band */

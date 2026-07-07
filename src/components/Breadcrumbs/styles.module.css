@@ -22,6 +22,7 @@
 
 .link {
   color: var(--fd-ink-3);
+  transition: color 0.15s ease;
 }
 
 .link:hover {

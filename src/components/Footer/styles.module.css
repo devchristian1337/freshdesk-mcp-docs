@@ -8,7 +8,8 @@
 .inner {
   max-width: var(--fd-content-max);
   margin: 0 auto;
-  padding: 3rem 1.25rem 2rem;
+  /* Extra spazio in basso: il dock flottante non deve coprire il copyright. */
+  padding: 3rem 1.25rem 8rem;
 }
 
 .columns {
@@ -37,12 +38,15 @@
 }
 
 .link {
+  display: inline-block;
   color: #d7dee2;
   font-size: 0.92rem;
+  transition: color 0.15s ease, transform 0.15s ease;
 }
 
 .link:hover {
   color: #ffffff;
+  transform: translateX(2px);
 }
 
 .copyright {

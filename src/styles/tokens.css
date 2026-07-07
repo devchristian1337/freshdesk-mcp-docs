@@ -43,7 +43,9 @@
   /* ------------------------------------------------ Geometria */
   --fd-radius: 8px;
   --fd-radius-sm: 6px;
-  --fd-navbar-h: 60px;
+  /* La navbar in alto non esiste più (sostituita dal dock in basso):
+     il token resta a 0 per gli offset sticky/scroll che lo usano. */
+  --fd-navbar-h: 0px;
   --fd-content-max: 1200px;
 
   /* Ombra unica, funzionale (elementi sospesi: modal, dropdown). */

@@ -5,6 +5,7 @@ import {ThemeProvider} from './theme/ThemeProvider';
 import {routes} from './routes';
 import './styles/tokens.css';
 import './styles/base.css';
+import './styles/tailwind.css';
 
 /**
  * Entry client. In produzione l'HTML è prerenderizzato (SSG): prima di
@@ -36,8 +37,11 @@ async function boot() {
     </StrictMode>
   );
 
-  // Idrata se il prerender ha già riempito #root, altrimenti (dev) monta da zero.
-  if (rootEl.hasChildNodes()) {
+  // Idrata se il prerender ha già riempito #root, altrimenti (dev) monta da
+  // zero. Serve firstElementChild, non hasChildNodes(): in dev la root
+  // contiene il segnaposto <!--app-html--> e un commento è pur sempre un
+  // child node — idratare una root "vuota" fa fallire l'hydration.
+  if (rootEl.firstElementChild) {
     hydrateRoot(rootEl, app);
   } else {
     createRoot(rootEl).render(app);

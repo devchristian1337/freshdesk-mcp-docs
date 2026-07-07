@@ -15,7 +15,10 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "plugins", "vite.config.ts"],
   "exclude": ["build", "build-ssr", "node_modules"]

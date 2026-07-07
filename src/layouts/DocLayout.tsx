@@ -22,7 +22,7 @@ export default function DocLayout({docId, toc, children}: DocLayoutProps) {
         <Sidebar />
       </aside>
 
-      <div className={styles.main}>
+      <div className={styles.main} key={docId}>
         <Breadcrumbs docId={docId} />
         <article
           className="markdown"
