@@ -25,14 +25,10 @@
 }
 
 .copy {
-  font-family: var(--fd-font-mono);
-  font-size: 0.72rem;
-  padding: 0.22rem 0.55rem;
   border: 1px solid var(--fd-line);
   border-radius: 5px;
   background: var(--fd-surface);
   color: var(--fd-ink-2);
-  cursor: pointer;
   transition: color 0.13s ease, border-color 0.13s ease;
 }
 
@@ -41,13 +37,19 @@
   border-color: var(--fd-line-strong);
 }
 
+.scrollArea {
+  width: 100%;
+  height: auto;
+}
+
 .pre {
   margin: 0;
   padding: 0.9rem 1rem;
-  overflow-x: auto;
   font-family: var(--fd-font-mono);
   font-size: 0.85rem;
   line-height: 1.6;
+  width: max-content;
+  min-width: 100%;
 }
 
 .line {

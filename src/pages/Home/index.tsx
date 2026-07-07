@@ -144,7 +144,7 @@ export default function Home() {
   usePageMeta('Documentazione', site.tagline);
 
   return (
-    <main>
+    <main className={styles.home}>
       {/* ------------------------------------------------------------ Hero */}
       <header className={styles.hero}>
         <div className={styles.heroInner}>

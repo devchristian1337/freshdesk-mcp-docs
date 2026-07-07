@@ -2,6 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
 import {ChevronRight, FileText, Search} from 'lucide-react';
 import {cn} from '@/lib/utils';
+import {ScrollArea} from '@/components/ui/scroll-area';
 
 /**
  * Spotlight di ricerca in stile macOS (blob morphing + framer-motion),
@@ -213,34 +214,38 @@ const SearchResultsContainer = ({
     <motion.div
       layout
       onMouseLeave={() => onHover(null)}
-      className="px-2 border-t border-[var(--fd-line)] flex flex-col bg-[var(--fd-surface)] max-h-96 overflow-y-auto w-full py-2">
-      {notice ? (
-        <div className="px-3 py-3 text-sm text-[var(--fd-ink-2)]">{notice}</div>
-      ) : searchResults.length === 0 ? (
-        <div className="px-3 py-3 text-sm text-[var(--fd-ink-2)]">{emptyText}</div>
-      ) : (
-        searchResults.map((result, index) => {
-          return (
-            <motion.div
-              key={`search-result-${result.link}-${index}`}
-              onMouseEnter={() => onHover(index)}
-              initial={{opacity: 0}}
-              animate={{opacity: 1}}
-              exit={{opacity: 0}}
-              transition={{
-                delay: index * 0.05,
-                duration: 0.2,
-                ease: 'easeOut',
-              }}>
-              <SearchResultCard
-                result={result}
-                isLast={index === searchResults.length - 1}
-                onNavigate={onNavigate}
-              />
-            </motion.div>
-          );
-        })
-      )}
+      className="border-t border-[var(--fd-line)] bg-[var(--fd-surface)] max-h-96 w-full">
+      <ScrollArea className="h-auto max-h-96 w-full" scrollFade scrollbarGutter>
+        <div className="flex flex-col px-2 py-2">
+          {notice ? (
+            <div className="px-3 py-3 text-sm text-[var(--fd-ink-2)]">{notice}</div>
+          ) : searchResults.length === 0 ? (
+            <div className="px-3 py-3 text-sm text-[var(--fd-ink-2)]">{emptyText}</div>
+          ) : (
+            searchResults.map((result, index) => {
+              return (
+                <motion.div
+                  key={`search-result-${result.link}-${index}`}
+                  onMouseEnter={() => onHover(index)}
+                  initial={{opacity: 0}}
+                  animate={{opacity: 1}}
+                  exit={{opacity: 0}}
+                  transition={{
+                    delay: index * 0.05,
+                    duration: 0.2,
+                    ease: 'easeOut',
+                  }}>
+                  <SearchResultCard
+                    result={result}
+                    isLast={index === searchResults.length - 1}
+                    onNavigate={onNavigate}
+                  />
+                </motion.div>
+              );
+            })
+          )}
+        </div>
+      </ScrollArea>
     </motion.div>
   );
 };

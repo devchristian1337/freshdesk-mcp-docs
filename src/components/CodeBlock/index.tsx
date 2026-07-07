@@ -1,5 +1,7 @@
-import {isValidElement, useState, type HTMLAttributes, type ReactElement} from 'react';
+import {isValidElement, type HTMLAttributes, type ReactElement} from 'react';
 import {Highlight, themes} from 'prism-react-renderer';
+import {CopyButton} from '@/components/ui/copy-button';
+import {ScrollArea} from '@/components/ui/scroll-area';
 import {useTheme} from '../../theme/ThemeProvider';
 import styles from './styles.module.css';
 
@@ -11,7 +13,6 @@ type CodeElementProps = {className?: string; children?: unknown};
  */
 export default function CodeBlock(props: HTMLAttributes<HTMLPreElement>) {
   const {theme} = useTheme();
-  const [copied, setCopied] = useState(false);
 
   // MDX produce <pre><code className="language-x">testo</code></pre>.
   const codeEl = isValidElement(props.children)
@@ -23,48 +24,37 @@ export default function CodeBlock(props: HTMLAttributes<HTMLPreElement>) {
     codeEl?.props.className?.match(/language-([\w-]+)/)?.[1] ?? 'text';
   const code = rawCode.replace(/\n$/, '');
 
-  // Fallback per contenuti non standard: rendi il pre così com'è.
+  // Fallback per contenuti non standard: rendi il pre cosi com'e.
   if (!codeEl) return <pre {...props} />;
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 1600);
-    } catch {
-      /* clipboard non disponibile (http, permessi): nessun feedback */
-    }
-  };
 
   return (
     <figure className={styles.block}>
       <figcaption className={styles.header}>
         <span className={styles.lang}>{language}</span>
-        <button
-          type="button"
-          className={styles.copy}
-          onClick={copy}
-          aria-label="Copia il codice">
-          {copied ? 'Copiato ✓' : 'Copia'}
-        </button>
+        <CopyButton value={code} size="sm" className={styles.copy} />
       </figcaption>
       <Highlight
         code={code}
         language={language}
         theme={theme === 'dark' ? themes.oneDark : themes.oneLight}>
         {({className, style, tokens, getLineProps, getTokenProps}) => (
-          <pre className={`${styles.pre} ${className}`} style={style}>
-            <code>
-              {tokens.map((line, i) => (
-                <span key={i} {...getLineProps({line})} className={styles.line}>
-                  {line.map((token, j) => (
-                    <span key={j} {...getTokenProps({token})} />
-                  ))}
-                  {'\n'}
-                </span>
-              ))}
-            </code>
-          </pre>
+          <ScrollArea
+            className={`h-auto w-full ${styles.scrollArea}`}
+            scrollbarGutter
+            clampContentMinWidth={false}>
+            <pre className={`${styles.pre} ${className}`} style={style}>
+              <code>
+                {tokens.map((line, i) => (
+                  <span key={i} {...getLineProps({line})} className={styles.line}>
+                    {line.map((token, j) => (
+                      <span key={j} {...getTokenProps({token})} />
+                    ))}
+                    {'\n'}
+                  </span>
+                ))}
+              </code>
+            </pre>
+          </ScrollArea>
         )}
       </Highlight>
     </figure>

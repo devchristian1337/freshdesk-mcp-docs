@@ -1,5 +1,9 @@
 /* Landing "console operativa" — hero con hand-off, registro, feature, modalità. */
 
+.home {
+  overflow-x: clip;
+}
+
 /* ---------------------------------------------------------------- Hero */
 .hero {
   border-bottom: 1px solid var(--fd-line);
@@ -71,6 +75,10 @@
   display: flex;
   gap: 0.7rem;
   flex-wrap: wrap;
+}
+
+.actions :global(.btn) {
+  min-width: 0;
 }
 
 .metaRow {
@@ -530,6 +538,10 @@
   margin: 0.3rem 0 1.3rem;
 }
 
+.ctaInner .actions {
+  justify-content: center;
+}
+
 /* Bottone ghost leggibile sul fondo inchiostro. */
 .ctaGhost {
   border-color: #3a4854;
@@ -570,5 +582,28 @@
 
   .section {
     padding: 3rem 1.25rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .actions {
+    width: min(100%, 22rem);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .actions :global(.btn) {
+    width: 100%;
+    min-height: 3.25rem;
+    padding-inline: 1rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .actions :global(.btn--lg) {
+    font-size: 0.94rem;
+    padding-inline: 0.85rem;
   }
 }

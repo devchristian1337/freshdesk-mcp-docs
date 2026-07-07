@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@base-ui/react": "^1.6.0",
     "@mdx-js/react": "^3.1.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.42.2",
