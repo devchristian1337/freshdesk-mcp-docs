@@ -199,7 +199,6 @@ interface SearchResultsContainerProps {
   searchResults: SpotlightResult[];
   emptyText: string;
   notice?: React.ReactNode;
-  onHover: (index: number | null) => void;
   onNavigate: (link: string, external: boolean) => void;
 }
 
@@ -207,13 +206,11 @@ const SearchResultsContainer = ({
   searchResults,
   emptyText,
   notice,
-  onHover,
   onNavigate,
 }: SearchResultsContainerProps) => {
   return (
     <motion.div
       layout
-      onMouseLeave={() => onHover(null)}
       className="border-t border-[var(--fd-line)] bg-[var(--fd-surface)] max-h-96 w-full">
       <ScrollArea className="h-auto max-h-96 w-full" scrollFade scrollbarGutter>
         <div className="flex flex-col px-2 py-2">
@@ -226,7 +223,6 @@ const SearchResultsContainer = ({
               return (
                 <motion.div
                   key={`search-result-${result.link}-${index}`}
-                  onMouseEnter={() => onHover(index)}
                   initial={{opacity: 0}}
                   animate={{opacity: 1}}
                   exit={{opacity: 0}}
@@ -273,9 +269,6 @@ const AppleSpotlight = ({
   onNavigate,
 }: AppleSpotlightProps) => {
   const [hovered, setHovered] = React.useState(false);
-  const [hoveredSearchResult, setHoveredSearchResult] = React.useState<number | null>(
-    null,
-  );
   const [hoveredShortcut, setHoveredShortcut] = React.useState<number | null>(null);
 
   // Niente MotionConfig reducedMotion="user": come nella demo originale le
@@ -350,18 +343,12 @@ const AppleSpotlight = ({
                   className="h-full w-full flex flex-col items-center justify-start z-10 relative shadow-[var(--fd-shadow-pop)] overflow-hidden border border-[var(--fd-line)]">
                   <SpotlightInput
                     placeholder={
-                      hoveredShortcut !== null && shortcuts[hoveredShortcut]
+                      !searchValue && hoveredShortcut !== null && shortcuts[hoveredShortcut]
                         ? shortcuts[hoveredShortcut].label
-                        : hoveredSearchResult !== null && searchResults[hoveredSearchResult]
-                          ? searchResults[hoveredSearchResult].label
-                          : 'Cerca nella documentazione'
+                        : 'Cerca nella documentazione'
                     }
-                    placeholderClassName={
-                      hoveredSearchResult !== null
-                        ? 'text-[var(--fd-ink)]'
-                        : 'text-[var(--fd-ink-3)]'
-                    }
-                    hidePlaceholder={!(hoveredSearchResult !== null || !searchValue)}
+                    placeholderClassName="text-[var(--fd-ink-3)]"
+                    hidePlaceholder={Boolean(searchValue)}
                     value={searchValue}
                     onChange={onSearchValueChange}
                   />
@@ -371,7 +358,6 @@ const AppleSpotlight = ({
                       searchResults={searchResults}
                       emptyText={`Nessun risultato per «${searchValue}»`}
                       notice={notice}
-                      onHover={setHoveredSearchResult}
                       onNavigate={onNavigate}
                     />
                   )}
