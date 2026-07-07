@@ -124,11 +124,11 @@ const SpotlightInput = ({
   }, []);
 
   return (
-    <div className="flex items-center w-full justify-start gap-3 px-6 h-16">
+    <div className="flex items-center w-full justify-start gap-3 px-6 h-16 max-sm:px-5">
       <motion.div layoutId="search-icon" className="text-[var(--fd-ink-2)]">
         <Search />
       </motion.div>
-      <div className="flex-1 relative text-2xl">
+      <div className="min-w-0 flex-1 relative text-2xl max-sm:text-lg">
         {!hidePlaceholder && (
           <SpotlightPlaceholder text={placeholder} className={placeholderClassName} />
         )}
@@ -148,7 +148,7 @@ const SpotlightInput = ({
           className="w-full bg-transparent outline-none border-0 p-0 [font:inherit] text-[var(--fd-ink)]"
         />
       </div>
-      <kbd className="font-[family-name:var(--fd-font-mono)] text-[0.68rem] text-[var(--fd-ink-3)] border border-[var(--fd-line)] rounded px-1.5 py-0.5">
+      <kbd className="font-[family-name:var(--fd-font-mono)] text-[0.68rem] text-[var(--fd-ink-3)] border border-[var(--fd-line)] rounded px-1.5 py-0.5 max-sm:hidden">
         Esc
       </kbd>
     </div>
