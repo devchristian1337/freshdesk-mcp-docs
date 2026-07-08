@@ -1,7 +1,7 @@
 ---
 id: campi
 title: Campi
-description: Reference dei tool sui field — ticket field, contact field e company field.
+description: Reference dei tool sui field - ticket field, contact field e company field.
 sidebar_label: Campi
 ---
 
@@ -19,7 +19,7 @@ Crea un ticket field custom (endpoint admin).
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_field_fields` | object | Sì | — |
+| `ticket_field_fields` | object | Sì | - |
 
 `ticket_field_fields` richiede almeno `label` e `type` (es. `custom_text`, `custom_dropdown`); per i dropdown includere `choices`.
 
@@ -51,7 +51,7 @@ Recupera un ticket field per ID (endpoint admin).
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_field_id` | integer | Sì | — |
+| `ticket_field_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -69,8 +69,8 @@ Aggiorna un ticket field custom (endpoint admin).
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_field_id` | integer | Sì | — |
-| `ticket_field_fields` | object | Sì | — |
+| `ticket_field_id` | integer | Sì | - |
+| `ticket_field_fields` | object | Sì | - |
 
 Chiavi comuni: `label`, `choices`.
 
@@ -109,7 +109,7 @@ Recupera un contact field per ID.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `contact_field_id` | integer | Sì | — |
+| `contact_field_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -127,15 +127,15 @@ Crea un contact field custom.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `field` | object (ContactFieldCreate) | Sì | — |
+| `field` | object (ContactFieldCreate) | Sì | - |
 
 **Campi di `field`:**
 
 | Campo | Tipo | Obbligatorio | Default | Note |
 |---|---|---|---|---|
-| `label` | string | Sì | — | Nome lato agenti |
-| `label_for_customers` | string | Sì | — | Nome lato clienti |
-| `type` | string | Sì | — | Uno tra: `custom_text`, `custom_paragraph`, `custom_checkbox`, `custom_number`, `custom_dropdown`, `custom_phone_number`, `custom_url`, `custom_date` |
+| `label` | string | Sì | - | Nome lato agenti |
+| `label_for_customers` | string | Sì | - | Nome lato clienti |
+| `type` | string | Sì | - | Uno tra: `custom_text`, `custom_paragraph`, `custom_checkbox`, `custom_number`, `custom_dropdown`, `custom_phone_number`, `custom_url`, `custom_date` |
 | `editable_in_signup` | boolean | No | `false` | Valorizzabile in signup |
 | `position` | integer | No | `1` | Posizione del campo |
 | `required_for_agents` | boolean | No | `false` | Obbligatorio per gli agenti |
@@ -173,8 +173,8 @@ Aggiorna un contact field custom.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `contact_field_id` | integer | Sì | — |
-| `contact_field_fields` | object | Sì | — |
+| `contact_field_id` | integer | Sì | - |
+| `contact_field_fields` | object | Sì | - |
 
 Chiavi comuni: `label`, `choices`.
 

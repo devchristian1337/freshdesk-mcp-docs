@@ -1,7 +1,7 @@
 ---
 id: conversazioni
 title: Conversazioni
-description: Reference dei tool sulle conversazioni dei ticket — thread, reply, note e allegati.
+description: Reference dei tool sulle conversazioni dei ticket - thread, reply, note e allegati.
 sidebar_label: Conversazioni
 ---
 
@@ -19,9 +19,9 @@ Recupera l'intero thread di conversazione di un ticket, impaginando automaticame
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
+| `ticket_id` | integer | Sì | - |
 
-**Risposta** — lista di messaggi (reply pubbliche e note private); ognuno con `body`/`body_text`, `user_id`, `private` (true per le note interne), `incoming`, `created_at` ed eventuali `attachments`:
+**Risposta** - lista di messaggi (reply pubbliche e note private); ognuno con `body`/`body_text`, `user_id`, `private` (true per le note interne), `incoming`, `created_at` ed eventuali `attachments`:
 
 ```json
 [
@@ -59,8 +59,8 @@ Invia una reply pubblica (visibile al cliente) su un ticket. Soggetto a [modalit
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
-| `body` | string (HTML) | Sì | — |
+| `ticket_id` | integer | Sì | - |
+| `body` | string (HTML) | Sì | - |
 
 **Chiamata**
 
@@ -68,7 +68,7 @@ Invia una reply pubblica (visibile al cliente) su un ticket. Soggetto a [modalit
 { "ticket_id": 12345, "body": "<p>Abbiamo reimpostato il suo accesso, può riprovare.</p>" }
 ```
 
-**Risposta** — l'oggetto conversazione creato:
+**Risposta** - l'oggetto conversazione creato:
 
 ```json
 { "id": 7003, "ticket_id": 12345, "private": false, "body": "<p>Abbiamo reimpostato il suo accesso, può riprovare.</p>" }
@@ -84,8 +84,8 @@ Aggiunge una nota privata (interna, non visibile al cliente) a un ticket. Sogget
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
-| `body` | string (HTML) | Sì | — |
+| `ticket_id` | integer | Sì | - |
+| `body` | string (HTML) | Sì | - |
 
 **Chiamata**
 
@@ -109,8 +109,8 @@ Aggiorna il corpo di una conversazione (reply o nota) esistente. Soggetto a [mod
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `conversation_id` | integer | Sì | — |
-| `body` | string (HTML) | Sì | — |
+| `conversation_id` | integer | Sì | - |
+| `body` | string (HTML) | Sì | - |
 
 :::note
 `conversation_id` è l'ID del messaggio, non del ticket.
@@ -132,7 +132,7 @@ Elenca allegati e immagini inline di un ticket e delle sue conversazioni. Di def
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
+| `ticket_id` | integer | Sì | - |
 | `include_content` | boolean | No | `false` |
 | `max_total_bytes` | integer | No | `5242880` (5 MB) |
 

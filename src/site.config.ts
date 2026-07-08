@@ -55,4 +55,4 @@ export const footerColumns: FooterColumn[] = [
 ];
 
 export const footerCopyright =
-  'Freshdesk MCP — documentazione tecnica. Costruito con React + Vite.';
+  'Freshdesk MCP - documentazione tecnica. Costruito con React + Vite.';

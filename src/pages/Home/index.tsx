@@ -60,7 +60,7 @@ const FEATURES: {title: string; body: ReactNode}[] = [
     title: 'ToolAnnotations',
     body: (
       <>
-        Ogni tool dichiara il proprio comportamento — read, write, update o delete —
+        Ogni tool dichiara il proprio comportamento - read, write, update o delete -
         come hint per automazioni AI più prudenti.
       </>
     ),
@@ -89,7 +89,7 @@ const REGISTRY: {
 
 /**
  * L'elemento signature: la corsa di una richiesta reale attraverso il server.
- * Tre tappe — richiesta in italiano, tool invocato, risposta JSON — animate
+ * Tre tappe - richiesta in italiano, tool invocato, risposta JSON - animate
  * in sequenza al load (solo CSS: con prefers-reduced-motion appaiono subito).
  */
 function HandOff() {

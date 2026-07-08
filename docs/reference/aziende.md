@@ -43,7 +43,7 @@ Recupera il dettaglio di un'azienda per ID.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `company_id` | integer | Sì | — |
+| `company_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -67,7 +67,7 @@ Cerca aziende per nome (autocomplete). Unifica i vecchi `search_companies` e `fi
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `query` | string | Sì | — |
+| `query` | string | Sì | - |
 
 `query` è il nome (anche parziale) dell'azienda da cercare.
 
@@ -93,9 +93,9 @@ Crea una nuova azienda.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `company` | object (CompanyCreate) | Sì | — |
+| `company` | object (CompanyCreate) | Sì | - |
 
-**Campi di `company`** — `name` è obbligatorio:
+**Campi di `company`** - `name` è obbligatorio:
 
 | Campo | Tipo | Obbligatorio | Note |
 |---|---|---|---|
@@ -135,8 +135,8 @@ Aggiorna un'azienda. Tutti i campi sono opzionali; se il payload è vuoto viene 
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `company_id` | integer | Sì | — |
-| `company` | object (CompanyUpdate) | Sì | — |
+| `company_id` | integer | Sì | - |
+| `company` | object (CompanyUpdate) | Sì | - |
 
 **Campi di `company`** (tutti opzionali): `name`, `domains`, `description`, `note`, `health_score`, `account_tier`, `industry`, `custom_fields`.
 

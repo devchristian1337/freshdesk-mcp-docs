@@ -32,7 +32,7 @@ I tool di **scrittura/eliminazione sui ticket** rispettano inoltre la [modalità
 
 I tool restituiscono dati JSON. Le forme ricorrenti sono:
 
-**Lista paginata** — i tool `list_*`/`get_*` con paginazione restituiscono la risorsa più un blocco `pagination`:
+**Lista paginata** - i tool `list_*`/`get_*` con paginazione restituiscono la risorsa più un blocco `pagination`:
 
 ```json
 {
@@ -46,9 +46,9 @@ I tool restituiscono dati JSON. Le forme ricorrenti sono:
 }
 ```
 
-**Risorsa singola** — i tool `view_*`/`get_*` per ID restituiscono direttamente l'oggetto Freshdesk (un dict), oppure una lista grezza per gli endpoint che la prevedono (es. `freshdesk_get_ticket_fields`).
+**Risorsa singola** - i tool `view_*`/`get_*` per ID restituiscono direttamente l'oggetto Freshdesk (un dict), oppure una lista grezza per gli endpoint che la prevedono (es. `freshdesk_get_ticket_fields`).
 
-**Creazione/aggiornamento di ticket** — i tool sui ticket incapsulano l'esito:
+**Creazione/aggiornamento di ticket** - i tool sui ticket incapsulano l'esito:
 
 ```json
 { "success": true, "message": "Ticket creato", "ticket": { "id": 1234 } }

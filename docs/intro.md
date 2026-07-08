@@ -51,10 +51,10 @@ Il modello sceglie automaticamente il tool corretto e ne compone i parametri.
 
 ## Come è organizzata questa documentazione
 
-- **[Installazione](./installazione.md)** — requisiti, installazione e avvio del server (stdio e HTTP).
-- **[Configurazione](./configurazione.md)** — variabili d'ambiente, credenziali Freshdesk ed esempi di configurazione del client MCP.
-- **[Reference dei tool](./reference/overview.md)** — ogni tool con parametri, esempio di chiamata e di risposta.
-- **[Esempi](./esempi.md)** — flussi d'uso reali che combinano più tool.
+- **[Installazione](./installazione.md)** - requisiti, installazione e avvio del server (stdio e HTTP).
+- **[Configurazione](./configurazione.md)** - variabili d'ambiente, credenziali Freshdesk ed esempi di configurazione del client MCP.
+- **[Reference dei tool](./reference/overview.md)** - ogni tool con parametri, esempio di chiamata e di risposta.
+- **[Esempi](./esempi.md)** - flussi d'uso reali che combinano più tool.
 
 :::note[Repository]
 Il codice sorgente è su [github.com/devchristian1337/freshdesk-mcp](https://github.com/devchristian1337/freshdesk-mcp). Il pacchetto è pubblicato come [`freshdesk-mcp`](https://pypi.org/project/freshdesk-mcp/) (versione 1.3.0).

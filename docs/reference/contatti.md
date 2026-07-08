@@ -52,7 +52,7 @@ Recupera il dettaglio di un contatto per ID.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `contact_id` | integer | Sì | — |
+| `contact_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -77,7 +77,7 @@ Cerca contatti per nome o email (autocomplete).
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `query` | string | Sì | — |
+| `query` | string | Sì | - |
 
 **Chiamata**
 
@@ -101,9 +101,9 @@ Crea un nuovo contatto.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `contact` | object (ContactCreate) | Sì | — |
+| `contact` | object (ContactCreate) | Sì | - |
 
-**Campi di `contact`** — `name` è obbligatorio e serve **almeno uno** tra `email`, `phone`, `mobile`, `twitter_id`, `unique_external_id`:
+**Campi di `contact`** - `name` è obbligatorio e serve **almeno uno** tra `email`, `phone`, `mobile`, `twitter_id`, `unique_external_id`:
 
 | Campo | Tipo | Obbligatorio | Note |
 |---|---|---|---|
@@ -147,8 +147,8 @@ Aggiorna un contatto.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `contact_id` | integer | Sì | — |
-| `contact_fields` | object | Sì | — |
+| `contact_id` | integer | Sì | - |
+| `contact_fields` | object | Sì | - |
 
 Chiavi comuni di `contact_fields`: `name`, `email`, `phone`, `company_id`, `job_title`, `custom_fields`.
 

@@ -2,7 +2,7 @@ import {Link} from 'react-router';
 import {usePageMeta} from '../lib/usePageMeta';
 import styles from './NotFound.module.css';
 
-/** Pagina 404 — servita anche come build/404.html da Cloudflare. */
+/** Pagina 404 - servita anche come build/404.html da Cloudflare. */
 export default function NotFound() {
   usePageMeta('Pagina non trovata');
 

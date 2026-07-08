@@ -43,7 +43,7 @@ Recupera il dettaglio di un gruppo per ID.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `group_id` | integer | Sì | — |
+| `group_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -61,13 +61,13 @@ Crea un gruppo.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `group` | object (GroupCreate) | Sì | — |
+| `group` | object (GroupCreate) | Sì | - |
 
 **Campi di `group`:**
 
 | Campo | Tipo | Obbligatorio | Default | Note |
 |---|---|---|---|---|
-| `name` | string | Sì | — | Nome del gruppo |
+| `name` | string | Sì | - | Nome del gruppo |
 | `description` | string | No | `null` | Descrizione |
 | `agent_ids` | array di integer | No | `null` | ID utente degli agenti |
 | `auto_ticket_assign` | integer (0/1) | No | `0` | Assegnazione automatica dei ticket |
@@ -103,8 +103,8 @@ Aggiorna un gruppo. Usa lo stesso schema della creazione (`name` resta obbligato
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `group_id` | integer | Sì | — |
-| `group` | object (GroupCreate) | Sì | — |
+| `group_id` | integer | Sì | - |
+| `group` | object (GroupCreate) | Sì | - |
 
 **Chiamata**
 

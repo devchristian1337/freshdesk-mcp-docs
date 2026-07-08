@@ -38,7 +38,7 @@ Elenca le canned response contenute in una cartella.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `folder_id` | integer | Sì | — |
+| `folder_id` | integer | Sì | - |
 
 **Chiamata**
 
@@ -64,7 +64,7 @@ Recupera il dettaglio di una canned response per ID.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `canned_response_id` | integer | Sì | — |
+| `canned_response_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -88,7 +88,7 @@ Crea una canned response.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `response` | object (CannedResponseCreate) | Sì | — |
+| `response` | object (CannedResponseCreate) | Sì | - |
 
 **Campi di `response`:**
 
@@ -129,8 +129,8 @@ Aggiorna una canned response.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `canned_response_id` | integer | Sì | — |
-| `canned_response_fields` | object | Sì | — |
+| `canned_response_id` | integer | Sì | - |
+| `canned_response_fields` | object | Sì | - |
 
 Chiavi comuni: `title`, `content_html`, `visibility`.
 
@@ -150,7 +150,7 @@ Crea una cartella di canned response.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `name` | string | Sì | — |
+| `name` | string | Sì | - |
 
 **Chiamata**
 
@@ -174,8 +174,8 @@ Rinomina una cartella di canned response.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `folder_id` | integer | Sì | — |
-| `name` | string | Sì | — |
+| `folder_id` | integer | Sì | - |
+| `name` | string | Sì | - |
 
 **Chiamata**
 

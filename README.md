@@ -1,4 +1,4 @@
-# Freshdesk MCP — Documentazione
+# Freshdesk MCP - Documentazione
 
 Sito di documentazione tecnica per [**freshdesk-mcp**](https://github.com/devchristian1337/freshdesk-mcp): applicazione React autonoma (Vite + react-router) con contenuti MDX, prerender statico di ogni pagina, ricerca offline [Pagefind](https://pagefind.app/) e tema chiaro/scuro.
 
@@ -16,18 +16,18 @@ npm run preview    # serve in locale la build di produzione
 npm run typecheck  # controllo TypeScript
 ```
 
-Nota: in `npm run dev` la ricerca non è attiva — l'indice Pagefind viene
+Nota: in `npm run dev` la ricerca non è attiva - l'indice Pagefind viene
 generato in build. Per provarla: `npm run build && npm run preview`.
 
 ## Pipeline di build
 
 `npm run build` esegue in sequenza:
 
-1. `vite build` — bundle client in `build/`
-2. `vite build --ssr` — bundle server temporaneo in `build-ssr/`
-3. `scripts/prerender.mjs` — HTML statico per ogni route (+ `404.html`, `sitemap.xml`, meta per pagina)
-4. `pagefind --site build` — indice di ricerca in `build/pagefind/`
-5. `scripts/check-links.mjs` — verifica dei link interni (build fallita se rotti)
+1. `vite build` - bundle client in `build/`
+2. `vite build --ssr` - bundle server temporaneo in `build-ssr/`
+3. `scripts/prerender.mjs` - HTML statico per ogni route (+ `404.html`, `sitemap.xml`, meta per pagina)
+4. `pagefind --site build` - indice di ricerca in `build/pagefind/`
+5. `scripts/check-links.mjs` - verifica dei link interni (build fallita se rotti)
 
 ## Deploy su Cloudflare
 

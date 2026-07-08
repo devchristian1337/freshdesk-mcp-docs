@@ -26,7 +26,7 @@ Elenca gli agenti con paginazione.
 | `page` | integer | No | `1` |
 | `per_page` | integer (1–100) | No | `30` |
 
-**Risposta** — ogni agente ha `id`, `contact` (name/email), `available`, `occasional`, `ticket_scope`, `group_ids`:
+**Risposta** - ogni agente ha `id`, `contact` (name/email), `available`, `occasional`, `ticket_scope`, `group_ids`:
 
 ```json
 {
@@ -54,7 +54,7 @@ Recupera il dettaglio di un agente per ID.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `agent_id` | integer | Sì | — |
+| `agent_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -77,7 +77,7 @@ Cerca agenti per nome o email (autocomplete).
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `query` | string | Sì | — |
+| `query` | string | Sì | - |
 
 **Chiamata**
 
@@ -103,7 +103,7 @@ Crea un agente.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `agent_fields` | object | Sì | — |
+| `agent_fields` | object | Sì | - |
 
 `agent_fields` deve contenere almeno `email` e `ticket_scope` (1/2/3). Campi comuni: `name`, `occasional` (bool), `group_ids` (lista), `role_ids` (lista), `signature` (HTML).
 
@@ -142,8 +142,8 @@ Aggiorna un agente.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `agent_id` | integer | Sì | — |
-| `agent_fields` | object | Sì | — |
+| `agent_id` | integer | Sì | - |
+| `agent_fields` | object | Sì | - |
 
 Chiavi comuni di `agent_fields`: `occasional`, `ticket_scope`, `group_ids`, `role_ids`, `signature`.
 

@@ -21,8 +21,8 @@ L'autenticazione verso l'API Freshdesk usa HTTP Basic con la API key come userna
 
 | Variabile | Scopo | Obbligatoria | Default |
 |---|---|---|---|
-| `FRESHDESK_DOMAIN` | Host Freshdesk (`*.freshdesk.com`) | Sì (fallback stdio) | — |
-| `FRESHDESK_API_KEY` | API key Freshdesk | Sì (fallback stdio) | — |
+| `FRESHDESK_DOMAIN` | Host Freshdesk (`*.freshdesk.com`) | Sì (fallback stdio) | - |
+| `FRESHDESK_API_KEY` | API key Freshdesk | Sì (fallback stdio) | - |
 | `FRESHDESK_TICKETS_READ_ONLY` | Se `true`, blocca creazione/modifica/eliminazione dei ticket | No | `false` |
 | `MCP_TRANSPORT` | `stdio` (default) oppure `http` | No | `stdio` |
 | `MCP_HTTP_HOST` | Host di bind in HTTP | No | `0.0.0.0` |
@@ -53,7 +53,7 @@ FASTMCP_STATELESS_HTTP=true
 
 Le credenziali vengono risolte **per-richiesta** con questa precedenza:
 
-1. **Header HTTP** (consigliati) — non finiscono negli access log:
+1. **Header HTTP** (consigliati) - non finiscono negli access log:
    - `X-Freshdesk-Domain`
    - `X-Freshdesk-Api-Key`
    - `X-Freshdesk-Tickets-Read-Only`

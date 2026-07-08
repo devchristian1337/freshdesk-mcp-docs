@@ -222,7 +222,7 @@ h4 {
 }
 
 /* Nelle pagine di reference gli H2 sono nomi di tool: identificatori,
-   quindi composti in mono — la tipografia codifica la natura del testo. */
+   quindi composti in mono - la tipografia codifica la natura del testo. */
 .markdown[data-kind='reference'] h2 {
   font-family: var(--fd-font-mono);
   font-weight: 600;

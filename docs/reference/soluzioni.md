@@ -1,7 +1,7 @@
 ---
 id: soluzioni
 title: Knowledge base
-description: Reference dei tool sulla knowledge base (solutions) — categorie, cartelle e articoli.
+description: Reference dei tool sulla knowledge base (solutions) - categorie, cartelle e articoli.
 sidebar_label: Knowledge base
 ---
 
@@ -37,7 +37,7 @@ Recupera una categoria per ID.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `category_id` | integer | Sì | — |
+| `category_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -53,7 +53,7 @@ Crea una categoria. `name` è obbligatorio.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `category_fields` | object | Sì | — |
+| `category_fields` | object | Sì | - |
 
 `category_fields`: `name` (obbligatorio), `description` (opzionale).
 
@@ -77,8 +77,8 @@ Aggiorna una categoria. `name` resta obbligatorio.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `category_id` | integer | Sì | — |
-| `category_fields` | object | Sì | — |
+| `category_id` | integer | Sì | - |
+| `category_fields` | object | Sì | - |
 
 **Chiamata**
 
@@ -96,7 +96,7 @@ Elenca le cartelle di una categoria.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `category_id` | integer | Sì | — |
+| `category_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -114,7 +114,7 @@ Recupera una cartella per ID.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `folder_id` | integer | Sì | — |
+| `folder_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -130,8 +130,8 @@ Crea una cartella in una categoria. `name` è obbligatorio.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `category_id` | integer | Sì | — |
-| `folder_fields` | object | Sì | — |
+| `category_id` | integer | Sì | - |
+| `folder_fields` | object | Sì | - |
 
 `folder_fields`: `name` (obbligatorio), `description`/`visibility` (opzionali).
 
@@ -155,8 +155,8 @@ Aggiorna una cartella. `name` resta obbligatorio.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `folder_id` | integer | Sì | — |
-| `folder_fields` | object | Sì | — |
+| `folder_id` | integer | Sì | - |
+| `folder_fields` | object | Sì | - |
 
 **Chiamata**
 
@@ -174,7 +174,7 @@ Elenca gli articoli di una cartella.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `folder_id` | integer | Sì | — |
+| `folder_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -192,7 +192,7 @@ Recupera un articolo per ID (include il corpo HTML).
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `article_id` | integer | Sì | — |
+| `article_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -212,7 +212,7 @@ Cerca articoli della knowledge base per testo (endpoint `/search/solutions`).
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `query` | string | Sì | — |
+| `query` | string | Sì | - |
 
 `query` è il testo da cercare nel titolo/contenuto degli articoli.
 
@@ -222,7 +222,7 @@ Cerca articoli della knowledge base per testo (endpoint `/search/solutions`).
 { "query": "password" }
 ```
 
-**Risposta** — lista di articoli corrispondenti (id, title, categoria/cartella):
+**Risposta** - lista di articoli corrispondenti (id, title, categoria/cartella):
 
 ```json
 [
@@ -238,8 +238,8 @@ Crea un articolo nella knowledge base. Richiede `title`, `description` (corpo HT
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `folder_id` | integer | Sì | — |
-| `article_fields` | object | Sì | — |
+| `folder_id` | integer | Sì | - |
+| `article_fields` | object | Sì | - |
 
 `article_fields`: `title`, `description` (HTML) e `status` (`1`=draft, `2`=published), tutti obbligatori.
 
@@ -270,8 +270,8 @@ Aggiorna un articolo della knowledge base.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `article_id` | integer | Sì | — |
-| `article_fields` | object | Sì | — |
+| `article_id` | integer | Sì | - |
+| `article_fields` | object | Sì | - |
 
 Chiavi comuni: `title`, `description`, `status`.
 

@@ -1,7 +1,7 @@
 ---
 id: tickets
 title: Ticket
-description: Reference dei tool sui ticket — lista, ricerca, dettaglio, CRUD, riepiloghi e field.
+description: Reference dei tool sui ticket - lista, ricerca, dettaglio, CRUD, riepiloghi e field.
 sidebar_label: Ticket
 ---
 
@@ -27,7 +27,7 @@ Elenca i ticket field configurati (standard e custom) con i loro valori ammessi.
 
 Nessun parametro.
 
-**Risposta** — lista di field con `name` (chiave interna), `label`, `type` e, per i dropdown, `choices`:
+**Risposta** - lista di field con `name` (chiave interna), `label`, `type` e, per i dropdown, `choices`:
 
 ```json
 [
@@ -120,7 +120,7 @@ Recupera un singolo ticket, con la possibilità di incorporare dati correlati.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
+| `ticket_id` | integer | Sì | - |
 | `include` | string | No | `null` |
 
 `include` accetta valori separati da virgola: `conversations`, `requester`, `company`, `stats`.
@@ -131,7 +131,7 @@ Recupera un singolo ticket, con la possibilità di incorporare dati correlati.
 { "ticket_id": 12345, "include": "conversations,requester" }
 ```
 
-**Risposta** — l'oggetto ticket (con le sezioni richieste in `include`):
+**Risposta** - l'oggetto ticket (con le sezioni richieste in `include`):
 
 ```json
 {
@@ -157,7 +157,7 @@ Cerca ticket con la query DSL di Freshdesk (endpoint `/search/tickets`).
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `query` | string | Sì | — |
+| `query` | string | Sì | - |
 | `page` | integer (1–10) | No | `1` |
 
 La ricerca è limitata a 10 pagine / 300 risultati.
@@ -168,7 +168,7 @@ La ricerca è limitata a 10 pagine / 300 risultati.
 { "query": "status:2 AND priority:4", "page": 1 }
 ```
 
-**Risposta** — risultato della ricerca Freshdesk:
+**Risposta** - risultato della ricerca Freshdesk:
 
 ```json
 {
@@ -189,11 +189,11 @@ Crea un ticket. Soggetto a [modalità read-only](../configurazione.md#modalità-
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `subject` | string | Sì | — |
-| `description` | string (HTML) | Sì | — |
-| `source` | integer (source) | Sì | — |
-| `priority` | integer (priority) | Sì | — |
-| `status` | integer (status) | Sì | — |
+| `subject` | string | Sì | - |
+| `description` | string (HTML) | Sì | - |
+| `source` | integer (source) | Sì | - |
+| `priority` | integer (priority) | Sì | - |
+| `status` | integer (status) | Sì | - |
 | `email` | string | Condizionale | `null` |
 | `requester_id` | integer | Condizionale | `null` |
 | `custom_fields` | object | No | `null` |
@@ -237,8 +237,8 @@ Aggiorna i campi di un ticket. Soggetto a [modalità read-only](../configurazion
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
-| `ticket_fields` | object | Sì | — |
+| `ticket_id` | integer | Sì | - |
+| `ticket_fields` | object | Sì | - |
 
 Chiavi comuni di `ticket_fields`: `status` (2–5), `priority` (1–4), `group_id`, `responder_id` (agente assegnatario), `type`, `tags` (lista), `custom_fields` (dict).
 
@@ -267,7 +267,7 @@ Elimina (sposta nel cestino) un ticket. Operazione distruttiva, soggetta a [moda
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
+| `ticket_id` | integer | Sì | - |
 
 **Chiamata**
 
@@ -291,7 +291,7 @@ Recupera il riepilogo (summary) di un ticket.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
+| `ticket_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -309,8 +309,8 @@ Crea o aggiorna il riepilogo di un ticket. Soggetto a [modalità read-only](../c
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
-| `body` | string | Sì | — |
+| `ticket_id` | integer | Sì | - |
+| `body` | string | Sì | - |
 
 **Chiamata**
 
@@ -328,7 +328,7 @@ Elimina il riepilogo di un ticket. Operazione distruttiva, soggetta a [modalità
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `ticket_id` | integer | Sì | — |
+| `ticket_id` | integer | Sì | - |
 
 **Risposta**
 
@@ -346,7 +346,7 @@ Recupera le proprietà di uno specifico ticket field per nome interno.
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `field_name` | string | Sì | — |
+| `field_name` | string | Sì | - |
 
 Il nome `type` viene mappato automaticamente sul campo di sistema `ticket_type`.
 
@@ -356,7 +356,7 @@ Il nome `type` viene mappato automaticamente sul campo di sistema `ticket_type`.
 { "field_name": "priority" }
 ```
 
-**Risposta** — l'oggetto field corrispondente (o `null` se non trovato):
+**Risposta** - l'oggetto field corrispondente (o `null` se non trovato):
 
 ```json
 {

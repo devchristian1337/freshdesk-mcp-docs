@@ -1,5 +1,5 @@
 /**
- * Freshdesk MCP — design token "Console operativa".
+ * Freshdesk MCP - design token "Console operativa".
  * Estetica di status board da helpdesk: carta tecnica, inchiostro blu,
  * verde operativo come unico colore interattivo, colori semantici usati
  * solo per informazione (read / write / delete, stati, priorità).
@@ -23,7 +23,7 @@
   --fd-primary-tint: #e2f0e7; /* fondi di stato attivo */
   --fd-on-primary: #ffffff;
 
-  /* Colori semantici — SOLO per significato, mai decorativi.
+  /* Colori semantici - SOLO per significato, mai decorativi.
      Rispecchiano le ToolAnnotations del server (read/write/delete). */
   --fd-read: #0b6e99;
   --fd-read-tint: #e2eff6;
