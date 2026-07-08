@@ -255,7 +255,7 @@ export default function Home() {
             </p>
             <pre className={styles.modeCode}>
               <code>
-                <span className={styles.promptSign}>$</span> uvx freshdesk-mcp
+                <span className={styles.promptSign}>$</span> freshdesk-mcp
               </code>
             </pre>
             <Link className={styles.modeLink} to="/docs/configurazione">

@@ -57,5 +57,5 @@ Il modello sceglie automaticamente il tool corretto e ne compone i parametri.
 - **[Esempi](./esempi.md)** - flussi d'uso reali che combinano più tool.
 
 :::note[Repository]
-Il codice sorgente è su [github.com/devchristian1337/freshdesk-mcp](https://github.com/devchristian1337/freshdesk-mcp). Il pacchetto è pubblicato come [`freshdesk-mcp`](https://pypi.org/project/freshdesk-mcp/) (versione 1.3.0).
+Il codice sorgente è su [github.com/devchristian1337/freshdesk-mcp](https://github.com/devchristian1337/freshdesk-mcp). Questa documentazione fa riferimento al repository GitHub: il pacchetto omonimo `freshdesk-mcp` pubblicato su PyPI non è gestito da questo progetto.
 :::

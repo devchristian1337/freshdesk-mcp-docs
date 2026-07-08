@@ -10,7 +10,7 @@ description: Requisiti, installazione e avvio del server Freshdesk MCP (stdio e 
 
 - **Python 3.10+**
 - Una **API key Freshdesk** (in Freshdesk: **Profile Settings → API Key**)
-- [`uv`](https://docs.astral.sh/uv/) consigliato per l'avvio (`pip install uv` oppure `brew install uv`)
+- [`uv`](https://docs.astral.sh/uv/) consigliato per l'installazione da GitHub (`pip install uv` oppure `brew install uv`)
 
 Dipendenze runtime principali (gestite automaticamente in installazione):
 
@@ -20,18 +20,23 @@ Dipendenze runtime principali (gestite automaticamente in installazione):
 
 ## Installazione
 
-### Con uv (consigliato)
+### Da GitHub con uv (consigliato)
 
-`uvx` scarica ed esegue il pacchetto in un ambiente isolato, senza installazione esplicita:
+Installa il comando console direttamente dal repository GitHub:
 
 ```bash
-uvx freshdesk-mcp
+uv tool install git+https://github.com/devchristian1337/freshdesk-mcp.git
+freshdesk-mcp
 ```
 
-### Con pip
+:::warning[Pacchetto PyPI omonimo]
+Il pacchetto `freshdesk-mcp` pubblicato su PyPI non appartiene a questo progetto. Non usare `uvx freshdesk-mcp` o `pip install freshdesk-mcp` per installare questa versione.
+:::
+
+### Da GitHub con pip
 
 ```bash
-pip install freshdesk-mcp
+pip install git+https://github.com/devchristian1337/freshdesk-mcp.git
 freshdesk-mcp
 ```
 
@@ -62,7 +67,7 @@ Il server è installato come comando console `freshdesk-mcp` (entry point `fresh
 ```bash
 FRESHDESK_DOMAIN=tuazienda.freshdesk.com \
 FRESHDESK_API_KEY=la_tua_api_key \
-uvx freshdesk-mcp
+freshdesk-mcp
 ```
 
 In genere non lo avvii a mano: è il client MCP a lanciarlo. Vedi la pagina [Configurazione](./configurazione.md).

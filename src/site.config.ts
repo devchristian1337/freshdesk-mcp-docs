@@ -48,7 +48,6 @@ export const footerColumns: FooterColumn[] = [
     title: 'Risorse',
     items: [
       {label: 'Repository GitHub', href: 'https://github.com/devchristian1337/freshdesk-mcp'},
-      {label: 'Pacchetto su PyPI', href: 'https://pypi.org/project/freshdesk-mcp/'},
       {label: 'API Freshdesk', href: 'https://developers.freshdesk.com/api/'},
     ],
   },

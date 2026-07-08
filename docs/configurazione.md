@@ -69,6 +69,7 @@ La API key passata in **query string** può finire negli access log di proxy/Rai
 ## Client MCP locale (stdio)
 
 Per i client che avviano il server in locale, aggiungi questa voce al file di configurazione del client.
+Gli esempi presuppongono che il comando `freshdesk-mcp` sia stato installato da GitHub come indicato nella pagina [Installazione](./installazione.md).
 
 ### Claude Desktop
 
@@ -78,8 +79,8 @@ File `claude_desktop_config.json`:
 {
   "mcpServers": {
     "freshdesk-mcp": {
-      "command": "uvx",
-      "args": ["freshdesk-mcp"],
+      "command": "freshdesk-mcp",
+      "args": [],
       "env": {
         "FRESHDESK_API_KEY": "la_tua_api_key",
         "FRESHDESK_DOMAIN": "tuazienda.freshdesk.com",
@@ -98,8 +99,8 @@ File `.cursor/mcp.json` nella root del progetto (o nelle impostazioni globali):
 {
   "mcpServers": {
     "freshdesk-mcp": {
-      "command": "uvx",
-      "args": ["freshdesk-mcp"],
+      "command": "freshdesk-mcp",
+      "args": [],
       "env": {
         "FRESHDESK_API_KEY": "la_tua_api_key",
         "FRESHDESK_DOMAIN": "tuazienda.freshdesk.com",
