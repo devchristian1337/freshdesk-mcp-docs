@@ -271,6 +271,11 @@ const AppleSpotlight = ({
   const [hovered, setHovered] = React.useState(false);
   const [hoveredShortcut, setHoveredShortcut] = React.useState<number | null>(null);
 
+  useEffect(() => {
+    setHovered(false);
+    setHoveredShortcut(null);
+  }, [isOpen]);
+
   // Niente MotionConfig reducedMotion="user": come nella demo originale le
   // animazioni girano anche con "riduci animazioni" attivo nel sistema
   // (scelta esplicita del proprietario del sito).
