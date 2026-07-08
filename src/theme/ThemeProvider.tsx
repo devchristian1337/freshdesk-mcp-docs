@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -19,6 +20,9 @@ const ThemeContext = createContext<ThemeContextValue>({
   toggle: () => {},
 });
 
+const THEME_TRANSITION_CLASS = 'theme-transition';
+const THEME_TRANSITION_MS = 180;
+
 /** Tema iniziale: deve combaciare con il prerender SSG per evitare mismatch. */
 function initialTheme(): Theme {
   return 'light';
@@ -26,11 +30,31 @@ function initialTheme(): Theme {
 
 export function ThemeProvider({children}: {children: ReactNode}) {
   const [theme, setTheme] = useState<Theme>(initialTheme);
+  const transitionTimeout = useRef<number | undefined>(undefined);
 
   // Applica il tema al documento e persiste la scelta esplicita.
   const apply = useCallback((next: Theme, persist: boolean) => {
+    const root = document.documentElement;
+    const current = root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+    const shouldTransition =
+      current !== next &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (shouldTransition) {
+      window.clearTimeout(transitionTimeout.current);
+      root.classList.add(THEME_TRANSITION_CLASS);
+    }
+
     setTheme(next);
-    document.documentElement.setAttribute('data-theme', next);
+    root.setAttribute('data-theme', next);
+
+    if (shouldTransition) {
+      transitionTimeout.current = window.setTimeout(() => {
+        root.classList.remove(THEME_TRANSITION_CLASS);
+        transitionTimeout.current = undefined;
+      }, THEME_TRANSITION_MS);
+    }
+
     if (persist) {
       try {
         localStorage.setItem('theme', next);
@@ -52,6 +76,13 @@ export function ThemeProvider({children}: {children: ReactNode}) {
         ? 'dark'
         : 'light';
     setTheme(current);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(transitionTimeout.current);
+      document.documentElement.classList.remove(THEME_TRANSITION_CLASS);
+    };
   }, []);
 
   // Se l'utente non ha mai scelto, segui i cambi di preferenza di sistema.
