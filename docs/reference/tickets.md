@@ -1,7 +1,7 @@
 ---
 id: tickets
-title: Ticket
-description: Reference dei tool sui ticket - lista, ricerca, dettaglio, CRUD, riepiloghi e field.
+title: Tool ticket Freshdesk
+description: Reference dei tool ticket Freshdesk MCP per lista, ricerca, dettaglio, creazione, aggiornamento, delete, riepiloghi e ticket field.
 sidebar_label: Ticket
 ---
 

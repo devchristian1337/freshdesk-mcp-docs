@@ -6,9 +6,12 @@
 export const site = {
   title: 'Freshdesk MCP',
   tagline:
-    'Server MCP per Freshdesk: 64 tool per ticket, contatti, aziende, knowledge base e altro',
+    'Documentazione tecnica di Freshdesk MCP: installa, configura e usa 64 tool MCP per ticket, contatti, aziende e knowledge base.',
   url: 'https://freshdesk-mcp.com',
+  language: 'it',
+  locale: 'it_IT',
   socialImage: '/img/docusaurus-social-card.jpg',
+  logo: '/img/logo.png',
   repoUrl: 'https://github.com/devchristian1337/freshdesk-mcp',
 } as const;
 

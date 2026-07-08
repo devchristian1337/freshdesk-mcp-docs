@@ -36,20 +36,50 @@ export async function render(path: string): Promise<string> {
   );
 }
 
-export type RouteMeta = {path: string; title: string; description: string};
+export type RouteMeta = {
+  path: string;
+  title: string;
+  pageTitle: string;
+  description: string;
+  kind: 'home' | 'doc';
+  breadcrumbs: {name: string; path: string}[];
+};
 
 /** Elenco delle route pubbliche con i meta per <title>/<meta> statici. */
 export async function collectRoutes(): Promise<RouteMeta[]> {
   const out: RouteMeta[] = [
-    {path: '/', title: `Documentazione | ${site.title}`, description: site.tagline},
+    {
+      path: '/',
+      title: 'Freshdesk MCP: 64 tool per integrare Freshdesk con AI',
+      pageTitle: site.title,
+      description: site.tagline,
+      kind: 'home',
+      breadcrumbs: [{name: 'Home', path: '/'}],
+    },
   ];
   for (const doc of orderedDocs) {
     const mod = await loadDoc(doc.id);
-    const title = mod.frontmatter.title ?? docRefOf(doc.id)?.label ?? doc.id;
+    const pageTitle = mod.frontmatter.title ?? docRefOf(doc.id)?.label ?? doc.id;
+    const isReference = doc.id.startsWith('reference/');
+    const sectionPath = isReference ? '/docs/reference/overview' : '/docs/intro';
+    const sectionName = isReference ? 'Reference dei tool' : 'Documentazione';
     out.push({
       path: `/docs/${doc.id}`,
-      title: `${title} | ${site.title}`,
+      title: `${pageTitle} | ${site.title}`,
+      pageTitle,
       description: mod.frontmatter.description ?? site.tagline,
+      kind: 'doc',
+      breadcrumbs:
+        doc.id === 'intro'
+          ? [
+              {name: 'Home', path: '/'},
+              {name: pageTitle, path: `/docs/${doc.id}`},
+            ]
+          : [
+              {name: 'Home', path: '/'},
+              {name: sectionName, path: sectionPath},
+              {name: pageTitle, path: `/docs/${doc.id}`},
+            ],
     });
   }
   return out;

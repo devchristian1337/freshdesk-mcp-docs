@@ -67,6 +67,39 @@ const FEATURES: {title: string; body: ReactNode}[] = [
   },
 ];
 
+const USE_CASES: {title: string; body: ReactNode}[] = [
+  {
+    title: 'Assistenza clienti',
+    body: (
+      <>
+        Recupera ticket, conversazioni e allegati prima di generare una risposta.
+        L'assistente può leggere il contesto reale, proporre una reply e mantenere
+        tracciabilità sulle operazioni eseguite.
+      </>
+    ),
+  },
+  {
+    title: 'Operations interne',
+    body: (
+      <>
+        Usa gruppi, agenti, aziende e contatti per collegare richieste, requester e
+        team di supporto. Le operazioni di scrittura restano esplicite e separate
+        dai tool di sola lettura.
+      </>
+    ),
+  },
+  {
+    title: 'Knowledge base',
+    body: (
+      <>
+        Cerca articoli esistenti, crea bozze strutturate e aggiorna contenuti
+        ricorrenti. Il modello può riusare soluzioni già pubblicate invece di
+        riscrivere ogni risposta da zero.
+      </>
+    ),
+  },
+];
+
 /** Registro dei domini: conteggi reali, chip = tipi di operazione presenti. */
 const REGISTRY: {
   label: string;
@@ -141,10 +174,10 @@ function HandOff() {
 /* ------------------------------------------------------------------ Pagina */
 
 export default function Home() {
-  usePageMeta('Documentazione', site.tagline);
+  usePageMeta('64 tool per integrare Freshdesk con AI', site.tagline);
 
   return (
-    <main className={styles.home}>
+    <main className={styles.home} data-pagefind-body>
       {/* ------------------------------------------------------------ Hero */}
       <header className={styles.hero}>
         <div className={styles.heroInner}>
@@ -240,7 +273,25 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------- Modalità */}
+      {/* ------------------------------------------------------- Casi d'uso */}
+      <section className={styles.section}>
+        <Reveal className={styles.sectionHead}>
+          <p className="fd-eyebrow">Quando usarlo</p>
+          <h2 className={styles.sectionTitle}>
+            Un layer MCP per workflow Freshdesk assistiti dall&apos;AI
+          </h2>
+        </Reveal>
+        <div className={styles.featureGrid}>
+          {USE_CASES.map((f, i) => (
+            <Reveal key={f.title} delay={i * 50} className={styles.featureCard}>
+              <h3 className={styles.featureTitle}>{f.title}</h3>
+              <p className={styles.featureBody}>{f.body}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------- Modalita */}
       <section className={styles.section}>
         <Reveal className={styles.sectionHead}>
           <p className="fd-eyebrow">Come si collega</p>

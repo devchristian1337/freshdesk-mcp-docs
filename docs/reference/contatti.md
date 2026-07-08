@@ -1,7 +1,7 @@
 ---
 id: contatti
-title: Contatti
-description: Reference dei tool sui contatti Freshdesk.
+title: Tool contatti Freshdesk
+description: Reference dei tool contatti Freshdesk MCP per listare, cercare, leggere, creare e aggiornare requester con campi standard e custom.
 sidebar_label: Contatti
 ---
 

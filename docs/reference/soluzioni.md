@@ -1,7 +1,7 @@
 ---
 id: soluzioni
-title: Knowledge base
-description: Reference dei tool sulla knowledge base (solutions) - categorie, cartelle e articoli.
+title: Tool knowledge base Freshdesk
+description: Reference dei tool knowledge base Freshdesk MCP per categorie, cartelle, articoli, ricerca, creazione e aggiornamento delle solutions.
 sidebar_label: Knowledge base
 ---
 

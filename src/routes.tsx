@@ -1,7 +1,6 @@
 import type {RouteObject} from 'react-router';
 import SiteLayout from './layouts/SiteLayout';
 import NotFound from './pages/NotFound';
-import DocPage from './pages/DocPage';
 import Home from './pages/Home';
 import {orderedDocs} from './content/docs.config';
 import {loadDoc} from './content/docs-modules';
@@ -17,7 +16,10 @@ function docRoute(docId: string): RouteObject {
   return {
     path: `docs/${docId}`,
     lazy: async () => {
-      const mod = await loadDoc(docId);
+      const [{default: DocPage}, mod] = await Promise.all([
+        import('./pages/DocPage'),
+        loadDoc(docId),
+      ]);
       return {
         Component: function Doc() {
           return <DocPage docId={docId} mod={mod} />;

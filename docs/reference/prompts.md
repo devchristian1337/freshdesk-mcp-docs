@@ -1,13 +1,21 @@
 ---
 id: prompts
-title: Prompt
-description: I prompt MCP guidati create_ticket e create_reply.
+title: Prompt MCP Freshdesk
+description: Reference dei prompt MCP Freshdesk per guidare il modello nella creazione di ticket e reply con payload corretti e contesto ticket.
 sidebar_label: Prompt
 ---
 
 # Prompt
 
 Oltre ai tool, il server espone **2 prompt MCP** (registrati con `@mcp.prompt`). I prompt non chiamano direttamente l'API: producono un testo guidato che aiuta il modello a comporre correttamente il payload, indirizzandolo verso i tool giusti.
+
+Usali quando vuoi ridurre ambiguità nella generazione del payload. Un prompt MCP è particolarmente utile nei client che lasciano al modello la scelta del tool successivo: invece di scrivere a mano tutto il JSON, il prompt ricorda campi obbligatori, formato atteso e controlli preliminari.
+
+## Flusso consigliato
+
+Per la creazione ticket, raccogli prima oggetto, descrizione, priorità, stato, canale e requester. Se il ticket usa campi personalizzati, recupera i metadati con `freshdesk_get_field_properties` prima di invocare `freshdesk_create_ticket`. Per le reply, leggi sempre la conversazione aggiornata con `freshdesk_get_ticket_conversation`, poi genera un corpo HTML breve e coerente con il tono delle risposte precedenti.
+
+I prompt non sostituiscono i tool di sicurezza o validazione: servono a dare al modello una traccia operativa ripetibile. Se un workflow richiede approvazione umana, usa il prompt per preparare il payload e mostrare l'azione prevista, poi invoca il tool solo dopo conferma nel client.
 
 ---
 

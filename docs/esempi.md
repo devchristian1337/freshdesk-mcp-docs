@@ -1,7 +1,7 @@
 ---
 id: esempi
-title: Esempi
-description: Flussi d'uso reali che combinano più tool del server Freshdesk MCP.
+title: Esempi workflow Freshdesk
+description: Esempi pratici per usare Freshdesk MCP in triage ticket, onboarding clienti, campi custom, knowledge base e modalità read-only.
 ---
 
 # Esempi

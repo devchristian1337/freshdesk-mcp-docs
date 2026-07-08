@@ -1,7 +1,7 @@
 ---
 id: agenti
-title: Agenti
-description: Reference dei tool sugli agenti Freshdesk.
+title: Tool agenti Freshdesk
+description: Reference dei tool agenti Freshdesk MCP per listare, cercare, leggere, creare e aggiornare agenti e profili operativi del supporto.
 sidebar_label: Agenti
 ---
 

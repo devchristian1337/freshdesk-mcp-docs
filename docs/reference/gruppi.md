@@ -1,13 +1,17 @@
 ---
 id: gruppi
-title: Gruppi
-description: Reference dei tool sui gruppi Freshdesk.
+title: Tool gruppi Freshdesk
+description: Reference dei tool gruppi Freshdesk MCP per listare, leggere, creare e aggiornare team, assegnazioni agenti ed escalation.
 sidebar_label: Gruppi
 ---
 
 # Gruppi
 
 4 tool per elencare, leggere, creare e aggiornare i gruppi.
+
+I gruppi Freshdesk sono il punto in cui ticket, agenti e regole di assegnazione si incontrano. In un flusso MCP servono soprattutto per due attività: leggere la struttura operativa prima di assegnare un ticket e mantenere aggiornati i team quando cambiano agenti, code o percorsi di escalation. La reference include solo operazioni esplicite: nessun tool assegna automaticamente ticket a un gruppo senza che il modello riceva un payload chiaro.
+
+Per automazioni AI conviene partire sempre da `freshdesk_list_groups` o `freshdesk_view_group`, salvare l'ID corretto e poi usare quel valore nei tool ticket. Questo riduce errori dovuti a nomi simili, gruppi duplicati o team dismessi.
 
 ---
 

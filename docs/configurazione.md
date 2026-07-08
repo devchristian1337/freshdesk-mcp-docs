@@ -1,7 +1,7 @@
 ---
 id: configurazione
-title: Configurazione
-description: Variabili d'ambiente, credenziali Freshdesk e configurazione del client MCP.
+title: Configurazione client MCP
+description: Configura Freshdesk MCP con variabili d'ambiente, API key, dominio Freshdesk e credenziali per client locali o HTTP multi-tenant.
 ---
 
 # Configurazione

@@ -1,7 +1,7 @@
 ---
 id: conversazioni
-title: Conversazioni
-description: Reference dei tool sulle conversazioni dei ticket - thread, reply, note e allegati.
+title: Tool conversazioni Freshdesk
+description: Reference dei tool conversazioni Freshdesk MCP per leggere thread, creare reply o note, aggiornare messaggi e gestire allegati ticket.
 sidebar_label: Conversazioni
 ---
 

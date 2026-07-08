@@ -1,7 +1,7 @@
 ---
 id: aziende
-title: Aziende
-description: Reference dei tool sulle aziende (companies) Freshdesk.
+title: Tool aziende Freshdesk
+description: Reference dei tool aziende Freshdesk MCP per listare, cercare, leggere, creare e aggiornare company, domini e campi account.
 sidebar_label: Aziende
 ---
 

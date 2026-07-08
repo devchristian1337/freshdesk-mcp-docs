@@ -20,15 +20,26 @@ const template = await readFile(path.join(buildDir, 'index.html'), 'utf8');
 
 /** Sostituisce head e root del template con i contenuti della route. */
 function fillTemplate(appHtml, meta) {
+  const pageUrl = absoluteUrl(meta.path);
+  const imageUrl = absoluteAsset(siteInfo.socialImage);
   const head = [
     `<title>${escapeHtml(meta.title)}</title>`,
     `<meta name="description" content="${escapeHtml(meta.description)}" />`,
-    `<link rel="canonical" href="${siteInfo.url}${meta.path === '/' ? '' : meta.path}" />`,
+    meta.robots ? `<meta name="robots" content="${escapeHtml(meta.robots)}" />` : '',
+    `<link rel="canonical" href="${pageUrl}" />`,
     `<meta property="og:title" content="${escapeHtml(meta.title)}" />`,
     `<meta property="og:description" content="${escapeHtml(meta.description)}" />`,
-    `<meta property="og:image" content="${siteInfo.url}${siteInfo.socialImage}" />`,
+    `<meta property="og:url" content="${pageUrl}" />`,
+    `<meta property="og:site_name" content="${escapeHtml(siteInfo.title)}" />`,
+    `<meta property="og:locale" content="${siteInfo.locale}" />`,
+    `<meta property="og:image" content="${imageUrl}" />`,
     `<meta property="og:type" content="website" />`,
-  ].join('\n    ');
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${escapeHtml(meta.title)}" />`,
+    `<meta name="twitter:description" content="${escapeHtml(meta.description)}" />`,
+    `<meta name="twitter:image" content="${imageUrl}" />`,
+    `<script type="application/ld+json">${jsonForHtml(schemaFor(meta, pageUrl, imageUrl))}</script>`,
+  ].filter(Boolean).join('\n    ');
 
   return template
     .replace(/<title>.*?<\/title>/s, '') // il titolo statico del template
@@ -42,6 +53,90 @@ function escapeHtml(s) {
     .replaceAll('<', '&lt;')
     .replaceAll('>', '&gt;')
     .replaceAll('"', '&quot;');
+}
+
+function absoluteUrl(routePath) {
+  return `${siteInfo.url}${routePath === '/' ? '/' : routePath}`;
+}
+
+function absoluteAsset(assetPath) {
+  return `${siteInfo.url}${assetPath.startsWith('/') ? assetPath : `/${assetPath}`}`;
+}
+
+function jsonForHtml(value) {
+  return JSON.stringify(value).replaceAll('<', '\\u003c');
+}
+
+function schemaFor(meta, pageUrl, imageUrl) {
+  const siteUrl = absoluteUrl('/');
+  const orgId = `${siteUrl}#organization`;
+  const siteId = `${siteUrl}#website`;
+  const pageId = `${pageUrl}#webpage`;
+  const graph = [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name: siteInfo.title,
+      url: siteUrl,
+      logo: absoluteAsset(siteInfo.logo),
+      sameAs: [siteInfo.repoUrl],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': siteId,
+      name: siteInfo.title,
+      url: siteUrl,
+      inLanguage: siteInfo.language,
+      publisher: {'@id': orgId},
+    },
+  ];
+
+  if (meta.kind === 'home') {
+    graph.push({
+      '@type': 'SoftwareApplication',
+      '@id': `${siteUrl}#software`,
+      name: siteInfo.title,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Windows, macOS, Linux',
+      programmingLanguage: 'Python',
+      url: siteUrl,
+      codeRepository: siteInfo.repoUrl,
+      image: imageUrl,
+      description: meta.description,
+      publisher: {'@id': orgId},
+    });
+  }
+
+  graph.push({
+    '@type': 'WebPage',
+    '@id': pageId,
+    url: pageUrl,
+    name: meta.pageTitle,
+    headline: meta.pageTitle,
+    description: meta.description,
+    image: imageUrl,
+    inLanguage: siteInfo.language,
+    isPartOf: {'@id': siteId},
+    publisher: {'@id': orgId},
+  });
+
+  if (meta.breadcrumbs?.length > 1) {
+    graph.push({
+      '@type': 'BreadcrumbList',
+      '@id': `${pageUrl}#breadcrumb`,
+      itemListElement: meta.breadcrumbs.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        name: item.name,
+        item: absoluteUrl(item.path),
+      })),
+    });
+  }
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': graph,
+  };
 }
 
 const routes = await collectRoutes();
@@ -65,7 +160,14 @@ for (const meta of routes) {
   const html = fillTemplate(appHtml, {
     path: '/404',
     title: `Pagina non trovata | ${siteInfo.title}`,
+    pageTitle: 'Pagina non trovata',
     description: siteInfo.tagline,
+    kind: 'doc',
+    robots: 'noindex, follow',
+    breadcrumbs: [
+      {name: 'Home', path: '/'},
+      {name: 'Pagina non trovata', path: '/404'},
+    ],
   });
   await writeFile(path.join(buildDir, '404.html'), html, 'utf8');
   console.log('prerender 404 -> build/404.html');
@@ -73,10 +175,11 @@ for (const meta of routes) {
 
 // sitemap.xml (come faceva il preset Docusaurus)
 {
+  const lastmod = new Date().toISOString().slice(0, 10);
   const urls = routes
     .map(
       (r) =>
-        `  <url><loc>${siteInfo.url}${r.path === '/' ? '/' : r.path}</loc></url>`,
+        `  <url><loc>${absoluteUrl(r.path)}</loc><lastmod>${lastmod}</lastmod></url>`,
     )
     .join('\n');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;

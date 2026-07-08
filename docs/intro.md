@@ -1,7 +1,7 @@
 ---
 id: intro
-title: Introduzione
-description: Cos'è Freshdesk MCP, a cosa serve e panoramica delle funzionalità.
+title: Introduzione a Freshdesk MCP
+description: "Panoramica di Freshdesk MCP: cosa fa il server, quali API Freshdesk espone e come usarlo con assistenti AI compatibili MCP."
 slug: /intro
 ---
 

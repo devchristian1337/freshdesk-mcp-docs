@@ -1,7 +1,7 @@
 ---
 id: installazione
-title: Installazione
-description: Requisiti, installazione e avvio del server Freshdesk MCP (stdio e HTTP).
+title: Installazione server MCP
+description: Installa Freshdesk MCP da GitHub con uv o pip, avvia il server in stdio o HTTP e prepara deploy Docker o Railway con health check.
 ---
 
 # Installazione
@@ -93,6 +93,12 @@ FASTMCP_STATELESS_HTTP=true \
 PORT=8000 \
 freshdesk-mcp
 ```
+
+## Verifica dopo l'installazione
+
+La verifica dipende dal transport scelto. In modalità `stdio`, il segnale più affidabile è il client MCP: dopo aver salvato la configurazione, riavvia il client e controlla che nell'elenco tool compaiano i nomi `freshdesk_*`. Se il client mostra errori di avvio, verifica prima percorso Python, ambiente virtuale e variabili `FRESHDESK_DOMAIN` e `FRESHDESK_API_KEY`.
+
+In modalità HTTP, il controllo minimo è l'endpoint `/health`, che deve restituire un JSON con stato `healthy`. Poi configura il client remoto sull'endpoint `/mcp` e invoca un tool di sola lettura, per esempio la lista dei ticket o dei gruppi. Questo evita test distruttivi durante il primo deploy e conferma insieme rete, autenticazione, routing e permessi Freshdesk.
 
 ## Deploy con Docker
 

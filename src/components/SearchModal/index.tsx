@@ -8,12 +8,7 @@ import {
   type SpotlightShortcut,
 } from '../ui/apple-spotlight';
 import {site} from '../../site.config';
-
-/** Evento globale che apre lo Spotlight (usato dal Dock). */
-export const OPEN_SEARCH_EVENT = 'fd:search:open';
-
-/** Evento con lo stato aperto/chiuso dello Spotlight (il Dock si nasconde). */
-export const SEARCH_STATE_EVENT = 'fd:search:state';
+import {OPEN_SEARCH_EVENT, SEARCH_STATE_EVENT} from './events';
 
 /**
  * Ricerca del sito in stile Spotlight: l'input interroga l'API JS di
@@ -62,8 +57,12 @@ const SHORTCUTS: SpotlightShortcut[] = [
   {label: 'GitHub', icon: <GitHubIcon size={28} />, link: site.repoUrl, external: true},
 ];
 
-export default function SearchModal() {
-  const [open, setOpen] = useState(false);
+type SearchModalProps = {
+  initialOpen?: boolean;
+};
+
+export default function SearchModal({initialOpen = false}: SearchModalProps) {
+  const [open, setOpen] = useState(initialOpen);
   const [unavailable, setUnavailable] = useState(false);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SpotlightResult[]>([]);

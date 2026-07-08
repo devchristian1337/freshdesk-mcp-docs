@@ -1,13 +1,17 @@
 ---
 id: risposte-predefinite
-title: Risposte predefinite
-description: Reference dei tool sulle canned response Freshdesk e le relative cartelle.
+title: Tool risposte predefinite
+description: Reference dei tool risposte predefinite Freshdesk MCP per cartelle, canned response, contenuti HTML, visibilità e aggiornamenti.
 sidebar_label: Risposte predefinite
 ---
 
 # Risposte predefinite
 
 7 tool per gestire le canned response e le cartelle che le contengono.
+
+Le risposte predefinite permettono di standardizzare comunicazioni ricorrenti senza perdere controllo sul testo finale inviato al cliente. In Freshdesk MCP i tool separano cartelle e contenuti: prima si individua la cartella, poi si legge o modifica la canned response. Questo è utile quando un assistente AI deve proporre una risposta coerente con procedure interne, policy di rimborso, messaggi di onboarding o comunicazioni di assistenza tecnica.
+
+Per evitare modifiche indesiderate, usa i tool `read` per recuperare titolo, HTML e visibilità prima di chiamare un tool `write` o `update`. Il campo `visibility` governa chi può usare la risposta: tutti gli agenti, solo il proprietario o gruppi selezionati.
 
 ---
 

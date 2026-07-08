@@ -5,7 +5,7 @@ import LumaBar, {type DockItem} from '../ui/futuristic-nav';
 import {GitHubIcon} from '../ui/github-icon';
 import {useTheme} from '../../theme/ThemeProvider';
 import {site} from '../../site.config';
-import {OPEN_SEARCH_EVENT, SEARCH_STATE_EVENT} from '../SearchModal';
+import {OPEN_SEARCH_EVENT, SEARCH_STATE_EVENT} from '../SearchModal/events';
 
 /**
  * Dock di navigazione del sito (sostituisce la navbar classica): voci di

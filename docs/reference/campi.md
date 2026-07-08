@@ -1,7 +1,7 @@
 ---
 id: campi
-title: Campi
-description: Reference dei tool sui field - ticket field, contact field e company field.
+title: Tool campi Freshdesk
+description: Reference dei tool campi Freshdesk MCP per ticket field, contact field e company field, con lettura, creazione e aggiornamento.
 sidebar_label: Campi
 ---
 

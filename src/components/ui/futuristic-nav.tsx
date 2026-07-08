@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {motion} from 'framer-motion';
 
 /**
  * LumaBar: dock di navigazione flottante in basso (glassmorphism), adattata
@@ -50,71 +49,65 @@ const LumaBar = ({items, activeIndex, onSelect, hidden = false}: LumaBarProps) =
   }, [activeIndex, items.length]);
 
   return (
-    <motion.div
+    <div
       data-dock-hidden={hidden || undefined}
-      className="fixed bottom-5 max-sm:bottom-3 left-1/2 -translate-x-1/2 z-50"
-      initial={false}
-      animate={{y: hidden ? 140 : 0, opacity: hidden ? 0 : 1}}
-      transition={{type: 'spring', stiffness: 400, damping: 34}}>
+      className="fixed bottom-5 max-sm:bottom-3 left-1/2 z-50 transition-[opacity,transform] duration-200 ease-out"
+      style={{
+        opacity: hidden ? 0 : 1,
+        transform: `translateX(-50%) translateY(${hidden ? 140 : 0}px)`,
+      }}>
       <nav
         aria-label="Navigazione principale"
         className="relative flex items-center justify-center gap-3 max-sm:gap-1 bg-[var(--fd-surface)]/75 backdrop-blur-2xl rounded-full px-4 py-2 max-sm:px-2.5 max-sm:py-1.5 shadow-[var(--fd-shadow-pop)] border border-[var(--fd-line)]">
         {/* Pallino della voce attiva: scivola verso la voce cliccata. */}
-        <motion.span
+        <span
           aria-hidden="true"
-          className="absolute bottom-[3px] w-1 h-1 rounded-full bg-[var(--fd-primary)] -translate-x-1/2 pointer-events-none"
-          initial={false}
-          animate={{left: dotLeft ?? '50%', opacity: dotLeft === null ? 0 : 1}}
-          transition={{type: 'spring', stiffness: 400, damping: 28}}
+          className="absolute bottom-[3px] w-1 h-1 rounded-full bg-[var(--fd-primary)] -translate-x-1/2 pointer-events-none transition-[left,opacity] duration-200 ease-out"
+          style={{left: dotLeft ?? '50%', opacity: dotLeft === null ? 0 : 1}}
         />
         {items.map((item, index) => {
           const isActive = index === activeIndex;
-          const motionProps = {
-            whileHover: {scale: 1.15},
-            animate: {scale: isActive ? 1.25 : 1},
-            // Molla poco smorzata: la voce appena attivata fa un piccolo
-            // "pop" elastico oltre la scala finale.
-            transition: {type: 'spring', stiffness: 500, damping: 15} as const,
-          };
           return (
-            <motion.div
+            <div
               key={item.id}
               ref={(el) => {
                 itemRefs.current[index] = el;
               }}
               className="relative flex flex-col items-center group">
               {item.href ? (
-                <motion.a
+                <a
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={item.label}
-                  {...motionProps}
-                  className={buttonClasses}>
+                  className={`${buttonClasses} transition-transform hover:scale-110`}
+                  style={{transform: `scale(${isActive ? 1.18 : 1})`}}>
                   {item.icon}
-                </motion.a>
+                </a>
               ) : (
-                <motion.button
+                <button
                   type="button"
                   onClick={() => onSelect(index)}
                   aria-label={item.label}
                   aria-current={isActive ? 'page' : undefined}
-                  {...motionProps}
-                  className={buttonClasses}
-                  style={{color: isActive ? 'var(--fd-primary)' : undefined}}>
+                  className={`${buttonClasses} transition-transform hover:scale-110`}
+                  style={{
+                    color: isActive ? 'var(--fd-primary)' : undefined,
+                    transform: `scale(${isActive ? 1.18 : 1})`,
+                  }}>
                   {item.icon}
-                </motion.button>
+                </button>
               )}
 
               {/* Tooltip sopra il dock */}
               <span className="absolute bottom-full mb-2 px-2 py-1 text-xs rounded-md bg-[var(--fd-ink)] text-[var(--fd-paper)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                 {item.label}
               </span>
-            </motion.div>
+            </div>
           );
         })}
       </nav>
-    </motion.div>
+    </div>
   );
 };
 

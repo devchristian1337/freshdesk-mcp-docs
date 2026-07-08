@@ -1,7 +1,7 @@
 ---
 id: overview
-title: Panoramica della reference
-description: Convenzioni di naming, annotations, formato delle risposte e degli errori.
+title: Reference dei tool MCP
+description: "Convenzioni della reference Freshdesk MCP: naming dei tool, alias, ToolAnnotations, risposte, errori, paginazione e parametri."
 sidebar_label: Panoramica
 ---
 
