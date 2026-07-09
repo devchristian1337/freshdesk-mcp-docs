@@ -42,9 +42,25 @@
             // Due frame garantiscono un paint iniziale in alto prima dello
             // scroll animato verso la posizione salvata.
             requestAnimationFrame(function () {
+              window.scrollTo({top: 0, left: 0, behavior: 'auto'});
               requestAnimationFrame(function () {
-                window.scrollTo({top: savedY, left: 0, behavior: 'smooth'});
-                if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
+                var startTime = performance.now();
+                var duration = Math.min(900, Math.max(450, savedY * 0.12));
+
+                function animateScroll(now) {
+                  var progress = Math.min((now - startTime) / duration, 1);
+                  // Cubic ease-out: partenza visibile, arrivo morbido.
+                  var eased = 1 - Math.pow(1 - progress, 3);
+                  window.scrollTo({top: Math.round(savedY * eased), left: 0, behavior: 'auto'});
+
+                  if (progress < 1) {
+                    requestAnimationFrame(animateScroll);
+                  } else if ('scrollRestoration' in history) {
+                    history.scrollRestoration = 'auto';
+                  }
+                }
+
+                requestAnimationFrame(animateScroll);
               });
             });
           }, {once: true});
