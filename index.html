@@ -11,14 +11,43 @@
       rel="stylesheet"
     />
     <script>
-      // Nei refresh non riusare la posizione della pagina precedente: il
-      // ripristino nativo tardivo renderebbe visibile uno scroll verso il basso.
+      // Al refresh partiamo sempre dall'alto e poi torniamo dolcemente alla
+      // posizione precedente della stessa route, senza il ripristino nativo
+      // imprevedibile durante il caricamento.
       (function () {
+        var storageKey = 'freshdesk-mcp:scroll:' + location.pathname + location.search + location.hash;
         var navigation = performance.getEntriesByType?.('navigation')[0];
         var isReload = navigation?.type === 'reload' || performance.navigation?.type === 1;
-        if (isReload && 'scrollRestoration' in history) {
-          history.scrollRestoration = 'manual';
-          window.scrollTo(0, 0);
+        var savedY = 0;
+
+        try {
+          savedY = Number(sessionStorage.getItem(storageKey)) || 0;
+        } catch (e) {
+          // Lo storage puo' non essere disponibile in modalita' privata.
+        }
+
+        window.addEventListener('pagehide', function () {
+          try {
+            sessionStorage.setItem(storageKey, String(window.scrollY));
+          } catch (e) {
+            // La pagina resta navigabile anche senza persistenza della posizione.
+          }
+        });
+
+        if (isReload && savedY > 0) {
+          if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+          window.scrollTo({top: 0, left: 0, behavior: 'auto'});
+
+          window.addEventListener('load', function () {
+            // Due frame garantiscono un paint iniziale in alto prima dello
+            // scroll animato verso la posizione salvata.
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                window.scrollTo({top: savedY, left: 0, behavior: 'smooth'});
+                if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
+              });
+            });
+          }, {once: true});
         }
       })();
     </script>
