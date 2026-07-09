@@ -11,6 +11,18 @@
       rel="stylesheet"
     />
     <script>
+      // Nei refresh non riusare la posizione della pagina precedente: il
+      // ripristino nativo tardivo renderebbe visibile uno scroll verso il basso.
+      (function () {
+        var navigation = performance.getEntriesByType?.('navigation')[0];
+        var isReload = navigation?.type === 'reload' || performance.navigation?.type === 1;
+        if (isReload && 'scrollRestoration' in history) {
+          history.scrollRestoration = 'manual';
+          window.scrollTo(0, 0);
+        }
+      })();
+    </script>
+    <script>
       // Anti-FOUC: imposta il tema prima del primo paint.
       // Ordine: scelta salvata → preferenza di sistema → chiaro.
       (function () {
