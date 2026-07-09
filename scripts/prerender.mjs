@@ -31,7 +31,7 @@ function fillTemplate(appHtml, meta) {
     `<meta property="og:description" content="${escapeHtml(meta.description)}" />`,
     `<meta property="og:url" content="${pageUrl}" />`,
     `<meta property="og:site_name" content="${escapeHtml(siteInfo.title)}" />`,
-    `<meta property="og:locale" content="${siteInfo.locale}" />`,
+    `<meta property="og:locale" content="${meta.ogLocale}" />`,
     `<meta property="og:image" content="${imageUrl}" />`,
     `<meta property="og:type" content="website" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
@@ -39,9 +39,11 @@ function fillTemplate(appHtml, meta) {
     `<meta name="twitter:description" content="${escapeHtml(meta.description)}" />`,
     `<meta name="twitter:image" content="${imageUrl}" />`,
     `<script type="application/ld+json">${jsonForHtml(schemaFor(meta, pageUrl, imageUrl))}</script>`,
+    ...meta.alternates.map((alternate) => `<link rel="alternate" hreflang="${alternate.language}" href="${absoluteUrl(alternate.path)}" />`),
   ].filter(Boolean).join('\n    ');
 
   return template
+    .replace(/<html lang="[^"]+">/, `<html lang="${meta.language}">`)
     .replace(/<title>.*?<\/title>/s, '') // il titolo statico del template
     .replace('<!--app-head-->', head)
     .replace('<!--app-html-->', appHtml);
@@ -86,7 +88,7 @@ function schemaFor(meta, pageUrl, imageUrl) {
       '@id': siteId,
       name: siteInfo.title,
       url: siteUrl,
-      inLanguage: siteInfo.language,
+      inLanguage: meta.language,
       publisher: {'@id': orgId},
     },
   ];
@@ -115,7 +117,7 @@ function schemaFor(meta, pageUrl, imageUrl) {
     headline: meta.pageTitle,
     description: meta.description,
     image: imageUrl,
-    inLanguage: siteInfo.language,
+    inLanguage: meta.language,
     isPartOf: {'@id': siteId},
     publisher: {'@id': orgId},
   });
@@ -163,6 +165,10 @@ for (const meta of routes) {
     pageTitle: 'Pagina non trovata',
     description: siteInfo.tagline,
     kind: 'doc',
+    locale: 'en',
+    language: 'en',
+    ogLocale: 'en_US',
+    alternates: [{language: 'en', path: '/404'}],
     robots: 'noindex, follow',
     breadcrumbs: [
       {name: 'Home', path: '/'},

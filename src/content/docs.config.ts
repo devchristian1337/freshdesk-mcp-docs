@@ -1,68 +1,72 @@
-/**
- * Struttura della documentazione (ex sidebars.ts): ordine, categorie ed
- * etichette. Fonte unica per sidebar, breadcrumbs, paginazione prev/next
- * e per l'elenco delle route da prerenderizzare.
- */
+import {uiCopy} from '../i18n/copy';
+import type {Locale} from '../i18n/config';
 
-export type DocRef = {
-  /** Percorso relativo a docs/ senza estensione: è anche la route /docs/<id>. */
-  id: string;
-  /** Etichetta mostrata in sidebar, breadcrumbs e paginazione. */
-  label: string;
-};
+export type DocId =
+  | 'intro'
+  | 'installazione'
+  | 'configurazione'
+  | 'reference/overview'
+  | 'reference/tickets'
+  | 'reference/conversazioni'
+  | 'reference/contatti'
+  | 'reference/aziende'
+  | 'reference/agenti'
+  | 'reference/gruppi'
+  | 'reference/campi'
+  | 'reference/risposte-predefinite'
+  | 'reference/soluzioni'
+  | 'reference/prompts'
+  | 'esempi';
 
-export type SidebarSection = {
-  /** Titolo della categoria; assente per le voci di primo livello. */
-  label?: string;
-  items: DocRef[];
-};
+export type DocRef = {id: DocId; label: string};
+export type SidebarSection = {label?: string; items: DocRef[]};
 
-export const sidebarSections: SidebarSection[] = [
-  {
-    items: [{id: 'intro', label: 'Introduzione'}],
-  },
-  {
-    label: 'Guida',
-    items: [
-      {id: 'installazione', label: 'Installazione'},
-      {id: 'configurazione', label: 'Configurazione'},
-    ],
-  },
-  {
-    label: 'Reference dei tool',
-    items: [
-      {id: 'reference/overview', label: 'Panoramica'},
-      {id: 'reference/tickets', label: 'Ticket'},
-      {id: 'reference/conversazioni', label: 'Conversazioni'},
-      {id: 'reference/contatti', label: 'Contatti'},
-      {id: 'reference/aziende', label: 'Aziende'},
-      {id: 'reference/agenti', label: 'Agenti'},
-      {id: 'reference/gruppi', label: 'Gruppi'},
-      {id: 'reference/campi', label: 'Campi'},
-      {id: 'reference/risposte-predefinite', label: 'Risposte predefinite'},
-      {id: 'reference/soluzioni', label: 'Knowledge base'},
-      {id: 'reference/prompts', label: 'Prompt'},
-    ],
-  },
-  {
-    items: [{id: 'esempi', label: 'Esempi'}],
-  },
-];
-
-/** Elenco piatto e ordinato: definisce prev/next e le route dei documenti. */
-export const orderedDocs: DocRef[] = sidebarSections.flatMap((s) => s.items);
-
-/** Categoria di appartenenza (per le breadcrumbs); undefined per il primo livello. */
-export function sectionOf(id: string): SidebarSection | undefined {
-  return sidebarSections.find((s) => s.items.some((d) => d.id === id));
+/** Struttura stabile delle route; cambia soltanto il testo mostrato. */
+export function sidebarSections(locale: Locale): SidebarSection[] {
+  const t = uiCopy[locale];
+  return [
+    {items: [{id: 'intro', label: t.introduction}]},
+    {
+      label: t.guide,
+      items: [
+        {id: 'installazione', label: t.installation},
+        {id: 'configurazione', label: t.configuration},
+      ],
+    },
+    {
+      label: t.footerReference,
+      items: [
+        {id: 'reference/overview', label: t.overview},
+        {id: 'reference/tickets', label: t.tickets},
+        {id: 'reference/conversazioni', label: t.conversations},
+        {id: 'reference/contatti', label: t.contacts},
+        {id: 'reference/aziende', label: t.companies},
+        {id: 'reference/agenti', label: t.agents},
+        {id: 'reference/gruppi', label: t.groups},
+        {id: 'reference/campi', label: t.fields},
+        {id: 'reference/risposte-predefinite', label: t.cannedResponses},
+        {id: 'reference/soluzioni', label: t.solutions},
+        {id: 'reference/prompts', label: t.prompts},
+      ],
+    },
+    {items: [{id: 'esempi', label: t.examples}]},
+  ];
 }
 
-export function docRefOf(id: string): DocRef | undefined {
-  return orderedDocs.find((d) => d.id === id);
+export function orderedDocs(locale: Locale): DocRef[] {
+  return sidebarSections(locale).flatMap((section) => section.items);
 }
 
-export function prevNextOf(id: string): {prev?: DocRef; next?: DocRef} {
-  const i = orderedDocs.findIndex((d) => d.id === id);
-  if (i === -1) return {};
-  return {prev: orderedDocs[i - 1], next: orderedDocs[i + 1]};
+export function sectionOf(locale: Locale, id: DocId): SidebarSection | undefined {
+  return sidebarSections(locale).find((section) => section.items.some((doc) => doc.id === id));
+}
+
+export function docRefOf(locale: Locale, id: DocId): DocRef | undefined {
+  return orderedDocs(locale).find((doc) => doc.id === id);
+}
+
+export function prevNextOf(locale: Locale, id: DocId): {prev?: DocRef; next?: DocRef} {
+  const docs = orderedDocs(locale);
+  const index = docs.findIndex((doc) => doc.id === id);
+  return index === -1 ? {} : {prev: docs[index - 1], next: docs[index + 1]};
 }

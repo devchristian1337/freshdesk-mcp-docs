@@ -2,65 +2,36 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router';
 import {BookOpen, Braces, Terminal} from 'lucide-react';
 import {GitHubIcon} from '../ui/github-icon';
-import {
-  AppleSpotlight,
-  type SpotlightResult,
-  type SpotlightShortcut,
-} from '../ui/apple-spotlight';
+import {AppleSpotlight, type SpotlightResult, type SpotlightShortcut} from '../ui/apple-spotlight';
 import {site} from '../../site.config';
 import {OPEN_SEARCH_EVENT, SEARCH_STATE_EVENT} from './events';
+import {uiCopy} from '../../i18n/copy';
+import {useLocale} from '../../i18n/LocaleProvider';
 
-/**
- * Ricerca del sito in stile Spotlight: l'input interroga l'API JS di
- * Pagefind, il cui indice viene generato in build (`pagefind --site build`)
- * dall'HTML prerenderizzato. In dev l'indice non esiste: mostriamo un
- * avviso al posto dei risultati.
- */
-
-/** Sottoinsieme dell'API JS di Pagefind che usiamo. */
 type PagefindApi = {
   init: () => Promise<void>;
   debouncedSearch: (
     term: string,
-    options?: Record<string, unknown>,
+    options?: {filters?: Record<string, string | string[]>},
     debounceMs?: number,
   ) => Promise<{results: PagefindRawResult[]} | null>;
 };
 
 type PagefindRawResult = {
   id: string;
-  data: () => Promise<{
-    url: string;
-    excerpt: string;
-    meta: {title?: string};
-  }>;
+  data: () => Promise<{url: string; excerpt: string; meta: {title?: string}}>;
 };
 
 const MAX_RESULTS = 8;
-
-/* Percorso servito dallo static hosting: esiste solo dopo la build
-   (costante non-letterale così né Vite né TS provano a risolverlo). */
 const PAGEFIND_URL = '/pagefind/pagefind.js';
 
-/** Gli URL di Pagefind puntano all'HTML statico: riportali a path di route. */
 function normalizeUrl(url: string): string {
-  return url
-    .replace(/index\.html$/, '')
-    .replace(/\.html$/, '')
-    .replace(/\/$/, '') || '/';
+  return url.replace(/index\.html$/, '').replace(/\.html$/, '').replace(/\/$/, '') || '/';
 }
 
-const SHORTCUTS: SpotlightShortcut[] = [
-  {label: 'Documentazione', icon: <BookOpen />, link: '/docs/intro'},
-  {label: 'Reference', icon: <Braces />, link: '/docs/reference/overview'},
-  {label: 'Esempi', icon: <Terminal />, link: '/docs/esempi'},
-  {label: 'GitHub', icon: <GitHubIcon size={28} />, link: site.repoUrl, external: true},
-];
+type SearchModalProps = {initialOpen?: boolean};
 
-type SearchModalProps = {
-  initialOpen?: boolean;
-};
-
+/** Spotlight locale-aware: Pagefind riceve sempre il filtro della lingua attiva. */
 export default function SearchModal({initialOpen = false}: SearchModalProps) {
   const [open, setOpen] = useState(initialOpen);
   const [unavailable, setUnavailable] = useState(false);
@@ -69,17 +40,16 @@ export default function SearchModal({initialOpen = false}: SearchModalProps) {
   const pagefindRef = useRef<PagefindApi | null>(null);
   const searchSeq = useRef(0);
   const navigate = useNavigate();
+  const {locale, localize} = useLocale();
+  const t = uiCopy[locale];
 
-  // Apertura da navbar (evento) e da tastiera (Ctrl/Cmd+K), chiusura con Esc.
   useEffect(() => {
     const onOpen = () => setOpen(true);
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setOpen((v) => !v);
-      } else if (e.key === 'Escape') {
-        setOpen(false);
-      }
+    const onKey = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setOpen((value) => !value);
+      } else if (event.key === 'Escape') setOpen(false);
     };
     window.addEventListener(OPEN_SEARCH_EVENT, onOpen);
     window.addEventListener('keydown', onKey);
@@ -89,22 +59,17 @@ export default function SearchModal({initialOpen = false}: SearchModalProps) {
     };
   }, []);
 
-  // Notifica lo stato al resto dell'app (il Dock si nasconde quando aperto).
   useEffect(() => {
     window.dispatchEvent(new CustomEvent(SEARCH_STATE_EVENT, {detail: {open}}));
   }, [open]);
 
-  // Blocca lo scroll della pagina mentre lo Spotlight è aperto.
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
+    const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = prev;
-    };
+    return () => { document.body.style.overflow = previous; };
   }, [open]);
 
-  // Reset della query a ogni apertura.
   useEffect(() => {
     if (open) {
       setQuery('');
@@ -112,88 +77,67 @@ export default function SearchModal({initialOpen = false}: SearchModalProps) {
     }
   }, [open]);
 
-  // Carica Pagefind alla prima apertura (e riusa l'istanza poi).
   useEffect(() => {
     if (!open || pagefindRef.current || unavailable) return;
     let cancelled = false;
     (async () => {
       try {
         const probe = await fetch(PAGEFIND_URL, {method: 'HEAD'});
-        // In dev il fallback SPA risponde 200 con HTML: senza il check sul
-        // content-type l'import fallirebbe con un 404 rumoroso in console.
-        const type = probe.headers.get('content-type') ?? '';
-        if (!probe.ok || !type.includes('javascript')) {
-          throw new Error('indice assente');
+        if (!probe.ok || !(probe.headers.get('content-type') ?? '').includes('javascript')) {
+          throw new Error('missing Pagefind index');
         }
-        const pagefind = (await import(
-          /* @vite-ignore */ PAGEFIND_URL
-        )) as PagefindApi;
+        const pagefind = (await import(/* @vite-ignore */ PAGEFIND_URL)) as PagefindApi;
         await pagefind.init();
         if (!cancelled) pagefindRef.current = pagefind;
       } catch {
         if (!cancelled) setUnavailable(true);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [open, unavailable]);
 
-  // Interroga Pagefind a ogni cambio di query (debounce interno a Pagefind).
   useEffect(() => {
     const pagefind = pagefindRef.current;
     if (!query || !pagefind) {
       setResults([]);
       return;
     }
-    const seq = ++searchSeq.current;
+    const sequence = ++searchSeq.current;
     (async () => {
-      const search = await pagefind.debouncedSearch(query, {}, 250);
-      // null = ricerca superata da una più recente.
-      if (!search || seq !== searchSeq.current) return;
-      const data = await Promise.all(
-        search.results.slice(0, MAX_RESULTS).map((r) => r.data()),
-      );
-      if (seq !== searchSeq.current) return;
-      setResults(
-        data.map((d) => ({
-          label: d.meta.title ?? 'Senza titolo',
-          descriptionHtml: d.excerpt,
-          link: normalizeUrl(d.url),
-        })),
-      );
+      const search = await pagefind.debouncedSearch(query, {filters: {locale}}, 250);
+      if (!search || sequence !== searchSeq.current) return;
+      const data = await Promise.all(search.results.slice(0, MAX_RESULTS).map((result) => result.data()));
+      if (sequence !== searchSeq.current) return;
+      setResults(data.map((result) => ({
+        label: result.meta.title ?? t.untitled,
+        descriptionHtml: result.excerpt,
+        link: normalizeUrl(result.url),
+      })));
     })();
-  }, [query]);
+  }, [locale, query, t.untitled]);
 
-  const handleNavigate = useCallback(
-    (link: string, external: boolean) => {
-      setOpen(false);
-      if (external) {
-        window.open(link, '_blank', 'noopener,noreferrer');
-      } else {
-        navigate(link);
-      }
-    },
-    [navigate],
-  );
+  const handleNavigate = useCallback((link: string, external: boolean) => {
+    setOpen(false);
+    if (external) window.open(link, '_blank', 'noopener,noreferrer');
+    else navigate(link);
+  }, [navigate]);
+
+  const shortcuts: SpotlightShortcut[] = [
+    {label: t.documentation, icon: <BookOpen />, link: localize('/docs/intro')},
+    {label: t.reference, icon: <Braces />, link: localize('/docs/reference/overview')},
+    {label: t.examples, icon: <Terminal />, link: localize('/docs/esempi')},
+    {label: 'GitHub', icon: <GitHubIcon size={28} />, link: site.repoUrl, external: true},
+  ];
 
   return (
     <AppleSpotlight
       isOpen={open}
       handleClose={() => setOpen(false)}
-      shortcuts={SHORTCUTS}
+      shortcuts={shortcuts}
       searchValue={query}
       onSearchValueChange={setQuery}
       searchResults={results}
-      notice={
-        unavailable ? (
-          <>
-            L&apos;indice di ricerca viene generato in build: esegui{' '}
-            <code>npm run build</code> e poi <code>npm run preview</code> per
-            provarla.
-          </>
-        ) : undefined
-      }
+      notice={unavailable ? <>{t.searchUnavailable} <code>npm run build</code> e poi <code>npm run preview</code>.</> : undefined}
       onNavigate={handleNavigate}
     />
   );

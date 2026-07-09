@@ -1,60 +1,59 @@
-/**
- * Configurazione del sito (ex themeConfig di Docusaurus).
- * Unica fonte per titolo, navbar, footer e metadati globali.
- */
+import {uiCopy} from './i18n/copy';
+import {defaultLocale, localeInfo, type Locale} from './i18n/config';
 
-export const site = {
+const shared = {
   title: 'Freshdesk MCP',
-  tagline:
-    'Documentazione tecnica di Freshdesk MCP: installa, configura e usa 64 tool MCP per ticket, contatti, aziende e knowledge base.',
   url: 'https://freshdesk-mcp.com',
-  language: 'it',
-  locale: 'it_IT',
   socialImage: '/img/docusaurus-social-card.jpg',
   logo: '/img/logo.png',
   repoUrl: 'https://github.com/devchristian1337/freshdesk-mcp',
 } as const;
 
+export function siteFor(locale: Locale) {
+  return {
+    ...shared,
+    language: localeInfo[locale].htmlLang,
+    locale: localeInfo[locale].ogLocale,
+    tagline: uiCopy[locale].siteTagline,
+  };
+}
+
+/** Compatibilità per codice eseguito fuori dal provider: inglese di default. */
+export const site = siteFor(defaultLocale);
+
 export type NavItem = {label: string; to?: string; href?: string};
 
-export const navbarItems: NavItem[] = [
-  {label: 'Documentazione', to: '/docs/intro'},
-  {label: 'Reference', to: '/docs/reference/overview'},
-  {label: 'Esempi', to: '/docs/esempi'},
-];
+export function footerColumns(locale: Locale): {title: string; items: NavItem[]}[] {
+  const t = uiCopy[locale];
+  return [
+    {
+      title: t.footerDocs,
+      items: [
+        {label: t.introduction, to: '/docs/intro'},
+        {label: t.installation, to: '/docs/installazione'},
+        {label: t.configuration, to: '/docs/configurazione'},
+        {label: t.examples, to: '/docs/esempi'},
+      ],
+    },
+    {
+      title: t.footerReference,
+      items: [
+        {label: t.overview, to: '/docs/reference/overview'},
+        {label: t.tickets, to: '/docs/reference/tickets'},
+        {label: t.solutions, to: '/docs/reference/soluzioni'},
+        {label: t.prompts, to: '/docs/reference/prompts'},
+      ],
+    },
+    {
+      title: t.footerResources,
+      items: [
+        {label: t.repository, href: shared.repoUrl},
+        {label: t.freshdeskApi, href: 'https://developers.freshdesk.com/api/'},
+      ],
+    },
+  ];
+}
 
-export type FooterColumn = {
-  title: string;
-  items: {label: string; to?: string; href?: string}[];
-};
-
-export const footerColumns: FooterColumn[] = [
-  {
-    title: 'Documentazione',
-    items: [
-      {label: 'Introduzione', to: '/docs/intro'},
-      {label: 'Installazione', to: '/docs/installazione'},
-      {label: 'Configurazione', to: '/docs/configurazione'},
-      {label: 'Esempi', to: '/docs/esempi'},
-    ],
-  },
-  {
-    title: 'Reference dei tool',
-    items: [
-      {label: 'Panoramica', to: '/docs/reference/overview'},
-      {label: 'Ticket', to: '/docs/reference/tickets'},
-      {label: 'Knowledge base', to: '/docs/reference/soluzioni'},
-      {label: 'Prompt', to: '/docs/reference/prompts'},
-    ],
-  },
-  {
-    title: 'Risorse',
-    items: [
-      {label: 'Repository GitHub', href: 'https://github.com/devchristian1337/freshdesk-mcp'},
-      {label: 'API Freshdesk', href: 'https://developers.freshdesk.com/api/'},
-    ],
-  },
-];
-
-export const footerCopyright =
-  'Freshdesk MCP - documentazione tecnica.';
+export function footerCopyright(locale: Locale): string {
+  return uiCopy[locale].footerCopyright;
+}

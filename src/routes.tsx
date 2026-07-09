@@ -2,8 +2,10 @@ import type {RouteObject} from 'react-router';
 import SiteLayout from './layouts/SiteLayout';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
-import {orderedDocs} from './content/docs.config';
+import {orderedDocs, type DocId} from './content/docs.config';
 import {loadDoc} from './content/docs-modules';
+import {LocaleProvider} from './i18n/LocaleProvider';
+import {defaultLocale, locales, type Locale} from './i18n/config';
 
 /**
  * Albero delle route, condiviso tra client (main.tsx) e prerender SSG
@@ -12,13 +14,13 @@ import {loadDoc} from './content/docs-modules';
  * puo attendere il modulo prima di renderizzare.
  */
 
-function docRoute(docId: string): RouteObject {
+function docRoute(locale: Locale, docId: DocId): RouteObject {
   return {
     path: `docs/${docId}`,
     lazy: async () => {
       const [{default: DocPage}, mod] = await Promise.all([
         import('./pages/DocPage'),
-        loadDoc(docId),
+        loadDoc(locale, docId),
       ]);
       return {
         Component: function Doc() {
@@ -29,17 +31,20 @@ function docRoute(docId: string): RouteObject {
   };
 }
 
-export const routes: RouteObject[] = [
-  {
-    path: '/',
-    element: <SiteLayout />,
+function localeRoute(locale: Locale): RouteObject {
+  return {
+    path: locale === defaultLocale ? '/' : locale,
+    element: (
+      <LocaleProvider locale={locale}>
+        <SiteLayout />
+      </LocaleProvider>
+    ),
     children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      ...orderedDocs.map((d) => docRoute(d.id)),
+      {index: true, element: <Home />},
+      ...orderedDocs(locale).map((doc) => docRoute(locale, doc.id)),
       {path: '*', element: <NotFound />},
     ],
-  },
-];
+  };
+}
+
+export const routes: RouteObject[] = locales.map(localeRoute);

@@ -1,4 +1,6 @@
 import type {ComponentType} from 'react';
+import type {Locale} from '../i18n/config';
+import type {DocId} from './docs.config';
 
 /** Forma di un modulo markdown compilato dalla pipeline MDX. */
 export type DocModule = {
@@ -27,11 +29,16 @@ const modules = import.meta.glob('../../docs/**/*.md') as Record<
   () => Promise<DocModule>
 >;
 
-/** Carica il modulo del documento con l'id dato (es. "reference/tickets"). */
-export function loadDoc(id: string): Promise<DocModule> {
-  const loader = modules[`../../docs/${id}.md`];
+/**
+ * Carica il documento nella raccolta specificata. La raccolta italiana
+ * conserva i Markdown originali nella radice docs/; le altre sono separate.
+ */
+export function loadDoc(locale: Locale, id: DocId): Promise<DocModule> {
+  const localizedKey = `../../docs/${locale}/${id}.md`;
+  const fallbackKey = `../../docs/${id}.md`;
+  const loader = locale === 'it' ? modules[fallbackKey] : modules[localizedKey];
   if (!loader) {
-    throw new Error(`Documento non trovato: docs/${id}.md`);
+    throw new Error(`Documento non trovato: ${localizedKey}`);
   }
   return loader();
 }

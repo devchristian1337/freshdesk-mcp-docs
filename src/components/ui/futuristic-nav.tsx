@@ -23,6 +23,10 @@ interface LumaBarProps {
   onSelect: (index: number) => void;
   /** True = il dock scivola fuori dallo schermo (verso il basso). */
   hidden?: boolean;
+  /** Controlli compositi, ad esempio il menu lingua. */
+  extra?: React.ReactNode;
+  /** Inserisce il controllo composito dopo una voce, invece che in coda. */
+  extraAfterIndex?: number;
 }
 
 const buttonClasses =
@@ -31,7 +35,7 @@ const buttonClasses =
   'text-[var(--fd-ink-2)] hover:text-[var(--fd-primary)] relative z-10 ' +
   'bg-transparent border-0 p-0 cursor-pointer transition-colors duration-200';
 
-const LumaBar = ({items, activeIndex, onSelect, hidden = false}: LumaBarProps) => {
+const LumaBar = ({items, activeIndex, onSelect, hidden = false, extra, extraAfterIndex}: LumaBarProps) => {
   // Pallino indicatore: elemento UNICO che scivola sotto la voce attiva.
   // Misuriamo il centro della voce e animiamo `left` con una molla: così lo
   // spostamento è sempre fluido (niente smonta/rimonta per voce).
@@ -68,44 +72,47 @@ const LumaBar = ({items, activeIndex, onSelect, hidden = false}: LumaBarProps) =
         {items.map((item, index) => {
           const isActive = index === activeIndex;
           return (
-            <div
-              key={item.id}
-              ref={(el) => {
-                itemRefs.current[index] = el;
-              }}
-              className="relative flex flex-col items-center group">
-              {item.href ? (
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={item.label}
-                  className={`${buttonClasses} transition-transform hover:scale-110`}
-                  style={{transform: `scale(${isActive ? 1.18 : 1})`}}>
-                  {item.icon}
-                </a>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => onSelect(index)}
-                  aria-label={item.label}
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`${buttonClasses} transition-transform hover:scale-110`}
-                  style={{
-                    color: isActive ? 'var(--fd-primary)' : undefined,
-                    transform: `scale(${isActive ? 1.18 : 1})`,
-                  }}>
-                  {item.icon}
-                </button>
-              )}
+            <React.Fragment key={item.id}>
+              <div
+                ref={(el) => {
+                  itemRefs.current[index] = el;
+                }}
+                className="relative flex flex-col items-center group">
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label}
+                    className={`${buttonClasses} transition-transform hover:scale-110`}
+                    style={{transform: `scale(${isActive ? 1.18 : 1})`}}>
+                    {item.icon}
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => onSelect(index)}
+                    aria-label={item.label}
+                    aria-current={isActive ? 'page' : undefined}
+                    className={`${buttonClasses} transition-transform hover:scale-110`}
+                    style={{
+                      color: isActive ? 'var(--fd-primary)' : undefined,
+                      transform: `scale(${isActive ? 1.18 : 1})`,
+                    }}>
+                    {item.icon}
+                  </button>
+                )}
 
-              {/* Tooltip sopra il dock */}
-              <span className="absolute bottom-full mb-2 px-2 py-1 text-xs rounded-md bg-[var(--fd-ink)] text-[var(--fd-paper)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                {item.label}
-              </span>
-            </div>
+                {/* Tooltip sopra il dock */}
+                <span className="absolute bottom-full mb-2 px-2 py-1 text-xs rounded-md bg-[var(--fd-ink)] text-[var(--fd-paper)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  {item.label}
+                </span>
+              </div>
+              {extraAfterIndex === index && extra}
+            </React.Fragment>
           );
         })}
+        {extraAfterIndex === undefined && extra}
       </nav>
     </div>
   );

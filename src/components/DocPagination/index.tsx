@@ -1,33 +1,29 @@
-import {Link} from 'react-router';
-import {prevNextOf} from '../../content/docs.config';
+import {prevNextOf, type DocId} from '../../content/docs.config';
+import {uiCopy} from '../../i18n/copy';
+import {LocalizedLink, useLocale} from '../../i18n/LocaleProvider';
 import styles from './styles.module.css';
 
-/** Navigazione sequenziale tra i documenti (ordine della sidebar). */
-export default function DocPagination({docId}: {docId: string}) {
-  const {prev, next} = prevNextOf(docId);
+/** Navigazione sequenziale tra i documenti nella lingua corrente. */
+export default function DocPagination({docId}: {docId: DocId}) {
+  const {locale} = useLocale();
+  const t = uiCopy[locale];
+  const {prev, next} = prevNextOf(locale, docId);
   if (!prev && !next) return null;
 
   return (
-    <nav className={styles.pager} aria-label="Pagine adiacenti">
+    <nav className={styles.pager} aria-label={t.adjacentPages}>
       {prev ? (
-        <Link to={`/docs/${prev.id}`} className={styles.card} rel="prev">
-          <span className={styles.dir}>← Precedente</span>
+        <LocalizedLink to={`/docs/${prev.id}`} className={styles.card} rel="prev">
+          <span className={styles.dir}>← {t.previous}</span>
           <span className={styles.label}>{prev.label}</span>
-        </Link>
-      ) : (
-        <span />
-      )}
+        </LocalizedLink>
+      ) : <span />}
       {next ? (
-        <Link
-          to={`/docs/${next.id}`}
-          className={`${styles.card} ${styles.cardNext}`}
-          rel="next">
-          <span className={styles.dir}>Successivo →</span>
+        <LocalizedLink to={`/docs/${next.id}`} className={`${styles.card} ${styles.cardNext}`} rel="next">
+          <span className={styles.dir}>{t.next} →</span>
           <span className={styles.label}>{next.label}</span>
-        </Link>
-      ) : (
-        <span />
-      )}
+        </LocalizedLink>
+      ) : <span />}
     </nav>
   );
 }
