@@ -32,6 +32,18 @@
   --fd-delete: #b3261e;
   --fd-delete-tint: #f9e5e3;
 
+  /* Sintassi Prism: le variabili vengono risolte prima dell'hydration,
+     cosi' i blocchi di codice seguono subito il tema impostato nel <head>. */
+  --fd-code-background: hsl(230, 1%, 98%);
+  --fd-code-ink: hsl(230, 8%, 24%);
+  --fd-code-comment: hsl(230, 4%, 64%);
+  --fd-code-number: hsl(35, 99%, 36%);
+  --fd-code-keyword: hsl(301, 63%, 40%);
+  --fd-code-property: hsl(5, 74%, 59%);
+  --fd-code-string: hsl(119, 34%, 47%);
+  --fd-code-function: hsl(221, 87%, 60%);
+  --fd-code-url: hsl(198, 99%, 37%);
+
   /* Colore dei link testuali (a bassa specificità: i moduli lo sovrascrivono). */
   --fd-link: var(--fd-primary-strong);
 
@@ -76,6 +88,16 @@
   --fd-write-tint: #33230e;
   --fd-delete: #e0655c;
   --fd-delete-tint: #361311;
+
+  --fd-code-background: hsl(220, 13%, 18%);
+  --fd-code-ink: hsl(220, 14%, 71%);
+  --fd-code-comment: hsl(220, 10%, 40%);
+  --fd-code-number: hsl(29, 54%, 61%);
+  --fd-code-keyword: hsl(286, 60%, 67%);
+  --fd-code-property: hsl(355, 65%, 65%);
+  --fd-code-string: hsl(95, 38%, 62%);
+  --fd-code-function: hsl(207, 82%, 66%);
+  --fd-code-url: hsl(187, 47%, 55%);
 
   --fd-link: var(--fd-primary);
 
