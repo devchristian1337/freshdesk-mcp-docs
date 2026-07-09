@@ -543,12 +543,12 @@
 }
 
 /* Bottone ghost leggibile sul fondo inchiostro. */
-.ctaGhost {
+.ctaInner .ctaGhost {
   border-color: #3a4854;
   color: #e8ece9;
 }
 
-.ctaGhost:hover {
+.ctaInner .ctaGhost:hover {
   border-color: #7d8b95;
   background: rgba(255, 255, 255, 0.05);
 }
