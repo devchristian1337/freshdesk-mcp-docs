@@ -49,6 +49,9 @@ Elenca i ticket con paginazione semplice. Per filtrare usa `freshdesk_list_ticke
 |---|---|---|---|
 | `page` | integer | No | `1` |
 | `per_page` | integer (1–100) | No | `30` |
+| `include_full` | boolean | No | `false` |
+
+Per default ogni ticket contiene solo i campi essenziali per l'elenco e gli eventuali `custom_fields` valorizzati. Imposta `include_full=true` per ricevere il payload completo di ogni ticket.
 
 **Chiamata**
 
@@ -83,10 +86,12 @@ Elenca i ticket applicando i filtri nativi dell'endpoint `GET /tickets`.
 | `order_type` | string | No | `null` |
 | `page` | integer | No | `1` |
 | `per_page` | integer (1–100) | No | `30` |
+| `include_full` | boolean | No | `false` |
 
 - `filter_name`: `new_and_my_open`, `watching`, `spam`, `deleted`.
 - `order_by`: `created_at`, `due_by`, `updated_at`, `status`.
 - `order_type`: `asc`, `desc`.
+- `include_full`: restituisce il payload completo di ogni ticket; per default il server proietta i campi essenziali per l'elenco.
 
 **Chiamata**
 
@@ -151,21 +156,33 @@ Recupera un singolo ticket, con la possibilità di incorporare dati correlati.
 
 ## freshdesk_search_tickets <span className="fd-tag">read</span>
 
-Cerca ticket con la query DSL di Freshdesk (endpoint `/search/tickets`).
+Cerca ticket tramite filtri strutturati nell'endpoint `/search/tickets`. Il server costruisce la DSL Freshdesk, combina i filtri con `AND` e gestisce quoting e formato delle date. Non esiste una ricerca full-text su `subject` o `description`; per filtrare per azienda o richiedente usa `freshdesk_list_tickets` con `company_id` o `requester_id`.
 
 **Alias:** `search_tickets`
 
 | Parametro | Tipo | Obbligatorio | Default |
 |---|---|---|---|
-| `query` | string | Sì | - |
+| `status` | integer | No | `null` |
+| `priority` | integer | No | `null` |
+| `agent_id` | integer | No | `null` |
+| `group_id` | integer | No | `null` |
+| `ticket_type` | string | No | `null` |
+| `tag` | string | No | `null` |
+| `created_after` | string (`yyyy-mm-dd`) | No | `null` |
+| `created_before` | string (`yyyy-mm-dd`) | No | `null` |
+| `updated_after` | string (`yyyy-mm-dd`) | No | `null` |
+| `updated_before` | string (`yyyy-mm-dd`) | No | `null` |
+| `custom_fields` | object | No | `null` |
+| `query` | string (DSL avanzata) | No | `null` |
 | `page` | integer (1–10) | No | `1` |
+| `include_full` | boolean | No | `false` |
 
-La ricerca è limitata a 10 pagine / 300 risultati.
+Fornisci almeno un filtro strutturato oppure una `query` DSL valida. `query` è un frammento DSL avanzato, non testo libero; se usata insieme ai filtri viene combinata con essi tramite `AND`. In `custom_fields` il prefisso `cf_` viene aggiunto automaticamente se manca.
 
 **Chiamata**
 
 ```json
-{ "query": "status:2 AND priority:4", "page": 1 }
+{ "status": 2, "priority": 4, "group_id": 15, "updated_after": "2026-01-01" }
 ```
 
 **Risposta** - risultato della ricerca Freshdesk:

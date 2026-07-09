@@ -15,7 +15,7 @@ Trova i ticket urgenti aperti, leggi il contesto, annota internamente e rispondi
 **Passo 1 - Cerca i ticket aperti e urgenti** con [`freshdesk_search_tickets`](./reference/tickets.md#freshdesk_search_tickets-read):
 
 ```json
-{ "query": "status:2 AND priority:4" }
+{ "status": 2, "priority": 4 }
 ```
 
 **Passo 2 - Leggi il ticket con la conversazione** con [`freshdesk_get_ticket`](./reference/tickets.md#freshdesk_get_ticket-read):
@@ -140,4 +140,4 @@ Individua categoria e cartella, poi crea l'articolo e verificane la presenza con
 
 ## 5. Lavorare in sola lettura
 
-Per analisi e reportistica senza rischio di modifiche, avvia il server con `FRESHDESK_TICKETS_READ_ONLY=true` (o l'header `X-Freshdesk-Tickets-Read-Only: true`). I tool di lettura - come [`freshdesk_get_tickets`](./reference/tickets.md#freshdesk_get_tickets-read), [`freshdesk_get_ticket_conversation`](./reference/conversazioni.md#freshdesk_get_ticket_conversation-read) e [`freshdesk_list_contacts`](./reference/contatti.md#freshdesk_list_contacts-read) - restano disponibili, mentre creazione, modifica ed eliminazione dei ticket vengono bloccate con un errore esplicito.
+Per analisi e reportistica senza mutazioni sui ticket, avvia il server con `FRESHDESK_TICKETS_READ_ONLY=true` (o l'header `X-Freshdesk-Tickets-Read-Only: true`). I tool di lettura - come [`freshdesk_get_tickets`](./reference/tickets.md#freshdesk_get_tickets-read), [`freshdesk_get_ticket_conversation`](./reference/conversazioni.md#freshdesk_get_ticket_conversation-read) e [`freshdesk_list_contacts`](./reference/contatti.md#freshdesk_list_contacts-read) - restano disponibili; il blocco copre anche reply, note, aggiornamento conversazioni e riepiloghi. Non blocca invece le scritture su risorse diverse dai ticket.

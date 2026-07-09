@@ -23,7 +23,7 @@ L'autenticazione verso l'API Freshdesk usa HTTP Basic con la API key come userna
 |---|---|---|---|
 | `FRESHDESK_DOMAIN` | Host Freshdesk (`*.freshdesk.com`) | Sì (fallback stdio) | - |
 | `FRESHDESK_API_KEY` | API key Freshdesk | Sì (fallback stdio) | - |
-| `FRESHDESK_TICKETS_READ_ONLY` | Se `true`, blocca creazione/modifica/eliminazione dei ticket | No | `false` |
+| `FRESHDESK_TICKETS_READ_ONLY` | Se `true`, blocca in modo sticky le mutazioni relative ai ticket | No | `false` |
 | `MCP_TRANSPORT` | `stdio` (default) oppure `http` | No | `stdio` |
 | `MCP_HTTP_HOST` | Host di bind in HTTP | No | `0.0.0.0` |
 | `PORT` | Porta HTTP (Railway la inietta) | No | → `FASTMCP_PORT` → `8000` |
@@ -39,7 +39,9 @@ FRESHDESK_DOMAIN=tuazienda.freshdesk.com
 # API key Freshdesk (Profile settings -> API key). NON committare il valore reale.
 FRESHDESK_API_KEY=la_tua_api_key
 
-# Se "true" blocca ogni operazione di scrittura/eliminazione sui ticket (sola lettura).
+# Se "true" blocca solo le mutazioni relative ai ticket: ticket, reply, note,
+# aggiornamento conversazioni e riepiloghi. Non è una modalità read-only globale.
+# Se impostata nell'ambiente del server, non può essere disattivata per richiesta.
 FRESHDESK_TICKETS_READ_ONLY=false
 
 # Transport: "stdio" (default) oppure "http".
@@ -135,7 +137,9 @@ X-Freshdesk-Tickets-Read-Only: false
 
 ## Modalità read-only
 
-Quando `FRESHDESK_TICKETS_READ_ONLY` (o l'header `X-Freshdesk-Tickets-Read-Only`) è attiva, i tool di scrittura sui ticket (`freshdesk_create_ticket`, `freshdesk_update_ticket`, `freshdesk_delete_ticket`, le reply/note e i summary) restituiscono un errore esplicito senza toccare Freshdesk:
+Quando `FRESHDESK_TICKETS_READ_ONLY=true` è impostata nell'ambiente del server, la modalità è **sticky**: header e query string non possono disattivarla. Se la variabile è `false` o assente, `X-Freshdesk-Tickets-Read-Only` e `freshdesk_tickets_read_only` possono attivarla per la singola richiesta.
+
+Con la modalità attiva, i seguenti tool restituiscono un errore esplicito senza toccare Freshdesk: `freshdesk_create_ticket`, `freshdesk_update_ticket`, `freshdesk_delete_ticket`, `freshdesk_create_ticket_reply`, `freshdesk_create_ticket_note`, `freshdesk_update_ticket_conversation`, `freshdesk_update_ticket_summary` e `freshdesk_delete_ticket_summary`.
 
 ```json
 {
@@ -143,4 +147,4 @@ Quando `FRESHDESK_TICKETS_READ_ONLY` (o l'header `X-Freshdesk-Tickets-Read-Only`
 }
 ```
 
-Le operazioni di **lettura** sui ticket e tutte le operazioni sugli altri oggetti (contatti, aziende, agenti, ecc.) restano consentite.
+Le operazioni di **lettura** sui ticket e tutte le operazioni sugli altri oggetti, incluse le scritture su contatti, aziende, agenti, gruppi, campi, risposte predefinite e knowledge base, restano consentite.

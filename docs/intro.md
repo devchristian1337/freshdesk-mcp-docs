@@ -25,14 +25,14 @@ Il modello sceglie automaticamente il tool corretto e ne compone i parametri.
 
 ## Panoramica delle funzionalità
 
-- **64 tool** con nome canonico `freshdesk_*`, organizzati per dominio.
+- **124 tool esposti dal server MCP**: 64 nomi canonici `freshdesk_*` e 60 alias legacy deprecati. Gli alias sono associati a 59 handler; `freshdesk_search_companies` ne espone due.
 - **2 prompt guidati** (`create_ticket`, `create_reply`) per assistere il modello nella composizione dei payload.
 - **ToolAnnotations** su ogni tool (read / write / update / delete): hint sul comportamento per automazioni più sicure.
 - **Multi-tenant via HTTP**: un solo deploy può servire più account Freshdesk, con credenziali fornite per-richiesta.
 - **Autenticazione via header** (`X-Freshdesk-Domain` / `X-Freshdesk-Api-Key`) preferita alla query string.
 - **Modalità read-only** sui ticket tramite `FRESHDESK_TICKETS_READ_ONLY`.
-- **Allegati context-safe**: i metadati sono restituiti di default, il contenuto base64 solo su richiesta e con cap rigidi.
-- **Paginazione automatica** del thread delle conversazioni.
+- **Allegati context-safe**: i metadati sono restituiti di default, il contenuto base64 solo su richiesta (1 MiB per file e 5 MiB complessivi per default).
+- **Paginazione automatica** del thread delle conversazioni, fino a 50 pagine da 100 messaggi.
 
 ## I tool, per dominio
 

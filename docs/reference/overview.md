@@ -7,11 +7,11 @@ sidebar_label: Panoramica
 
 # Reference dei tool
 
-Questa sezione documenta tutti i **64 tool** e i **2 prompt** del server, raggruppati per dominio. Prima di consultare i singoli tool, vale la pena conoscere le convenzioni comuni.
+Questa sezione documenta l'output effettivo di `list_tools` e `list_prompts` del server: **124 tool** (64 canonici e 60 alias legacy) e **2 prompt**, raggruppati per dominio. Prima di consultare i singoli tool, vale la pena conoscere le convenzioni comuni.
 
 ## Naming e alias
 
-Ogni tool ha un **nome canonico** con prefisso `freshdesk_*` (es. `freshdesk_get_ticket`). Per retrocompatibilità con i client già configurati, molti tool espongono anche il **vecchio nome** come **alias deprecato** (es. `get_ticket`). Gli alias funzionano in modo identico ma la loro descrizione invita a usare il nome canonico.
+Ogni handler ha un **nome canonico** con prefisso `freshdesk_*` (es. `freshdesk_get_ticket`). Per retrocompatibilità con i client già configurati, 59 handler espongono uno o più nomi legacy come **alias deprecati** (es. `get_ticket`); sono 60 nomi legacy in totale, perché `freshdesk_search_companies` espone sia `search_companies` sia `find_company_by_name`. Gli alias funzionano in modo identico ma la loro descrizione invita a usare il nome canonico.
 
 Nelle pagine seguenti, per ogni tool sono indicati il nome canonico e gli eventuali alias.
 
@@ -26,7 +26,7 @@ Ogni tool dichiara delle annotations, cioè hint sul suo comportamento (sono sug
 | <span className="fd-tag fd-tag--write">update</span> | Aggiornamento (idempotente) | `idempotentHint: true` |
 | <span className="fd-tag fd-tag--delete">delete</span> | Operazione distruttiva | `destructiveHint: true` |
 
-I tool di **scrittura/eliminazione sui ticket** rispettano inoltre la [modalità read-only](../configurazione.md#modalità-read-only).
+I tool di **scrittura/eliminazione sui ticket** rispettano inoltre la [modalità read-only](../configurazione.md#modalità-read-only). Il blocco non riguarda le operazioni di scrittura su altre risorse Freshdesk.
 
 ## Formato delle risposte
 
@@ -75,7 +75,7 @@ Errori comuni di validazione lato client (prima della chiamata all'API):
 
 ## Paginazione
 
-I tool con paginazione accettano `page` (≥ 1) e `per_page` (1–100, default 30). Il blocco `pagination` viene ricostruito a partire dall'header HTTP `Link` restituito da Freshdesk: `next_page`/`prev_page` valgono `null` quando non c'è una pagina successiva/precedente.
+I tool di elenco paginati accettano `page` (≥ 1) e `per_page` (1–100, default 30). Il blocco `pagination` viene ricostruito a partire dall'header HTTP `Link` restituito da Freshdesk: `next_page`/`prev_page` valgono `null` quando non c'è una pagina successiva/precedente. La ricerca ticket usa il solo parametro `page` e accetta le pagine 1–10; il thread delle conversazioni segue le pagine automaticamente fino a un massimo difensivo di 50 pagine da 100 messaggi.
 
 ## Come leggere le tabelle dei parametri
 
