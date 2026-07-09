@@ -69,5 +69,9 @@ export default defineConfig({
     // Deve restare "build": wrangler.jsonc serve gli asset da ./build
     outDir: 'build',
     emptyOutDir: true,
+    // Le pagine docs sono prerenderizzate ma il loro componente e lazy:
+    // mantenere il CSS nello stesso chunk JS causerebbe un FOUC al refresh.
+    // Un solo stylesheet viene invece referenziato nel <head> di ogni pagina.
+    cssCodeSplit: false,
   },
 });
