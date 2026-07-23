@@ -1,4 +1,10 @@
-import {useEffect, useRef, useState, type ChangeEvent} from 'react';
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from 'react';
 import {useLocation, useNavigate} from 'react-router';
 import {BookOpen, Globe2, Home, Moon, Search, Sun, Terminal} from 'lucide-react';
 import LumaBar, {type DockItem} from '../ui/futuristic-nav';
@@ -19,37 +25,170 @@ import {uiCopy} from '../../i18n/copy';
 type RouteItem = DockItem & {to?: string; action?: 'search' | 'theme'};
 
 function LanguageMenu() {
-  const {pathname, search} = useLocation();
+  const {pathname, search, hash} = useLocation();
   const navigate = useNavigate();
   const {locale} = useLocale();
   const t = uiCopy[locale];
+  const menuId = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [open, setOpen] = useState(false);
+  const selectedIndex = locales.indexOf(locale);
 
   const changeLanguage = (next: Locale) => {
-    if (next !== locale) navigate(`${localizePath(next, pathname)}${search}`);
-  };
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    changeLanguage(event.currentTarget.value as Locale);
+    setOpen(false);
+    if (next !== locale) navigate(`${localizePath(next, pathname)}${search}${hash}`);
+    requestAnimationFrame(() => triggerRef.current?.focus());
   };
 
+  const focusOption = (index: number) => {
+    optionRefs.current[index]?.focus();
+  };
+
+  const openMenu = (focusIndex = selectedIndex) => {
+    setOpen(true);
+    requestAnimationFrame(() => focusOption(focusIndex));
+  };
+
+  const closeMenu = (restoreFocus = false) => {
+    setOpen(false);
+    if (restoreFocus) requestAnimationFrame(() => triggerRef.current?.focus());
+  };
+
+  const handleTriggerKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      openMenu(event.key === 'ArrowUp' ? locales.length - 1 : selectedIndex);
+    } else if (event.key === 'Escape' && open) {
+      event.preventDefault();
+      closeMenu(true);
+    }
+  };
+
+  const handleMenuKeyDown = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    const currentIndex = optionRefs.current.findIndex(
+      (option) => option === document.activeElement,
+    );
+
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      const direction = event.key === 'ArrowDown' ? 1 : -1;
+      const nextIndex = (currentIndex + direction + locales.length) % locales.length;
+      focusOption(nextIndex);
+    } else if (event.key === 'Home' || event.key === 'End') {
+      event.preventDefault();
+      focusOption(event.key === 'Home' ? 0 : locales.length - 1);
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      closeMenu(true);
+    } else if (event.key === 'Tab') {
+      setOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const handleScroll = () => setOpen(false);
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    window.addEventListener('scroll', handleScroll, {passive: true});
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [open]);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname, search, hash]);
+
   return (
-    <label className="relative flex w-11 h-11 max-sm:w-9 max-sm:h-9 items-center justify-center group text-[var(--fd-ink-2)] hover:text-[var(--fd-primary)] transition-[color,transform] duration-200 hover:scale-110 focus-within:outline focus-within:outline-2 focus-within:outline-[var(--fd-primary)] focus-within:outline-offset-2">
-      <span className="sr-only">{t.language}</span>
-      <Globe2 aria-hidden="true" className="size-5 max-sm:size-[18px]" />
-      <select
-        aria-label={t.language}
-        value={locale}
-        onChange={handleChange}
-        className="absolute inset-0 h-full w-full cursor-pointer opacity-0">
-        {locales.map((candidate) => (
-          <option key={candidate} value={candidate}>
-            {localeInfo[candidate].nativeName}
-          </option>
-        ))}
-      </select>
-      <span className="absolute bottom-full mb-2 px-2 py-1 text-xs rounded-md bg-[var(--fd-ink)] text-[var(--fd-paper)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-        {t.language}
-      </span>
-    </label>
+    <div
+      ref={rootRef}
+      className="relative flex w-11 h-11 max-sm:w-9 max-sm:h-9 items-center justify-center">
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-label={`${t.language}: ${localeInfo[locale].nativeName}`}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-controls={open ? menuId : undefined}
+        onClick={() => (open ? closeMenu(true) : openMenu())}
+        onKeyDown={handleTriggerKeyDown}
+        className={`relative flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 group cursor-pointer transition-[color,transform] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--fd-primary)] focus-visible:outline-offset-2 ${
+          open
+            ? 'text-[var(--fd-primary)] scale-110'
+            : 'text-[var(--fd-ink-2)] hover:text-[var(--fd-primary)] hover:scale-110'
+        }`}>
+        <Globe2 aria-hidden="true" className="size-5 max-sm:size-[18px]" />
+        <span
+          aria-hidden="true"
+          className={`absolute bottom-full mb-2 px-2 py-1 text-xs rounded-md bg-[var(--fd-ink)] text-[var(--fd-paper)] whitespace-nowrap pointer-events-none transition-opacity ${
+            open
+              ? 'invisible opacity-0'
+              : 'opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100'
+          }`}>
+          {t.language}
+        </span>
+      </button>
+
+      {open && (
+        <div
+          id={menuId}
+          role="menu"
+          aria-label={t.language}
+          aria-orientation="vertical"
+          onKeyDown={handleMenuKeyDown}
+          className="absolute bottom-[calc(100%+0.75rem)] right-0 z-[60] w-44 rounded-xl border border-[var(--fd-line)] bg-[var(--fd-surface)] p-1.5 shadow-[var(--fd-shadow-pop)]">
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-1.5 right-3 -z-10 size-3 rotate-45 border-b border-r border-[var(--fd-line)] bg-[var(--fd-surface)]"
+          />
+          <span
+            aria-hidden="true"
+            className="block px-2.5 pb-1.5 pt-1 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-[var(--fd-ink-3)]">
+            {t.language}
+          </span>
+          {locales.map((candidate, index) => {
+            const selected = candidate === locale;
+            return (
+              <button
+                key={candidate}
+                ref={(element) => {
+                  optionRefs.current[index] = element;
+                }}
+                type="button"
+                role="menuitemradio"
+                aria-checked={selected}
+                tabIndex={-1}
+                onClick={() => changeLanguage(candidate)}
+                className={`flex min-h-11 w-full items-center gap-3 rounded-lg border-0 px-2.5 py-2 text-left text-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--fd-primary)] focus-visible:outline-offset-[-2px] ${
+                  selected
+                    ? 'bg-[var(--fd-primary-tint)] text-[var(--fd-primary-strong)]'
+                    : 'bg-transparent text-[var(--fd-ink-2)] hover:bg-[var(--fd-sunken)] hover:text-[var(--fd-ink)]'
+                }`}>
+                <span
+                  aria-hidden="true"
+                  className="w-5 font-mono text-[0.65rem] font-semibold uppercase tracking-[0.08em] opacity-70">
+                  {candidate}
+                </span>
+                <span className="flex-1 font-medium">{localeInfo[candidate].nativeName}</span>
+                <span
+                  aria-hidden="true"
+                  className={`text-xs text-[var(--fd-primary)] ${selected ? 'opacity-100' : 'opacity-0'}`}>
+                  ✓
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
   );
 }
 
