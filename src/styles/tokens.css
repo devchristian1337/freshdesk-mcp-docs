@@ -12,7 +12,7 @@
   --fd-sunken: #eef0eb; /* incassi: righe alternate, wells */
   --fd-ink: #17222b; /* testo primario: blu-inchiostro, mai nero puro */
   --fd-ink-2: #51616d; /* testo secondario */
-  --fd-ink-3: #7d8b95; /* testo terziario: didascalie, meta */
+  --fd-ink-3: #5c6b75; /* testo terziario: didascalie, meta */
   --fd-line: #dce1dd; /* bordi 1px */
   --fd-line-strong: #c3ccc5;
 
@@ -27,7 +27,7 @@
      Rispecchiano le ToolAnnotations del server (read/write/delete). */
   --fd-read: #0b6e99;
   --fd-read-tint: #e2eff6;
-  --fd-write: #b45309;
+  --fd-write: #a64b00;
   --fd-write-tint: #f8ecdd;
   --fd-delete: #b3261e;
   --fd-delete-tint: #f9e5e3;
@@ -36,21 +36,27 @@
      cosi' i blocchi di codice seguono subito il tema impostato nel <head>. */
   --fd-code-background: hsl(230, 1%, 98%);
   --fd-code-ink: hsl(230, 8%, 24%);
-  --fd-code-comment: hsl(230, 4%, 64%);
-  --fd-code-number: hsl(35, 99%, 36%);
-  --fd-code-keyword: hsl(301, 63%, 40%);
-  --fd-code-property: hsl(5, 74%, 59%);
-  --fd-code-string: hsl(119, 34%, 47%);
-  --fd-code-function: hsl(221, 87%, 60%);
-  --fd-code-url: hsl(198, 99%, 37%);
+  --fd-code-comment: #62666d;
+  --fd-code-number: #8a4b00;
+  --fd-code-keyword: #7a1f78;
+  --fd-code-property: #b42318;
+  --fd-code-string: #276b2b;
+  --fd-code-function: #245ec2;
+  --fd-code-url: #006f8f;
 
   /* Colore dei link testuali (a bassa specificità: i moduli lo sovrascrivono). */
   --fd-link: var(--fd-primary-strong);
 
   /* ------------------------------------------------ Tipografia */
-  --fd-font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
-  --fd-font-body: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
-  --fd-font-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  /*
+   * Stack nativi: nessuna richiesta esterna blocca il primo paint. Le varianti
+   * "Variable" mantengono una resa editoriale sui sistemi che le includono,
+   * con fallback metricamente stabile sulle altre piattaforme.
+   */
+  --fd-font-display: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
+  --fd-font-body: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  --fd-font-mono: ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas,
+    'Liberation Mono', monospace;
 
   /* ------------------------------------------------ Geometria */
   --fd-radius: 8px;
@@ -73,7 +79,7 @@
   --fd-sunken: #0b1015;
   --fd-ink: #e8ece9;
   --fd-ink-2: #98a6b0;
-  --fd-ink-3: #6d7c86;
+  --fd-ink-3: #84939d;
   --fd-line: #29343e;
   --fd-line-strong: #3a4854;
 
@@ -91,10 +97,10 @@
 
   --fd-code-background: hsl(220, 13%, 18%);
   --fd-code-ink: hsl(220, 14%, 71%);
-  --fd-code-comment: hsl(220, 10%, 40%);
+  --fd-code-comment: #929dab;
   --fd-code-number: hsl(29, 54%, 61%);
   --fd-code-keyword: hsl(286, 60%, 67%);
-  --fd-code-property: hsl(355, 65%, 65%);
+  --fd-code-property: #e3727b;
   --fd-code-string: hsl(95, 38%, 62%);
   --fd-code-function: hsl(207, 82%, 66%);
   --fd-code-url: hsl(187, 47%, 55%);

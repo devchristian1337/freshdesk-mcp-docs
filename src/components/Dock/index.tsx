@@ -1,7 +1,6 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState, type ChangeEvent} from 'react';
 import {useLocation, useNavigate} from 'react-router';
-import {Menu} from '@base-ui/react/menu';
-import {BookOpen, Check, Globe2, Home, Moon, Search, Sun, Terminal} from 'lucide-react';
+import {BookOpen, Globe2, Home, Moon, Search, Sun, Terminal} from 'lucide-react';
 import LumaBar, {type DockItem} from '../ui/futuristic-nav';
 import {GitHubIcon} from '../ui/github-icon';
 import {useTheme} from '../../theme/ThemeProvider';
@@ -28,41 +27,29 @@ function LanguageMenu() {
   const changeLanguage = (next: Locale) => {
     if (next !== locale) navigate(`${localizePath(next, pathname)}${search}`);
   };
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    changeLanguage(event.currentTarget.value as Locale);
+  };
 
   return (
-    <div className="relative flex flex-col items-center group">
-      <Menu.Root>
-        <Menu.Trigger
-          aria-label={t.language}
-          className="flex items-center justify-center w-11 h-11 max-sm:w-9 max-sm:h-9 [&_svg]:size-5 max-sm:[&_svg]:size-[18px] text-[var(--fd-ink-2)] hover:text-[var(--fd-primary)] relative z-10 bg-transparent border-0 p-0 cursor-pointer transition-[color,transform] duration-200 hover:scale-110 active:scale-[0.98]">
-          <Globe2 />
-        </Menu.Trigger>
-        <Menu.Portal>
-          <Menu.Positioner side="top" align="center" sideOffset={12} className="z-[60]">
-            <Menu.Popup className="w-max select-none rounded-[var(--fd-radius)] border border-[var(--fd-line)] bg-[var(--fd-surface)] p-1.5 shadow-[var(--fd-shadow-pop)] outline-none">
-              <Menu.RadioGroup value={locale} onValueChange={(value) => changeLanguage(value as Locale)}>
-                {locales.map((candidate) => (
-                  <Menu.RadioItem
-                    key={candidate}
-                    value={candidate}
-                    closeOnClick
-                    label={localeInfo[candidate].nativeName}
-                    className="flex w-full cursor-pointer select-none items-center justify-start gap-2 rounded-[var(--fd-radius-sm)] px-3 py-2 text-sm text-[var(--fd-ink)] outline-none data-[highlighted]:bg-[var(--fd-primary-tint)] data-[highlighted]:text-[var(--fd-primary-strong)]">
-                    {localeInfo[candidate].nativeName}
-                    <Menu.RadioItemIndicator className="text-[var(--fd-primary)]">
-                      <Check size={16} strokeWidth={2} />
-                    </Menu.RadioItemIndicator>
-                  </Menu.RadioItem>
-                ))}
-              </Menu.RadioGroup>
-            </Menu.Popup>
-          </Menu.Positioner>
-        </Menu.Portal>
-      </Menu.Root>
+    <label className="relative flex w-11 h-11 max-sm:w-9 max-sm:h-9 items-center justify-center group text-[var(--fd-ink-2)] hover:text-[var(--fd-primary)] transition-[color,transform] duration-200 hover:scale-110 focus-within:outline focus-within:outline-2 focus-within:outline-[var(--fd-primary)] focus-within:outline-offset-2">
+      <span className="sr-only">{t.language}</span>
+      <Globe2 aria-hidden="true" className="size-5 max-sm:size-[18px]" />
+      <select
+        aria-label={t.language}
+        value={locale}
+        onChange={handleChange}
+        className="absolute inset-0 h-full w-full cursor-pointer opacity-0">
+        {locales.map((candidate) => (
+          <option key={candidate} value={candidate}>
+            {localeInfo[candidate].nativeName}
+          </option>
+        ))}
+      </select>
       <span className="absolute bottom-full mb-2 px-2 py-1 text-xs rounded-md bg-[var(--fd-ink)] text-[var(--fd-paper)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
         {t.language}
       </span>
-    </div>
+    </label>
   );
 }
 

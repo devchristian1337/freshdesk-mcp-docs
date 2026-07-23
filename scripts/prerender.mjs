@@ -16,7 +16,44 @@ const {render, collectRoutes, siteInfo} = await import(
   pathToFileURL(path.join(ssrDir, 'entry-server.js')).href
 );
 
-const template = await readFile(path.join(buildDir, 'index.html'), 'utf8');
+let template = await readFile(path.join(buildDir, 'index.html'), 'utf8');
+
+/*
+ * Il sito e' interamente prerenderizzato: incorporare l'unico stylesheet
+ * elimina una richiesta render-blocking su ogni route. Lo script client resta
+ * disponibile per ricerca, tema e navigazione SPA, ma viene scoperto in fondo
+ * al body, dopo che il contenuto statico e' gia' renderizzabile.
+ */
+const stylesheetMatch = template.match(
+  /<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/,
+);
+if (!stylesheetMatch) {
+  throw new Error('Stylesheet client non trovato nel template Vite');
+}
+const stylesheetPath = path.join(buildDir, stylesheetMatch[1].slice(1));
+const criticalCss = (await readFile(stylesheetPath, 'utf8')).replaceAll(
+  '</style',
+  '<\\/style',
+);
+template = template.replace(
+  stylesheetMatch[0],
+  `<style data-critical-css>${criticalCss}</style>`,
+);
+
+const clientScriptMatch = template.match(
+  /<script type="module"[^>]*src="\/assets\/[^"]+\.js"[^>]*><\/script>/,
+);
+if (!clientScriptMatch) {
+  throw new Error('Entry client non trovato nel template Vite');
+}
+const clientScript = clientScriptMatch[0].replace(
+  '<script ',
+  '<script fetchpriority="low" ',
+);
+template = template
+  .replace(clientScriptMatch[0], '')
+  .replace(/\s*<link rel="modulepreload"[^>]*>/g, '')
+  .replace('</body>', `  ${clientScript}\n  </body>`);
 
 /** Sostituisce head e root del template con i contenuti della route. */
 function fillTemplate(appHtml, meta) {

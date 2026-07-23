@@ -37,10 +37,11 @@ const buttonClasses =
 
 const LumaBar = ({items, activeIndex, onSelect, hidden = false, extra, extraAfterIndex}: LumaBarProps) => {
   // Pallino indicatore: elemento UNICO che scivola sotto la voce attiva.
-  // Misuriamo il centro della voce e animiamo `left` con una molla: così lo
-  // spostamento è sempre fluido (niente smonta/rimonta per voce).
+  // Misuriamo il centro della voce e animiamo solo `transform`: lo
+  // spostamento resta fluido senza forzare un nuovo layout.
   const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [dotLeft, setDotLeft] = useState<number | null>(null);
+  const [dotReady, setDotReady] = useState(false);
 
   useEffect(() => {
     const measure = () => {
@@ -48,8 +49,12 @@ const LumaBar = ({items, activeIndex, onSelect, hidden = false, extra, extraAfte
       setDotLeft(el ? el.offsetLeft + el.offsetWidth / 2 : null);
     };
     measure();
+    const frame = requestAnimationFrame(() => setDotReady(true));
     window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('resize', measure);
+    };
   }, [activeIndex, items.length]);
 
   return (
@@ -66,8 +71,13 @@ const LumaBar = ({items, activeIndex, onSelect, hidden = false, extra, extraAfte
         {/* Pallino della voce attiva: scivola verso la voce cliccata. */}
         <span
           aria-hidden="true"
-          className="absolute bottom-[3px] w-1 h-1 rounded-full bg-[var(--fd-primary)] -translate-x-1/2 pointer-events-none transition-[left,opacity] duration-200 ease-out"
-          style={{left: dotLeft ?? '50%', opacity: dotLeft === null ? 0 : 1}}
+          className={`absolute bottom-[3px] left-0 w-1 h-1 rounded-full bg-[var(--fd-primary)] pointer-events-none ${
+            dotReady ? 'transition-[transform,opacity] duration-200 ease-out' : 'transition-none'
+          }`}
+          style={{
+            transform: `translate3d(${dotLeft ?? 0}px, 0, 0) translateX(-50%)`,
+            opacity: dotLeft === null ? 0 : 1,
+          }}
         />
         {items.map((item, index) => {
           const isActive = index === activeIndex;

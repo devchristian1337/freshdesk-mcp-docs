@@ -25,7 +25,7 @@ export default function DocLayout({docId, toc, children}: DocLayoutProps) {
         <Sidebar />
       </aside>
 
-      <div className={styles.main} key={docId}>
+      <main className={styles.main} key={docId}>
         <Breadcrumbs docId={docId} />
         <article
           className="markdown"
@@ -34,7 +34,7 @@ export default function DocLayout({docId, toc, children}: DocLayoutProps) {
           {children}
         </article>
         <DocPagination docId={docId} />
-      </div>
+      </main>
 
       <aside className={styles.toc}>
         <Toc entries={toc} />

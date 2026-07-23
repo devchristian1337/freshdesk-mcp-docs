@@ -254,6 +254,13 @@ h4 {
   margin: 0.9rem 0;
 }
 
+/* I link nel testo non dipendono dal solo colore per essere riconoscibili. */
+.markdown a:not(.anchor-link) {
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
 .markdown li + li {
   margin-top: 0.35rem;
 }

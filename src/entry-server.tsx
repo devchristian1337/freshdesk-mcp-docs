@@ -74,7 +74,7 @@ export async function collectRoutes(): Promise<RouteMeta[]> {
         path: paths[locale],
         title: `${pageTitle} | ${site.title}`,
         pageTitle,
-        description: site.tagline,
+        description: mod.frontmatter.description ?? site.tagline,
         kind: 'doc',
         locale,
         language: localeInfo[locale].htmlLang,

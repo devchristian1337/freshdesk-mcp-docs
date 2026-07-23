@@ -19,9 +19,9 @@ function HandOff({copy}: {copy: ReturnType<typeof homeContentFor>}) {
     <div className={styles.console} aria-label={copy.requestExample}>
       <div className={styles.consoleBar}><span className={styles.consoleDot} /><span className={styles.consoleTitle}>freshdesk-mcp · session</span><span className={styles.consoleStatus}>{copy.active}</span></div>
       <ol className={styles.rail}>
-        <li className={clsx(styles.stage, styles.stage1)}><span className={styles.stageLabel}>{copy.request}</span><p className={styles.prompt}>{copy.requestExample}</p></li>
-        <li className={clsx(styles.stage, styles.stage2)}><span className={styles.stageLabel}>{copy.tool}</span><p className={styles.toolCall}><code className={styles.toolName}>freshdesk_get_ticket</code><span className="fd-tag">read</span></p><pre className={styles.snippet}><code>{'{ "ticket_id": 12345, "include": "conversations" }'}</code></pre></li>
-        <li className={clsx(styles.stage, styles.stage3)}><span className={styles.stageLabel}>{copy.response}</span><pre className={styles.snippet}><code>{`{\n  "id": 12345,\n  "subject": "${copy.ticketSubject}",\n  "status": 2,\n  "conversations": [ ... ]\n}`}</code></pre></li>
+        <li className={styles.stage}><span className={styles.stageLabel}>{copy.request}</span><p className={styles.prompt}>{copy.requestExample}</p></li>
+        <li className={styles.stage}><span className={styles.stageLabel}>{copy.tool}</span><p className={styles.toolCall}><code className={styles.toolName}>freshdesk_get_ticket</code><span className="fd-tag">read</span></p><pre className={styles.snippet}><code>{'{ "ticket_id": 12345, "include": "conversations" }'}</code></pre></li>
+        <li className={styles.stage}><span className={styles.stageLabel}>{copy.response}</span><pre className={styles.snippet}><code>{`{\n  "id": 12345,\n  "subject": "${copy.ticketSubject}",\n  "status": 2,\n  "conversations": [ ... ]\n}`}</code></pre></li>
       </ol>
     </div>
   );
