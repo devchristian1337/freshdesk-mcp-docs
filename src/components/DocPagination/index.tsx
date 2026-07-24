@@ -1,3 +1,4 @@
+import {ArrowLeft, ArrowRight} from 'lucide-react';
 import {prevNextOf, type DocId} from '../../content/docs.config';
 import {uiCopy} from '../../i18n/copy';
 import {LocalizedLink, useLocale} from '../../i18n/LocaleProvider';
@@ -14,13 +15,13 @@ export default function DocPagination({docId}: {docId: DocId}) {
     <nav className={styles.pager} aria-label={t.adjacentPages}>
       {prev ? (
         <LocalizedLink to={`/docs/${prev.id}`} className={styles.card} rel="prev">
-          <span className={styles.dir}>← {t.previous}</span>
+          <span className={styles.dir}><ArrowLeft size={13} aria-hidden="true" /> {t.previous}</span>
           <span className={styles.label}>{prev.label}</span>
         </LocalizedLink>
       ) : <span />}
       {next ? (
         <LocalizedLink to={`/docs/${next.id}`} className={`${styles.card} ${styles.cardNext}`} rel="next">
-          <span className={styles.dir}>{t.next} →</span>
+          <span className={styles.dir}>{t.next} <ArrowRight size={13} aria-hidden="true" /></span>
           <span className={styles.label}>{next.label}</span>
         </LocalizedLink>
       ) : <span />}

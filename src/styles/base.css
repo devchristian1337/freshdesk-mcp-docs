@@ -1,7 +1,14 @@
-/**
+/* Hallmark · genre: modern-minimal · macrostructure: Long Document
+ * design-system: design.md · designed-as-app
+ * varianti: guida (prosa, divisore = spazio) · reference (record, regola ink)
+ * pre-emit critique: P5 H5 E5 S4 R5 V4
+ *
  * Base globale: reset, tipografia, bottoni, chip semantici e resa
  * del contenuto markdown (.markdown). I nomi .fd-tag* sono un contratto
  * con i file in docs/ e non vanno rinominati.
+ *
+ * Prima di modificare colori, spazi, motion o voce dei CTA: leggi design.md
+ * alla root. Questo file ne e' un'applicazione, non una fonte.
  */
 
 /* ---------------------------------------------------------------- Reset */
@@ -16,6 +23,13 @@ html {
   scroll-behavior: smooth;
   /* Le ancore non devono finire sotto la navbar fissa. */
   scroll-padding-top: calc(var(--fd-navbar-h) + 16px);
+}
+
+/* Nessuna pagina scorre in orizzontale. `clip` e non `hidden`: `hidden`
+   creerebbe un contenitore di scroll e romperebbe `position: sticky`. */
+html,
+body {
+  overflow-x: clip;
 }
 
 body {
@@ -34,8 +48,8 @@ body {
 :root.theme-transition *::after {
   transition-property: color, background-color, border-color, outline-color,
     text-decoration-color, fill, stroke, box-shadow;
-  transition-duration: 180ms;
-  transition-timing-function: ease;
+  transition-duration: var(--fd-dur-short);
+  transition-timing-function: var(--fd-ease-out);
 }
 
 img,
@@ -94,15 +108,24 @@ button {
 }
 
 /* ---------------------------------------------------------------- Titoli */
+/* I titoli sono sempre romani: nessun corsivo, né sulla faccia né su una
+   parola isolata dentro un titolo altrimenti dritto. L'enfasi la portano
+   peso e colore d'accento. */
 h1,
 h2,
 h3,
 h4 {
   font-family: var(--fd-font-display);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  font-style: normal;
+  font-weight: var(--fd-display-weight);
+  line-height: var(--fd-display-leading);
+  letter-spacing: var(--fd-display-tracking);
   color: var(--fd-ink);
+}
+
+h1 {
+  font-weight: var(--fd-display-weight-strong);
+  letter-spacing: var(--fd-display-tracking-tight);
 }
 
 /* ---------------------------------------------------------------- Etichette tecniche */
@@ -110,11 +133,11 @@ h4 {
 .fd-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--fd-space-2xs);
   font-family: var(--fd-font-mono);
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--fd-label-tracking);
   text-transform: uppercase;
   color: var(--fd-ink-2);
 }
@@ -129,26 +152,30 @@ h4 {
 }
 
 /* ---------------------------------------------------------------- Bottoni */
+/* Un solo segnale di hover: il colore. Il `translateY` sull'`:active` resta:
+   non è decorazione, è la risposta tattile alla pressione. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.62rem 1.25rem;
+  gap: var(--fd-space-2xs);
+  padding: var(--fd-space-2xs) var(--fd-space-md);
   border-radius: var(--fd-radius-sm);
   border: 1px solid transparent;
   font-family: var(--fd-font-body);
   font-size: 0.95rem;
   font-weight: 600;
+  /* Un'etichetta cliccabile non va mai a capo. */
+  white-space: nowrap;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.15s ease, border-color 0.15s ease,
-    transform 0.15s ease;
+  transition: background-color var(--fd-dur-instant) var(--fd-ease-out),
+    border-color var(--fd-dur-instant) var(--fd-ease-out),
+    color var(--fd-dur-instant) var(--fd-ease-out);
 }
 
 .btn:hover {
   text-decoration: none;
-  transform: translateY(-1px);
 }
 
 .btn:active {
@@ -164,10 +191,6 @@ h4 {
   background: var(--fd-primary-strong);
 }
 
-[data-theme='dark'] .btn--primary:hover {
-  background: var(--fd-primary-strong);
-}
-
 .btn--ghost {
   background: transparent;
   border-color: var(--fd-line-strong);
@@ -180,8 +203,38 @@ h4 {
 }
 
 .btn--lg {
-  padding: 0.78rem 1.6rem;
+  padding: var(--fd-space-xs) var(--fd-space-xl);
   font-size: 1rem;
+}
+
+/* Stati non-nominali: disabilitato e in corso. */
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.btn[aria-busy='true'] {
+  cursor: progress;
+  /* Il tratto scorre lungo il bordo inferiore: nessuno spinner, nessun salto
+     di layout, l'etichetta resta leggibile. */
+  background-image: linear-gradient(
+    90deg,
+    transparent 0 35%,
+    currentColor 35% 65%,
+    transparent 65% 100%
+  );
+  background-size: 300% 2px;
+  background-position: 150% 100%;
+  background-repeat: no-repeat;
+  animation: fd-btn-busy 1s linear infinite;
+}
+
+@keyframes fd-btn-busy {
+  to {
+    background-position: -150% 100%;
+  }
 }
 
 /* ---------------------------------------------------------------- Chip semantici */
@@ -223,35 +276,56 @@ h4 {
 .markdown > h1:first-child {
   margin-top: 0;
   font-size: 2.3rem;
-  font-weight: 800;
+  font-weight: var(--fd-display-weight-strong);
 }
 
+/* Variante GUIDA (Long Document): il divisore e' lo spazio, non una regola.
+   Queste pagine sono prosa continua - una riga sopra ogni H2 le trasformava
+   in una scheda tecnica, che e' il registro sbagliato per un discorso. */
 .markdown h2 {
   font-size: 1.45rem;
-  margin: 2.8rem 0 0.9rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--fd-line);
+  margin: var(--fd-space-2xl) 0 var(--fd-space-sm);
 }
 
 .markdown h3 {
   font-size: 1.15rem;
-  margin: 2rem 0 0.7rem;
+  margin: var(--fd-space-xl) 0 var(--fd-space-xs);
 }
 
-/* Nelle pagine di reference gli H2 sono nomi di tool: identificatori,
-   quindi composti in mono - la tipografia codifica la natura del testo. */
+/* Variante REFERENCE: ogni H2 e' un nome di tool, quindi un identificatore -
+   composto in mono, come da contratto tipografico del sito. Ed e' un record
+   discreto, non un paragrafo: la regola in inchiostro pieno lo delimita, con
+   lo stesso peso delle bande della home (regola spessa = confine di record,
+   filo sottile = confine di riga).
+   Ritmo stretto: molta aria sopra il nome, poca sotto, cosi' il tool e la sua
+   descrizione restano una cosa sola. */
 .markdown[data-kind='reference'] h2 {
   font-family: var(--fd-font-mono);
   font-weight: 600;
   font-size: 1.25rem;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--fd-display-tracking);
   overflow-wrap: anywhere;
+  margin: var(--fd-space-3xl) 0 var(--fd-space-xs);
+  padding-top: var(--fd-space-lg);
+  border-top: 2px solid var(--fd-ink);
+}
+
+.markdown[data-kind='reference'] > h2:first-of-type {
+  margin-top: var(--fd-space-2xl);
 }
 
 .markdown p,
 .markdown ul,
 .markdown ol {
-  margin: 0.9rem 0;
+  margin: var(--fd-space-sm) 0;
+}
+
+/* Misura di lettura. Il vincolo sta sul testo corrente, non sulla colonna:
+   tabelle di reference, blocchi di codice e immagini restano a piena
+   larghezza, dove la larghezza serve davvero. */
+.markdown p,
+.markdown li {
+  max-width: 68ch;
 }
 
 /* I link nel testo non dipendono dal solo colore per essere riconoscibili. */
@@ -262,23 +336,23 @@ h4 {
 }
 
 .markdown li + li {
-  margin-top: 0.35rem;
+  margin-top: var(--fd-space-3xs);
 }
 
 .markdown hr {
   border: 0;
   border-top: 1px solid var(--fd-line);
-  margin: 2.2rem 0;
+  margin: var(--fd-space-xl) 0;
 }
 
 /* Ancora ¶ sui titoli (parità con Docusaurus), visibile su hover. */
 .markdown .anchor-link {
-  margin-left: 0.4rem;
+  margin-left: var(--fd-space-2xs);
   font-family: var(--fd-font-body);
   font-weight: 400;
   color: var(--fd-ink-3);
   opacity: 0;
-  transition: opacity 0.12s ease;
+  transition: opacity var(--fd-dur-instant) var(--fd-ease-out);
 }
 
 .markdown h2:hover .anchor-link,
@@ -310,8 +384,8 @@ h4 {
 /* Admonition (:::note/info/tip/warning/caution nei .md).
    Bordo sinistro semantico + fondo in tinta: informazione, non decorazione. */
 .admonition {
-  margin: 1.3rem 0;
-  padding: 0.85rem 1.1rem;
+  margin: var(--fd-space-lg) 0;
+  padding: var(--fd-space-xs) var(--fd-space-sm);
   border: 1px solid var(--fd-line);
   border-left: 3px solid var(--fd-ink-3);
   border-radius: var(--fd-radius-sm);
@@ -327,10 +401,10 @@ h4 {
   font-family: var(--fd-font-mono);
   font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--fd-label-tracking);
   text-transform: uppercase;
   color: var(--fd-ink-2);
-  margin: 0 0 0.35rem;
+  margin: 0 0 var(--fd-space-3xs);
 }
 
 .admonition--info {
@@ -383,7 +457,7 @@ h4 {
   border: 1px solid var(--fd-line);
   border-radius: var(--fd-radius);
   overflow: hidden;
-  margin: 1.2rem 0;
+  margin: var(--fd-space-md) 0;
   font-size: 0.92rem;
   display: table;
 }
@@ -397,12 +471,12 @@ h4 {
   text-align: left;
   color: var(--fd-ink-2);
   background: var(--fd-sunken);
-  padding: 0.55rem 0.9rem;
+  padding: var(--fd-space-2xs) var(--fd-space-sm);
   border-bottom: 1px solid var(--fd-line);
 }
 
 .markdown td {
-  padding: 0.55rem 0.9rem;
+  padding: var(--fd-space-2xs) var(--fd-space-sm);
   border-bottom: 1px solid var(--fd-line);
   vertical-align: top;
 }

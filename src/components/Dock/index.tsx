@@ -6,7 +6,7 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react';
 import {useLocation, useNavigate} from 'react-router';
-import {BookOpen, Globe2, Home, Moon, Search, Sun, Terminal} from 'lucide-react';
+import {BookOpen, Check, Globe2, Home, Moon, Search, Sun, Terminal} from 'lucide-react';
 import LumaBar, {type DockItem} from '../ui/futuristic-nav';
 import {GitHubIcon} from '../ui/github-icon';
 import {useTheme} from '../../theme/ThemeProvider';
@@ -120,10 +120,10 @@ function LanguageMenu() {
         aria-controls={open ? menuId : undefined}
         onClick={() => (open ? closeMenu(true) : openMenu())}
         onKeyDown={handleTriggerKeyDown}
-        className={`relative flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 group cursor-pointer transition-[color,transform] duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--fd-primary)] focus-visible:outline-offset-2 ${
+        className={`relative flex h-full w-full items-center justify-center rounded-full border-0 bg-transparent p-0 group cursor-pointer transition-colors duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--fd-primary)] focus-visible:outline-offset-2 ${
           open
-            ? 'text-[var(--fd-primary)] scale-110'
-            : 'text-[var(--fd-ink-2)] hover:text-[var(--fd-primary)] hover:scale-110'
+            ? 'text-[var(--fd-primary)]'
+            : 'text-[var(--fd-ink-2)] hover:text-[var(--fd-primary)]'
         }`}>
         <Globe2 aria-hidden="true" className="size-5 max-sm:size-[18px]" />
         <span
@@ -178,11 +178,10 @@ function LanguageMenu() {
                   {candidate}
                 </span>
                 <span className="flex-1 font-medium">{localeInfo[candidate].nativeName}</span>
-                <span
+                <Check
                   aria-hidden="true"
-                  className={`text-xs text-[var(--fd-primary)] ${selected ? 'opacity-100' : 'opacity-0'}`}>
-                  ✓
-                </span>
+                  className={`size-4 text-[var(--fd-primary)] ${selected ? 'opacity-100' : 'opacity-0'}`}
+                />
               </button>
             );
           })}

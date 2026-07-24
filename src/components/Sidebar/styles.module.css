@@ -16,7 +16,7 @@
   font-family: var(--fd-font-mono);
   font-size: 0.68rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--fd-label-tracking);
   text-transform: uppercase;
   color: var(--fd-ink-3);
   margin: 0 0 0.4rem;
@@ -34,20 +34,21 @@
 
 .link {
   display: block;
-  padding: 0.36rem 0.7rem;
+  padding: var(--fd-space-3xs) var(--fd-space-xs);
   border-radius: var(--fd-radius-sm);
   font-size: 0.9rem;
   color: var(--fd-ink-2);
   border-left: 2px solid transparent;
-  transition: color 0.13s ease, background-color 0.13s ease,
-    transform 0.13s ease;
+  transition: color var(--fd-dur-instant) var(--fd-ease-out),
+    background-color var(--fd-dur-instant) var(--fd-ease-out);
 }
 
+/* Un solo segnale: il tint di riga (il colore del testo fa parte dello
+   stesso stato). Niente scivolamento laterale in aggiunta. */
 .link:hover {
   color: var(--fd-ink);
   background: var(--fd-sunken);
   text-decoration: none;
-  transform: translateX(2px);
 }
 
 .linkActive {

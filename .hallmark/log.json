@@ -1,0 +1,13 @@
+[
+  {
+    "date": "2026-07-24",
+    "scope": "app",
+    "macrostructure": "Catalogue (marketing) + Long Document (content)",
+    "theme": "Console operativa (autoriale, preservata dal pre-flight)",
+    "theme_axes": "light / sans+mono / chromatic-green",
+    "enrichment": "none (typography only)",
+    "archetypes": "S2 Hanging · F3 Tabular spec sheet · N5 Floating pill (bottom) · Ft2 Inline (marketing) · Ft3 Index columns (docs)",
+    "design_system": "design.md",
+    "brief": "Freshdesk MCP · redesign multi-pagina: la home diventa una superficie d'inventario, le docs si separano in variante guida e variante reference"
+  }
+]

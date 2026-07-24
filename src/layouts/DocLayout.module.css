@@ -1,11 +1,16 @@
+/* Hallmark · genre: modern-minimal · macrostructure: Long Document
+ * design-system: design.md · designed-as-app
+ * pre-emit critique: P4 H5 E5 S4 R5 V3
+ */
+
 .grid {
   max-width: var(--fd-content-max);
   margin: 0 auto;
   width: 100%;
-  padding: 2rem 1.25rem 3.5rem;
+  padding: var(--fd-space-xl) var(--fd-space-md) var(--fd-space-3xl);
   display: grid;
   grid-template-columns: 230px minmax(0, 1fr) 210px;
-  gap: 2.5rem;
+  gap: var(--fd-space-2xl);
   align-items: start;
 }
 
@@ -25,8 +30,8 @@
 
 @media (max-width: 1000px) {
   .grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 0;
-    padding-top: 1.2rem;
+    padding-top: var(--fd-space-md);
   }
 }

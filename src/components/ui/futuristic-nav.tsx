@@ -88,14 +88,15 @@ const LumaBar = ({items, activeIndex, onSelect, hidden = false, extra, extraAfte
                   itemRefs.current[index] = el;
                 }}
                 className="relative flex flex-col items-center group">
+                {/* Un solo segnale per stato: il colore (più il pallino, che
+                    è l'indicatore di posizione). Niente scale sovrapposto. */}
                 {item.href ? (
                   <a
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={item.label}
-                    className={`${buttonClasses} transition-transform hover:scale-110`}
-                    style={{transform: `scale(${isActive ? 1.18 : 1})`}}>
+                    className={buttonClasses}>
                     {item.icon}
                   </a>
                 ) : (
@@ -104,11 +105,8 @@ const LumaBar = ({items, activeIndex, onSelect, hidden = false, extra, extraAfte
                     onClick={() => onSelect(index)}
                     aria-label={item.label}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`${buttonClasses} transition-transform hover:scale-110`}
-                    style={{
-                      color: isActive ? 'var(--fd-primary)' : undefined,
-                      transform: `scale(${isActive ? 1.18 : 1})`,
-                    }}>
+                    className={buttonClasses}
+                    style={{color: isActive ? 'var(--fd-primary)' : undefined}}>
                     {item.icon}
                   </button>
                 )}

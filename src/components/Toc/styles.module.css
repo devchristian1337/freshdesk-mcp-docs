@@ -12,7 +12,7 @@
   font-family: var(--fd-font-mono);
   font-size: 0.66rem;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--fd-label-tracking);
   text-transform: uppercase;
   color: var(--fd-ink-3);
   margin: 0 0 0.6rem;
@@ -32,7 +32,7 @@
   color: var(--fd-ink-2);
   line-height: 1.45;
   overflow-wrap: anywhere;
-  transition: color 0.15s ease;
+  transition: color var(--fd-dur-instant) var(--fd-ease-out);
 }
 
 .link:hover {

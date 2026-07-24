@@ -1,30 +1,28 @@
 .pager {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.8rem;
-  margin-top: 2.6rem;
-  padding-top: 1.4rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--fd-space-xs);
+  margin-top: var(--fd-space-2xl);
+  padding-top: var(--fd-space-lg);
   border-top: 1px solid var(--fd-line);
 }
 
 .card {
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.85rem 1rem;
+  gap: var(--fd-space-3xs);
+  padding: var(--fd-space-xs) var(--fd-space-sm);
   border: 1px solid var(--fd-line);
   border-radius: var(--fd-radius);
   background: var(--fd-surface);
   color: var(--fd-ink);
-  transition: border-color 0.14s ease, background-color 0.14s ease,
-    transform 0.14s ease;
+  transition: border-color var(--fd-dur-short) var(--fd-ease-out);
 }
 
+/* Un solo segnale, come le card della home. */
 .card:hover {
   border-color: var(--fd-primary);
-  background: var(--fd-primary-tint);
   text-decoration: none;
-  transform: translateY(-2px);
 }
 
 .cardNext {
@@ -32,12 +30,19 @@
 }
 
 .dir {
+  display: flex;
+  align-items: center;
+  gap: var(--fd-space-3xs);
   font-family: var(--fd-font-mono);
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--fd-ink-3);
+}
+
+.cardNext .dir {
+  justify-content: flex-end;
 }
 
 .label {

@@ -1,8 +1,16 @@
-/**
+/* Hallmark · design-system: design.md · designed-as-app
+ *
  * Freshdesk MCP - design token "Console operativa".
  * Estetica di status board da helpdesk: carta tecnica, inchiostro blu,
  * verde operativo come unico colore interattivo, colori semantici usati
  * solo per informazione (read / write / delete, stati, priorità).
+ *
+ * QUESTO FILE E' L'ORIGINALE: e' quello che il sito carica, in hex.
+ * `design.md` alla root porta gli stessi valori in OKLCH, piu' le regole che
+ * l'hex non puo' esprimere (disciplina dell'accento, contratto sans/mono,
+ * un solo segnale di hover, famiglie di macrostruttura). Se cambi un colore
+ * qui, aggiorna anche la tabella in design.md - o le due fonti divergono e
+ * l'audit lo segnala come drift.
  */
 
 :root {
@@ -47,16 +55,66 @@
   /* Colore dei link testuali (a bassa specificità: i moduli lo sovrascrivono). */
   --fd-link: var(--fd-primary-strong);
 
+  /* Nessuna banda scura fissa, nessun fondo in tinta: la chiusura di pagina si
+     legge come un gradino di elevazione (carta -> surface rialzata -> sunken
+     incassato), identico nei due temi.
+     Vedi design.md § Chiusura di pagina. */
+
   /* ------------------------------------------------ Tipografia */
   /*
    * Stack nativi: nessuna richiesta esterna blocca il primo paint. Le varianti
    * "Variable" mantengono una resa editoriale sui sistemi che le includono,
    * con fallback metricamente stabile sulle altre piattaforme.
+   *
+   * LIMITE NOTO: display e body sono due tagli ottici della stessa
+   * superfamiglia e fuori da Windows ricadono entrambi su `system-ui`. Su
+   * quelle piattaforme i titoli non hanno una faccia propria. La seconda voce
+   * reale del sito è quindi il MONO, usato per tutto ciò che è identificatore
+   * o etichetta (eyebrow, chip read/write/delete, `th`, H2 delle pagine
+   * reference, conteggi del registro): la coppia è sans + mono, non due sans.
+   * Per una faccia display davvero distinta servirebbe un font self-hosted -
+   * scelta con implicazioni di licenza e di peso, quindi non presa qui.
+   *
+   * Fino ad allora la distinzione display/body è portata dal peso e dalla
+   * spaziatura, dichiarati sotto invece che improvvisati caso per caso.
    */
   --fd-font-display: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
   --fd-font-body: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
   --fd-font-mono: ui-monospace, 'Cascadia Code', 'SFMono-Regular', Consolas,
     'Liberation Mono', monospace;
+
+  --fd-display-weight: 700;
+  --fd-display-weight-strong: 800; /* h1 e titoli di banda */
+  --fd-display-tracking: -0.01em;
+  --fd-display-tracking-tight: -0.02em; /* display grandi, sopra ~2.5rem */
+  --fd-display-leading: 1.15;
+
+  /* Il registro delle etichette mono: un'unica voce, non tre varianti ad hoc. */
+  --fd-label-tracking: 0.08em;
+
+  /* ------------------------------------------------ Spazio */
+  /* Scala 4 pt: ogni padding, gap e margin del sito pesca da qui. */
+  --fd-space-3xs: 0.25rem; /*  4 */
+  --fd-space-2xs: 0.5rem; /*  8 */
+  --fd-space-xs: 0.75rem; /* 12 */
+  --fd-space-sm: 1rem; /* 16 */
+  --fd-space-md: 1.25rem; /* 20 - gutter orizzontale standard */
+  --fd-space-lg: 1.5rem; /* 24 */
+  --fd-space-xl: 2rem; /* 32 */
+  --fd-space-2xl: 3rem; /* 48 */
+  --fd-space-3xl: 4rem; /* 64 */
+  --fd-space-4xl: 6rem; /* 96 */
+
+  /* ------------------------------------------------ Motion */
+  /* Tre easing nominate, mai l'`ease` di default del browser. */
+  --fd-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --fd-ease-in: cubic-bezier(0.64, 0, 0.78, 0);
+  --fd-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --fd-dur-instant: 120ms; /* cambi di colore, tint di riga */
+  --fd-dur-short: 180ms; /* bordi, opacità, tema */
+  --fd-dur-med: 240ms; /* elementi che si spostano */
+  --fd-dur-long: 600ms; /* entrata orchestrata (una sola per pagina) */
 
   /* ------------------------------------------------ Geometria */
   --fd-radius: 8px;
